@@ -81,7 +81,7 @@ export default function TaxationPage() {
       </table>
 
       {/* Add Tax Rule Modal */}
-      {isAddModalOpen && <AddTaxRuleForm onClose={() => setIsAddModalOpen(false)} />}
+      {isAddModalOpen && <AddTaxRuleForm onAdd={() => setIsAddModalOpen(false)} />}
 
       {/* Edit Tax Rule Modal */}
       {editTaxRule && <EditTaxRuleForm taxRule={editTaxRule} onClose={() => setEditTaxRule(null)} />}
