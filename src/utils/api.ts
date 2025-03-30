@@ -156,10 +156,27 @@ export const getCustomers = async () => {
 
 // Add Customer
 export const addCustomer = async (customer: { name: string; email: string }) => {
-  const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
+  try {
+    const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
 
-  await axios.post(`${API_URL}/${tenantId}/customers`, customer, { headers: getAuthHeaders() });
+    if (!tenantId) {
+      throw new Error("Tenant ID is missing. Please log in again.");
+    }
+
+    const response = await axios.post(`${API_URL}/${tenantId}/customers`, customer, { headers: getAuthHeaders() });
+
+    return response.data; // Return response data
+  } catch (error) {
+    console.error("Error adding customer:", error);
+
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data.message || "Failed to add customer.");
+    } else {
+      throw new Error("An unknown error occurred while adding customer.");
+    }
+  }
 };
+
 
 // Update Customer
 export const updateCustomer = async (customerId: string, customer: { name: string; email: string }) => {
