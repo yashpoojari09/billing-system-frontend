@@ -143,10 +143,11 @@ export const deleteInventoryItem = async (id: string) => {
   }
 };
 //customers
-const tenantId="0c5f9551-b759-435d-87dc-4e5cf0ef807e"
+const tenantId = localStorage.getItem("tenantId"); // Get tenantId from storage
 
 // Fetch Customers
 export const getCustomers = async () => {
+  
   const response = await axios.get(`${API_URL}/${tenantId}/customers`, { headers: getAuthHeaders() });
   return response.data;
 };
