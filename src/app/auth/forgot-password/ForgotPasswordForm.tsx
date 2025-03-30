@@ -8,6 +8,7 @@ import { z } from "zod";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 
+
 type ForgotPasswordInputs = z.infer<typeof forgotPasswordSchema>;
 
 const ForgotPasswordForm = () => {

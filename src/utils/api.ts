@@ -3,10 +3,12 @@ export const API_URL="https://billing-system-lemon.vercel.app/api";
 
 // Get tokens from localStorage
 const getAuthHeaders = () => {
-  const accessToken = localStorage.getItem("accessToken");
-  return accessToken ? { Authorization: `Bearer ${accessToken}` } : {};
+  if (typeof window !== "undefined") {
+    const accessToken = localStorage.getItem("accessToken");
+    return accessToken ? { Authorization: `Bearer ${accessToken}` } : {};
+  }
+  return {}; // Return empty headers during SSR
 };
-
 // API instance with interceptor for authentication
 const api = axios.create({
   baseURL: API_URL,
@@ -39,7 +41,7 @@ export const loginUser = async (email: string, password: string) => {
 /// Refresh Token
 export const refreshAccessToken = async () => {
   try {
-    const response = await axios.get("${API_URL}/auth/refresh", { withCredentials: true });
+    const response = await axios.get(`${API_URL}/auth/refresh`, { withCredentials: true }, );
      // ✅ Store the new access token in localStorage
      localStorage.setItem("accessToken", response.data.accessToken);
     return response.data.accessToken;
@@ -52,7 +54,7 @@ export const refreshAccessToken = async () => {
 
 export const forgotPassword = async (email: string) => {
   try {
-    const response = await axios.post(`${API_URL}/auth/forgot-password`, { email });
+    const response = await axios.post(`${API_URL}/auth/forgot-password`, { email },  { headers: getAuthHeaders() });
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -77,7 +79,7 @@ export const resetPassword = async (token:string, input: z.infer<typeof resetPas
   try {
     const { data } = await axios.post(`${API_URL}/auth/reset-password`, 
       { token, ...parsedInput.data }, // 🔥 Send token along with the form data
-        { headers: { "Content-Type": "application/json" } }
+        { headers: { "Content-Type": "application/json" } } 
     );
 
     return { success: true, message: data.message };
@@ -143,47 +145,61 @@ export const deleteInventoryItem = async (id: string) => {
   }
 };
 //customers
-const tenantId = localStorage.getItem("tenantId"); // Get tenantId from storage
 
 // Fetch Customers
 export const getCustomers = async () => {
-  
+  const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
+
   const response = await axios.get(`${API_URL}/${tenantId}/customers`, { headers: getAuthHeaders() });
   return response.data;
 };
 
 // Add Customer
 export const addCustomer = async (customer: { name: string; email: string }) => {
+  const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
+
   await axios.post(`${API_URL}/${tenantId}/customers`, customer, { headers: getAuthHeaders() });
 };
 
 // Update Customer
 export const updateCustomer = async (customerId: string, customer: { name: string; email: string }) => {
+  const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
+
   await axios.put(`${API_URL}/${tenantId}/customers/${customerId}`, customer, { headers: getAuthHeaders() });
 };
 
 // Delete Customer
 export const deleteCustomer = async (customerId: string) => {
+  const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
+
   await axios.delete(`${API_URL}/${tenantId}/customers/${customerId}`, { headers: getAuthHeaders() });
 };
 
 // Taxation
 export const getTaxRules = async () => {
+  const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
+
   const response = await axios.get(`${API_URL}/${tenantId}/taxation`, { headers: getAuthHeaders() });
   return response.data;
 };
 
 export const createTaxRule = async (data: { taxRate: number; region: string }) => {
+  const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
+
   const response = await axios.post(`${API_URL}/${tenantId}/taxation`, data, { headers: getAuthHeaders() });
   return response.data;
 };
 
 export const updateTaxRule = async (taxId: string, data: { taxRate: number; region: string }) => {
+  const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
+
   const response = await axios.put(`${API_URL}/${tenantId}/taxation/${taxId}`, data, { headers: getAuthHeaders() });
   return response.data;
 };
 
 export const deleteTaxRule = async (taxId: string) => {
+  const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
+
   const response = await axios.delete(`${API_URL}/${tenantId}/taxation/${taxId}`, { headers: getAuthHeaders() });
   return response.data;
 };
