@@ -2,12 +2,9 @@
 
 import { useState } from "react";
 import { updateCustomer } from "@/utils/api";
+import { EditCustomerFormProps } from "@/types";
 
-interface EditCustomerFormProps {
-  customer: { id: string; name: string; email: string };
-  onClose: () => void;
-  onUpdate: () => void;
-}
+
 
 export default function EditCustomerForm({ customer, onClose, onUpdate }: EditCustomerFormProps) {
   const [formData, setFormData] = useState({
@@ -28,7 +25,7 @@ export default function EditCustomerForm({ customer, onClose, onUpdate }: EditCu
 
     try {
       await updateCustomer(customer.id, formData);
-      onUpdate(); // Refresh the customer list
+      onUpdate({ ...customer, ...formData }); // Refresh the customer list
       onClose();
     } catch (error) {
       setError("Failed to update customer.");

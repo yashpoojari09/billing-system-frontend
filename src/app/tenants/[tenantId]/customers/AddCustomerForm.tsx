@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { customerSchema } from "@/utils/validation";
 import { addCustomer } from "@/utils/api";
 import { z } from "zod";
+import { Customer } from "@/types";
 
 type CustomerFormValues = z.infer<typeof customerSchema>;
 
@@ -15,7 +16,7 @@ export default function AddCustomerForm({
   onCustomerAdded, // ✅ Accept the function
 }: {
   onClose: () => void;
-  onCustomerAdded: (customer: any) => void; // ✅ Define prop type
+  onCustomerAdded: (customer:Customer) => void; // ✅ Define prop type
 }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 

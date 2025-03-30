@@ -7,10 +7,11 @@ import { useRouter } from "next/navigation";
 import Button from "@/components/ui/Button";
 import { useParams } from "next/navigation";
 import { getCustomers } from "@/utils/api"; // ✅ Ensure this is imported
+import {Customer} from "@/types"
 
 export default function CustomersPage() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [customers, setCustomers] = useState<any[]>([]); // ✅ Explicitly type the state as an array of any
+  const [customers, setCustomers] = useState<Customer[]>([]); // ✅ Explicitly type the state as an array of any
 
   const router = useRouter();
   const params = useParams();
@@ -36,14 +37,7 @@ export default function CustomersPage() {
       console.error("Failed to fetch customers:", error);
     }
   };
-    // Function to update customer list when a new one is added
-    interface Customer {
-      id: string;
-      name: string;
-      email: string;
-      [key: string]: any; // ✅ Allow additional properties
-    }
-
+  
     const handleCustomerAdded = (newCustomer: Customer) => {
       setCustomers((prevCustomers) => [...prevCustomers, newCustomer]); // ✅ Update table instantly
     };
@@ -63,7 +57,7 @@ export default function CustomersPage() {
           + Add Customer
         </Button>
       </div>
-    <CustomersTable customers={customers}  />
+    <CustomersTable customers={customers} setCustomers={setCustomers} />
     <br/>  
 
   {/* ✅ Display Add Customer Modal */}
