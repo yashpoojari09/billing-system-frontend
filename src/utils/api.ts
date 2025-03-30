@@ -106,7 +106,7 @@ export const getInventory = async () => {
   try {
     const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
 
-    const response = await axios.get(`${API_URL}/tenants//inventory`, { headers: getAuthHeaders() });
+    const response = await axios.get(`${API_URL}/tenants/${tenantId}/inventory`, { headers: getAuthHeaders() });
     return response.data;
   } catch (error) {
     console.error("Error fetching inventory:", error);
@@ -143,6 +143,7 @@ export const updateInventoryItem = async (id: string, data: { name: string; stoc
 // Delete Inventory Item
 export const deleteInventoryItem = async (id: string) => {
   try {
+    const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
     const response = await axios.delete(`${API_URL}/tenants/${tenantId}/inventory/${id}`, { headers: getAuthHeaders() });
     return response.data;
   } catch (error) {
