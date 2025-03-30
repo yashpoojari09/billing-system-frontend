@@ -3,11 +3,11 @@
 import { useState } from "react";
 import { deleteCustomer } from "@/utils/api";
 import EditCustomerForm from "./EditCustomerForm";
-import { CustomersTableProps, Customer } from "@/types";
+import { CustomersTableProps } from "@/types";
 
 
-export default function CustomersTable({ customers, setCustomers, onCustomerUpdated }: CustomersTableProps) {
-  const [editCustomer, setEditCustomer] = useState<Customer | null>(null);
+export default function CustomersTable({ customers, setCustomers }: CustomersTableProps) {
+  // const [editCustomer, setEditCustomer] = useState<Customer | null>(null);
   const [editCustomerId, setEditCustomerId] = useState<string | null>(null);
 
   // ✅ Handle customer deletion

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { updateCustomer } from "@/utils/api";
-import { EditCustomerFormProps, Customer } from "@/types";
+import { EditCustomerFormProps } from "@/types";
 
 export default function EditCustomerForm({ customer, onClose, onUpdate }: EditCustomerFormProps) {
   const [formData, setFormData] = useState({
@@ -26,7 +26,7 @@ export default function EditCustomerForm({ customer, onClose, onUpdate }: EditCu
       const updatedCustomer = await updateCustomer(customer.id, formData); // ✅ Update directly
       onUpdate(updatedCustomer); // ✅ Refresh customer list
       onClose(); // ✅ Close modal
-    } catch (err) {
+    } catch  {
       setError("Failed to update customer.");
     } finally {
       setLoading(false);
