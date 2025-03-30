@@ -3,9 +3,14 @@
 import { useState, useEffect } from "react";
 import { getCustomers, deleteCustomer } from "@/utils/api";
 import EditCustomerForm from "./EditCustomerForm";
+import AddCustomerForm from "./AddCustomerForm";
 
-export default function CustomersTable() {
-  const [customers, setCustomers] = useState<{ id: string; name: string; email: string }[]>([]);
+interface CustomersTableProps {
+  customers: { id: string; name: string; email: string }[];
+}
+
+export default function CustomersTable({ customers }: CustomersTableProps) {
+  const [customerList, setCustomerList] = useState<{ id: string; name: string; email: string }[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false); // ✅ Loading state
   const [error, setError] = useState<string | null>(null); // ✅ Error state
   const [editCustomer, setEditCustomer] = useState<{ id: string; name: string; email: string } | null>(null);
@@ -20,7 +25,7 @@ export default function CustomersTable() {
       setIsLoading(true);
       setError(null);
       const data = await getCustomers();
-      setCustomers(data);
+      setCustomerList(data);
     } catch (error) {
       setError("Failed to fetch customers.");
       console.error("Error fetching customers:", error);
@@ -41,6 +46,8 @@ export default function CustomersTable() {
       }
     }
   };
+
+  
   return (
     <div className="bg-white p-4 shadow rounded-lg">
       <h2 className="text-xl font-bold mb-4 text-[#000000]">Customers List</h2>
@@ -60,8 +67,8 @@ export default function CustomersTable() {
           </tr>
         </thead>
         <tbody>
-        {customers.length > 0 ? (
-          customers.map((customer) => (
+        {customerList.length > 0 ? (
+          customerList.map((customer) => (
             <tr key={customer.id} className="border text-[#001e38]">
               <td className="p-2 border">{customer.name}</td>
               <td className="p-2 border">{customer.email}</td>

@@ -6,10 +6,12 @@ import AddCustomerForm from "./AddCustomerForm";
 import { useRouter } from "next/navigation";
 import Button from "@/components/ui/Button";
 import { useParams } from "next/navigation";
-
+import { getCustomers } from "@/utils/api"; // ✅ Ensure this is imported
 
 export default function CustomersPage() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [customers, setCustomers] = useState<any[]>([]); // ✅ Explicitly type the state as an array of any
+
   const router = useRouter();
   const params = useParams();
   const tenantId = params?.tenantId;
@@ -21,8 +23,30 @@ export default function CustomersPage() {
     if (!token) {
       // ❌ If no token, redirect to login
       router.push("/");
+
     }
+    fetchCustomers();
   }, [router]);
+
+  const fetchCustomers = async () => {
+    try {
+      const data = await getCustomers();
+      setCustomers(data);
+    } catch (error) {
+      console.error("Failed to fetch customers:", error);
+    }
+  };
+    // Function to update customer list when a new one is added
+    interface Customer {
+      id: string;
+      name: string;
+      email: string;
+      [key: string]: any; // ✅ Allow additional properties
+    }
+
+    const handleCustomerAdded = (newCustomer: Customer) => {
+      setCustomers((prevCustomers) => [...prevCustomers, newCustomer]); // ✅ Update table instantly
+    };
 
 
   const handleLogout = () => {
@@ -39,16 +63,23 @@ export default function CustomersPage() {
           + Add Customer
         </Button>
       </div>
-    <CustomersTable />
+    <CustomersTable customers={customers}  />
     <br/>  
 
-      {isAddModalOpen && <AddCustomerForm onClose={() => setIsAddModalOpen(false)} />}
-      <Button type="button"
+  {/* ✅ Display Add Customer Modal */}
+  {isAddModalOpen && (
+  <AddCustomerForm
+    onClose={() => setIsAddModalOpen(false)}
+    onCustomerAdded={handleCustomerAdded} // ✅ Pass function to update list
+  />
+)}
+        <Button type="button"
           onClick={handleLogout} 
           className="bg-red-600 text-white px-4 py-2 rounded-md"
         >
           Logout
         </Button>
+
     </div>
   );
 }

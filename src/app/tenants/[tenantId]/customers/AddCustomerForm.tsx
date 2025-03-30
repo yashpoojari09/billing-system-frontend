@@ -9,7 +9,14 @@ import { z } from "zod";
 
 type CustomerFormValues = z.infer<typeof customerSchema>;
 
-export default function AddCustomerForm({ onClose }: { onClose: () => void }) {
+
+export default function AddCustomerForm({
+  onClose,
+  onCustomerAdded, // ✅ Accept the function
+}: {
+  onClose: () => void;
+  onCustomerAdded: (customer: any) => void; // ✅ Define prop type
+}) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const {
@@ -19,11 +26,17 @@ export default function AddCustomerForm({ onClose }: { onClose: () => void }) {
     formState: { errors },
   } = useForm<CustomerFormValues>({ resolver: zodResolver(customerSchema) });
 
+
   const onSubmit = async (data: CustomerFormValues) => {
     setIsSubmitting(true);
-    await addCustomer(data);
-    reset();
-    onClose();
+    try {
+      const newCustomer = await addCustomer(data); // ✅ Get newly added customer
+      onCustomerAdded(newCustomer); // ✅ Update Customers list in parent
+      reset();
+      onClose();
+    } catch (error) {
+      console.error("Error adding customer:", error);
+    }
     setIsSubmitting(false);
   };
 
