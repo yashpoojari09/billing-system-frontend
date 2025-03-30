@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { inventorySchema } from "@/utils/validation";
-import { addInventory, updateInventory } from "@/utils/api";
+import { addInventoryItem, updateInventoryItem } from "@/utils/api";
 import { useState, useEffect } from "react";
 
 type InventoryFormProps = {
@@ -27,9 +27,9 @@ export default function InventoryForm({ initialData, onSuccess }: InventoryFormP
   const onSubmit = async (data: any) => {
     try {
       if (initialData?.id) {
-        await updateInventory(initialData.id, data);
+        await updateInventoryItem(initialData.id, data);
       } else {
-        await addInventory(data);
+        await addInventoryItem(data);
       }
       onSuccess();
       reset();
