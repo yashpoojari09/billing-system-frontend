@@ -202,7 +202,11 @@ export const addCustomer = async (customer: { name: string; email: string }) => 
 export const updateCustomer = async (customerId: string, customer: { name: string; email: string }) => {
   const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
 
- const response = await axios.put(`${API_URL}/tenants/${tenantId}/customers/${customerId}`, customer, { headers: getAuthHeaders() });
+ const response = await axios.put(`${API_URL}/tenants/${tenantId}/customers/${customerId}`, customer,{ 
+  headers: { 
+    ...getAuthHeaders(), 
+    "Content-Type": "application/json" 
+  } });
   return response.data;
 
 };
