@@ -28,11 +28,13 @@ const LoginForm = () => {
       const response = await loginUser(data.email, data.password);
         // ✅ Store only the access token in localStorage
     localStorage.setItem("accessToken", response.accessToken);
+    const tenantId = localStorage.getItem("tenantId") || "default-tenant";
+
 
       console.log("Login Successful:", response);
           // ✅ Redirect to Customers page
-    router.push("/customers");
-    } catch (err) {
+          router.push(`/${tenantId}/customers`);
+        } catch (err) {
       if (err instanceof Error) {
         setError(err.message); // Access message safely
       } else {

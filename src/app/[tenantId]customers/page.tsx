@@ -17,6 +17,7 @@ export default function CustomersPage() {
    // ✅ Check for accessToken on page load
    useEffect(() => {
     const token = localStorage.getItem("accessToken");
+    
     if (!token) {
       // ❌ If no token, redirect to login
       router.push("/");
