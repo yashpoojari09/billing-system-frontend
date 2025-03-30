@@ -155,13 +155,26 @@ export const deleteInventoryItem = async (id: string) => {
 
 // Fetch Customers
 export const getCustomers = async () => {
-  const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
+  try {
+    const tenantId = localStorage.getItem("tenantId");
 
-  const response = await axios.get(`${API_URL}/tenants/${tenantId}/customers`, { headers: getAuthHeaders() });
-  return response.data;
+    if (!tenantId) {
+      throw new Error("Tenant ID is missing. Please log in again.");
+    }
+
+    const response = await axios.get(`${API_URL}/tenants/${tenantId}/customers`, { headers: getAuthHeaders() });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching customers:", error);
+
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.message || "Failed to fetch customers.");
+    } else {
+      throw new Error("An unknown error occurred while fetching customers.");
+    }
+  }
 };
-
-// Add Customer
 export const addCustomer = async (customer: { name: string; email: string }) => {
   try {
     const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
