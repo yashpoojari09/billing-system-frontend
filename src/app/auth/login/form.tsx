@@ -28,10 +28,12 @@ const LoginForm = () => {
       const response = await loginUser(data.email, data.password);
         // ✅ Store only the access token in localStorage
     localStorage.setItem("accessToken", response.accessToken);
+    localStorage.setItem("tenantId", response.user.tenantId);
+
     const tenantId = localStorage.getItem("tenantId") || "default-tenant";
 
 
-      console.log("Login Successful:", response);
+      console.log("Login Successful:");
           // ✅ Redirect to Customers page
           router.push(`/${tenantId}/customers`);
         } catch (err) {
