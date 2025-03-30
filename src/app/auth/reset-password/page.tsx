@@ -30,7 +30,7 @@ const ResetPasswordPage = () => {
           setError("Invalid or expired token.");
           setIsValidToken(false);
         }
-      } catch (err) {
+      } catch (error) {
         setError("An unexpected error occurred.");
         setIsValidToken(false);
       }

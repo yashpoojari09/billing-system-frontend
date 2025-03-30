@@ -67,7 +67,7 @@ import { z } from "zod";
 import { resetPasswordSchema } from "./validation";
 
 // Reste Password
-export const resetPassword = async (token:String, input: z.infer<typeof resetPasswordSchema>) => {
+export const resetPassword = async (token:string, input: z.infer<typeof resetPasswordSchema>) => {
   // 🔹 Validate input using Zod
   const parsedInput = resetPasswordSchema.safeParse(input);
   if (!parsedInput.success) {

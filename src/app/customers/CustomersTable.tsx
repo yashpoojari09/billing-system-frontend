@@ -6,11 +6,11 @@ import { getCustomers, deleteCustomer } from "@/utils/api";
 
 export default function CustomersTable() {
   const [customers, setCustomers] = useState<{ id: string; name: string; email: string }[]>([]);
-  const [editCustomer, setEditCustomer] = useState<{ id: string; name: string; email: string } | null>(null);
+  // const [editCustomer, setEditCustomer] = useState<{ id: string; name: string; email: string } | null>(null);
 
-  useEffect(() => {
-    fetchCustomers();
-  }, []);
+  // useEffect(() => {
+  //   fetchCustomers();
+  // }, []);
 
   const fetchCustomers = async () => {
     const data = await getCustomers();
@@ -41,9 +41,9 @@ export default function CustomersTable() {
               <td className="p-2 border">{customer.name}</td>
               <td className="p-2 border">{customer.email}</td>
               <td className="p-2 border">
-                <button onClick={() => setEditCustomer(customer)} className="bg-blue-500 text-white px-3 py-1 rounded mr-2">
+                {/* <button onClick={() => setEditCustomer(customer)} className="bg-blue-500 text-white px-3 py-1 rounded mr-2">
                   Edit
-                </button>
+                </button> */}
                 <button onClick={() => handleDelete(customer.id)} className="bg-red-500 text-white px-3 py-1 rounded">
                   Delete
                 </button>
@@ -53,7 +53,7 @@ export default function CustomersTable() {
         </tbody>
       </table>
 
-      {editCustomer && <EditCustomerForm customer={editCustomer} onClose={() => setEditCustomer(null)} />}
+      {/* {editCustomer && <EditCustomerForm customer={editCustomer} onClose={() => setEditCustomer(null)} />} */}
     </div>
   );
 }
