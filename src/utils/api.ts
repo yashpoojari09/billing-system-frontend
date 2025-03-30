@@ -104,7 +104,9 @@ export const logoutUser = () => {
 // Fetch Inventory Items
 export const getInventory = async () => {
   try {
-    const response = await axios.get(`${API_URL}/inventory`, { headers: getAuthHeaders() });
+    const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
+
+    const response = await axios.get(`${API_URL}/tenants//inventory`, { headers: getAuthHeaders() });
     return response.data;
   } catch (error) {
     console.error("Error fetching inventory:", error);
@@ -115,7 +117,9 @@ export const getInventory = async () => {
 // Add New Inventory Item
 export const addInventoryItem = async (data: { name: string; stock: number; price: number }) => {
   try {
-    const response = await axios.post(`${API_URL}/inventory`, data, { headers: getAuthHeaders() });
+    const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
+
+    const response = await axios.post(`${API_URL}/tenants/${tenantId}/inventory`, data, { headers: getAuthHeaders() });
     return response.data;
   } catch (error) {
     console.error("Error adding inventory:", error);
@@ -126,7 +130,9 @@ export const addInventoryItem = async (data: { name: string; stock: number; pric
 // Update Inventory Item
 export const updateInventoryItem = async (id: string, data: { name: string; stock: number; price: number }) => {
   try {
-    const response = await axios.put(`${API_URL}/inventory/${id}`, data, { headers: getAuthHeaders() });
+    const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
+
+    const response = await axios.put(`${API_URL}/tenants/${tenantId}/inventory/${id}`, data, { headers: getAuthHeaders() });
     return response.data;
   } catch (error) {
     console.error("Error updating inventory:", error);
@@ -137,7 +143,7 @@ export const updateInventoryItem = async (id: string, data: { name: string; stoc
 // Delete Inventory Item
 export const deleteInventoryItem = async (id: string) => {
   try {
-    const response = await axios.delete(`${API_URL}/inventory/${id}`, { headers: getAuthHeaders() });
+    const response = await axios.delete(`${API_URL}/tenants/${tenantId}/inventory/${id}`, { headers: getAuthHeaders() });
     return response.data;
   } catch (error) {
     console.error("Error deleting inventory:", error);
@@ -150,7 +156,7 @@ export const deleteInventoryItem = async (id: string) => {
 export const getCustomers = async () => {
   const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
 
-  const response = await axios.get(`${API_URL}/${tenantId}/customers`, { headers: getAuthHeaders() });
+  const response = await axios.get(`${API_URL}/tenants/${tenantId}/customers`, { headers: getAuthHeaders() });
   return response.data;
 };
 
@@ -163,7 +169,7 @@ export const addCustomer = async (customer: { name: string; email: string }) => 
       throw new Error("Tenant ID is missing. Please log in again.");
     }
 
-    const response = await axios.post(`${API_URL}/${tenantId}/customers`, customer, { headers: getAuthHeaders() });
+    const response = await axios.post(`${API_URL}/tenants/${tenantId}/customers`, customer, { headers: getAuthHeaders() });
 
     return response.data; // Return response data
   } catch (error) {
@@ -182,41 +188,41 @@ export const addCustomer = async (customer: { name: string; email: string }) => 
 export const updateCustomer = async (customerId: string, customer: { name: string; email: string }) => {
   const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
 
-  await axios.put(`${API_URL}/${tenantId}/customers/${customerId}`, customer, { headers: getAuthHeaders() });
+  await axios.put(`${API_URL}/tenants/${tenantId}/customers/${customerId}`, customer, { headers: getAuthHeaders() });
 };
 
 // Delete Customer
 export const deleteCustomer = async (customerId: string) => {
   const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
 
-  await axios.delete(`${API_URL}/${tenantId}/customers/${customerId}`, { headers: getAuthHeaders() });
+  await axios.delete(`${API_URL}/tenants/${tenantId}/customers/${customerId}`, { headers: getAuthHeaders() });
 };
 
 // Taxation
 export const getTaxRules = async () => {
   const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
 
-  const response = await axios.get(`${API_URL}/${tenantId}/taxation`, { headers: getAuthHeaders() });
+  const response = await axios.get(`${API_URL}/tenants/${tenantId}/taxation`, { headers: getAuthHeaders() });
   return response.data;
 };
 
 export const createTaxRule = async (data: { taxRate: number; region: string }) => {
   const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
 
-  const response = await axios.post(`${API_URL}/${tenantId}/taxation`, data, { headers: getAuthHeaders() });
+  const response = await axios.post(`${API_URL}/tenants/${tenantId}/taxation`, data, { headers: getAuthHeaders() });
   return response.data;
 };
 
 export const updateTaxRule = async (taxId: string, data: { taxRate: number; region: string }) => {
   const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
 
-  const response = await axios.put(`${API_URL}/${tenantId}/taxation/${taxId}`, data, { headers: getAuthHeaders() });
+  const response = await axios.put(`${API_URL}/tenants/${tenantId}/taxation/${taxId}`, data, { headers: getAuthHeaders() });
   return response.data;
 };
 
 export const deleteTaxRule = async (taxId: string) => {
   const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
 
-  const response = await axios.delete(`${API_URL}/${tenantId}/taxation/${taxId}`, { headers: getAuthHeaders() });
+  const response = await axios.delete(`${API_URL}/tenants/${tenantId}/taxation/${taxId}`, { headers: getAuthHeaders() });
   return response.data;
 };
