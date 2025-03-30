@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { inventorySchema } from "@/utils/validation";
 import { addInventoryItem, updateInventoryItem } from "@/utils/api";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 
 type InventoryFormProps = {
   initialData?: { id?: string; name: string; stock: number; price: number } | null;
