@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { getCustomers, deleteCustomer } from "@/utils/api";
 // import { EditCustomerForm } from "/EditCustomerForm";
 
@@ -8,9 +8,9 @@ export default function CustomersTable() {
   const [customers, setCustomers] = useState<{ id: string; name: string; email: string }[]>([]);
   // const [editCustomer, setEditCustomer] = useState<{ id: string; name: string; email: string } | null>(null);
 
-  useEffect(() => {
-    fetchCustomers();
-  }, []);
+  // useEffect(() => {
+  //   fetchCustomers();
+  // }, []);
 
   const fetchCustomers = async () => {
     const data = await getCustomers();
