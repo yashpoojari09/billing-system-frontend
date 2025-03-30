@@ -6,8 +6,10 @@ import EditCustomerForm from "./EditCustomerForm";
 import { CustomersTableProps, Customer } from "@/types";
 
 
-export default function CustomersTable({ customers, setCustomers }: CustomersTableProps) {
+export default function CustomersTable({ customers, setCustomers, onCustomerUpdated }: CustomersTableProps) {
   const [editCustomer, setEditCustomer] = useState<Customer | null>(null);
+  const [editCustomerId, setEditCustomerId] = useState<string | null>(null);
+
 
   // ✅ Handle customer deletion
   const handleDelete = async (id: string) => {
@@ -42,7 +44,7 @@ export default function CustomersTable({ customers, setCustomers }: CustomersTab
                 <td className="p-2 border">{customer.email}</td>
                 <td className="p-2 border">
                   <button
-                    onClick={() => setEditCustomer(customer)}
+                    onClick={() => setEditCustomerId(customer.id)}
                     className="bg-blue-500 text-white px-3 py-1 rounded mr-2"
                   >
                     Edit
@@ -67,13 +69,13 @@ export default function CustomersTable({ customers, setCustomers }: CustomersTab
       </table>
 
       {/* ✅ Show EditCustomerForm */}
-      {editCustomer && (
+      {editCustomerId && (
         <EditCustomerForm
-          customer={editCustomer}
-          onClose={() => setEditCustomer(null)}
-          onUpdate={(updatedCustomer) => {
+          customerId={editCustomerId}
+          onClose={() => setEditCustomerId(null)}
+          onUpdate={(onCustomerUpdated) => {
             setCustomers((prev) =>
-              prev.map((cust) => (cust.id === updatedCustomer.id ? updatedCustomer : cust))
+              prev.map((cust) => (cust.id === onCustomerUpdated.id ? onCustomerUpdated : cust))
             );
           }}
         />

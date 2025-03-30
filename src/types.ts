@@ -8,11 +8,13 @@ export interface Customer {
   export interface CustomersTableProps {
     customers: Customer[];
     setCustomers: React.Dispatch<React.SetStateAction<Customer[]>>;
+    onCustomerUpdated: (updatedCustomer: Customer) => void; // ✅ Callback to update list
+
   }
 
   export interface EditCustomerFormProps {
-    customer: { id: string; name: string; email: string };
+    customerId: string;
     onClose: () => void;
-    onUpdate: (updatedCustomer: { id: string; name: string; email: string }) => void; // ✅ Add this
+    onUpdate: (updatedCustomer: Customer) => void; // ✅ Add this
 
   }

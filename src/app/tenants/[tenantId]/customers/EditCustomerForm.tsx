@@ -1,37 +1,48 @@
 "use client";
 
-import { useState } from "react";
-import { updateCustomer } from "@/utils/api";
+import { useState, useEffect } from "react";
+import { updateCustomer, getCustomerById } from "@/utils/api";
 import { EditCustomerFormProps } from "@/types";
 
-
-
-export default function EditCustomerForm({ customer, onClose, onUpdate }: EditCustomerFormProps) {
+export default function EditCustomerForm({ customerId, onClose, onUpdate }: EditCustomerFormProps) {
   const [formData, setFormData] = useState({
-    name: customer.name,
-    email: customer.email,
+    name: "",
+    email: "",
   });
-  const [isLoading, setIsLoading] = useState(false);
+
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Fetch customer details when component mounts
+  useEffect(() => {
+    async function fetchCustomer() {
+      try {
+        const data = await getCustomerById(customerId);
+        setFormData({ name: data.name, email: data.email });
+      } catch (err) {
+        setError("Failed to fetch customer details.");
+      }
+    }
+    fetchCustomer();
+  }, [customerId]);
+
+  // Handle input change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-    setError(null);
-
+    setLoading(true);
     try {
-      await updateCustomer(customer.id, formData);
-      onUpdate({ ...customer, ...formData }); // Refresh the customer list
-      onClose();
-    } catch (error) {
+      const updatedCustomer = await updateCustomer(customerId, formData);
+      onUpdate(updatedCustomer); // ✅ Update UI
+      onClose(); // ✅ Close modal
+    } catch (err) {
       setError("Failed to update customer.");
-      console.error("Error updating customer:", error);
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
@@ -39,45 +50,40 @@ export default function EditCustomerForm({ customer, onClose, onUpdate }: EditCu
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-96">
         <h2 className="text-xl font-bold mb-4">Edit Customer</h2>
+
         {error && <p className="text-red-500">{error}</p>}
+
         <form onSubmit={handleSubmit}>
-          <label className="block mb-2">
-            Name:
+          <div className="mb-4">
+            <label className="block text-gray-700">Name</label>
             <input
               type="text"
               name="name"
               value={formData.name}
               onChange={handleChange}
-              className="w-full p-2 border rounded mt-1"
+              className="w-full p-2 border rounded"
               required
             />
-          </label>
-          <label className="block mb-4">
-            Email:
+          </div>
+
+          <div className="mb-4">
+            <label className="block text-gray-700">Email</label>
             <input
               type="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full p-2 border rounded mt-1"
+              className="w-full p-2 border rounded"
               required
             />
-          </label>
+          </div>
+
           <div className="flex justify-end gap-2">
-            <button
-              type="button"
-              onClick={onClose}
-              className="bg-gray-500 text-white px-4 py-2 rounded"
-              disabled={isLoading}
-            >
+            <button type="button" onClick={onClose} className="px-4 py-2 bg-gray-500 text-white rounded">
               Cancel
             </button>
-            <button
-              type="submit"
-              className="bg-blue-500 text-white px-4 py-2 rounded"
-              disabled={isLoading}
-            >
-              {isLoading ? "Updating..." : "Update"}
+            <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded" disabled={loading}>
+              {loading ? "Updating..." : "Save Changes"}
             </button>
           </div>
         </form>

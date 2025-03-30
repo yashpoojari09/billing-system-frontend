@@ -41,6 +41,11 @@ export default function CustomersPage() {
     const handleCustomerAdded = (newCustomer: Customer) => {
       setCustomers((prevCustomers) => [...prevCustomers, newCustomer]); // ✅ Update table instantly
     };
+    const handleCustomerUpdated = (updatedCustomer: Customer) => {
+      setCustomers((prevCustomers) =>
+        prevCustomers.map((customer) => (customer.id === updatedCustomer.id ? updatedCustomer : customer))
+      );
+    };
 
 
   const handleLogout = () => {
@@ -57,7 +62,7 @@ export default function CustomersPage() {
           + Add Customer
         </Button>
       </div>
-    <CustomersTable customers={customers} setCustomers={setCustomers} />
+    <CustomersTable customers={customers} setCustomers={setCustomers} onCustomerUpdated={handleCustomerUpdated} />
     <br/>  
 
   {/* ✅ Display Add Customer Modal */}

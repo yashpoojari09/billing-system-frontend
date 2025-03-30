@@ -202,9 +202,27 @@ export const addCustomer = async (customer: { name: string; email: string }) => 
 export const updateCustomer = async (customerId: string, customer: { name: string; email: string }) => {
   const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
 
-  await axios.put(`${API_URL}/tenants/${tenantId}/customers/${customerId}`, customer, { headers: getAuthHeaders() });
-};
+ const response = await axios.put(`${API_URL}/tenants/${tenantId}/customers/${customerId}`, customer, { headers: getAuthHeaders() });
+  return response.data;
 
+};
+// GEt CustomerBYID
+export async function getCustomerById(customerId: string) {
+  try {
+    const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
+
+    const res = await fetch(`${API_URL}/tenants/${tenantId}/customers/${customerId}`);
+
+    if (!res.ok) {
+      throw new Error(`Failed to fetch customer: ${res.statusText}`);
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.error("Error fetching customer:", error);
+    throw error;
+  }
+}
 // Delete Customer
 export const deleteCustomer = async (customerId: string) => {
   const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
