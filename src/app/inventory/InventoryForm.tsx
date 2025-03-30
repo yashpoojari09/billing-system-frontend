@@ -24,7 +24,7 @@ export default function InventoryForm({ initialData, onSuccess }: InventoryFormP
     if (initialData) reset(initialData);
   }, [initialData, reset]);
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: { name: string; stock: number; price: number }) => {
     try {
       if (initialData?.id) {
         await updateInventoryItem(initialData.id, data);

@@ -30,7 +30,7 @@ const ForgotPasswordForm = () => {
       // Show success message
       setMessage("A password reset link has been sent to your email.");
       setErrorMessage(""); // Clear any previous errors
-    } catch (_error) {
+    } catch {
       // Handle error and show message
       setErrorMessage("Failed to send reset link. Please try again.");
       setMessage(""); // Clear success message

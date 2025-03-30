@@ -37,7 +37,7 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({ token }) => {
       } else {
         setError(response.message);
       }
-    } catch (_err) {
+    } catch {
       setError("An error occurred. Please try again.");
     }
   };

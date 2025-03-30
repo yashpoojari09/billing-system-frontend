@@ -18,7 +18,7 @@ export default function CustomersPage() {
       // ❌ If no token, redirect to login
       router.push("/");
     }
-  }, []);
+  }, [router]);
 
 
   const handleLogout = () => {

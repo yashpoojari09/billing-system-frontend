@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { API_URL } from "@/utils/api";
 import ResetPasswordForm from "./ResetPasswordForm";
+import { Suspense } from "react";
 
-const ResetPasswordPage = () => {
+const ResetPasswordContent = () => {
   const searchParams = useSearchParams();
   const token = searchParams?.get("token") || "";
 
@@ -30,7 +31,7 @@ const ResetPasswordPage = () => {
           setError("Invalid or expired token.");
           setIsValidToken(false);
         }
-      } catch (error) {
+      } catch {
         setError("An unexpected error occurred.");
         setIsValidToken(false);
       }
@@ -49,4 +50,11 @@ const ResetPasswordPage = () => {
   );
 };
 
-export default ResetPasswordPage;
+// Wrap in Suspense
+export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={<p className="text-center">Loading...</p>}>
+      <ResetPasswordContent />
+    </Suspense>
+  );
+}
