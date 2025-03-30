@@ -1,32 +1,19 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { updateCustomer, getCustomerById } from "@/utils/api";
-import { EditCustomerFormProps } from "@/types";
+import { useState } from "react";
+import { updateCustomer } from "@/utils/api";
+import { EditCustomerFormProps, Customer } from "@/types";
 
-export default function EditCustomerForm({ customerId, onClose, onUpdate }: EditCustomerFormProps) {
+export default function EditCustomerForm({ customer, onClose, onUpdate }: EditCustomerFormProps) {
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
+    name: customer.name,
+    email: customer.email,
   });
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Fetch customer details when component mounts
-  useEffect(() => {
-    async function fetchCustomer() {
-      try {
-        const data = await getCustomerById(customerId);
-        setFormData({ name: data.name, email: data.email });
-      } catch (err) {
-        setError("Failed to fetch customer details.");
-      }
-    }
-    fetchCustomer();
-  }, [customerId]);
-
-  // Handle input change
+  /// Handle input change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -36,8 +23,8 @@ export default function EditCustomerForm({ customerId, onClose, onUpdate }: Edit
     e.preventDefault();
     setLoading(true);
     try {
-      const updatedCustomer = await updateCustomer(customerId, formData);
-      onUpdate(updatedCustomer); // ✅ Update UI
+      const updatedCustomer = await updateCustomer(customer.id, formData); // ✅ Update directly
+      onUpdate(updatedCustomer); // ✅ Refresh customer list
       onClose(); // ✅ Close modal
     } catch (err) {
       setError("Failed to update customer.");

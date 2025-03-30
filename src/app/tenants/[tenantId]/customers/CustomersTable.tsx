@@ -10,7 +10,6 @@ export default function CustomersTable({ customers, setCustomers, onCustomerUpda
   const [editCustomer, setEditCustomer] = useState<Customer | null>(null);
   const [editCustomerId, setEditCustomerId] = useState<string | null>(null);
 
-
   // ✅ Handle customer deletion
   const handleDelete = async (id: string) => {
     if (confirm("Are you sure you want to delete this customer?")) {
@@ -71,11 +70,11 @@ export default function CustomersTable({ customers, setCustomers, onCustomerUpda
       {/* ✅ Show EditCustomerForm */}
       {editCustomerId && (
         <EditCustomerForm
-          customerId={editCustomerId}
+          customer={customers.find((customer) => customer.id === editCustomerId)!}
           onClose={() => setEditCustomerId(null)}
           onUpdate={(onCustomerUpdated) => {
             setCustomers((prev) =>
-              prev.map((cust) => (cust.id === onCustomerUpdated.id ? onCustomerUpdated : cust))
+              prev.map((customer) => (customer.id === onCustomerUpdated.id ? onCustomerUpdated : customer))
             );
           }}
         />

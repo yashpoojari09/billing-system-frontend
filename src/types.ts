@@ -13,7 +13,7 @@ export interface Customer {
   }
 
   export interface EditCustomerFormProps {
-    customerId: string;
+    customer: Customer
     onClose: () => void;
     onUpdate: (updatedCustomer: Customer) => void; // ✅ Add this
 

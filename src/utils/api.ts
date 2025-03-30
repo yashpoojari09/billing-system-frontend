@@ -206,23 +206,23 @@ export const updateCustomer = async (customerId: string, customer: { name: strin
   return response.data;
 
 };
-// GEt CustomerBYID
-export async function getCustomerById(customerId: string) {
-  try {
-    const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
+// // GEt CustomerBYID
+// export async function getCustomerById(customerId: string,data: { name: string; email: string }) {
+//   try {
+//     const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
 
-    const res = await fetch(`${API_URL}/tenants/${tenantId}/customers/${customerId}`);
+//     const res = await fetch(`${API_URL}/tenants/${tenantId}/customers/${customerId}`);
 
-    if (!res.ok) {
-      throw new Error(`Failed to fetch customer: ${res.statusText}`);
-    }
+//     if (!res.ok) {
+//       throw new Error(`Failed to fetch customer: ${res.statusText}`);
+//     }
 
-    return await res.json();
-  } catch (error) {
-    console.error("Error fetching customer:", error);
-    throw error;
-  }
-}
+//     return await res.json();
+//   } catch (error) {
+//     console.error("Error fetching customer:", error);
+//     throw error;
+//   }
+// }
 // Delete Customer
 export const deleteCustomer = async (customerId: string) => {
   const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
