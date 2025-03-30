@@ -35,7 +35,7 @@ const LoginForm = () => {
 
       console.log("Login Successful:");
           // ✅ Redirect to Customers page
-          router.push(`/${tenantId}/customers`);
+          router.push(`/tenants/${tenantId}/customers`);
         } catch (err) {
       if (err instanceof Error) {
         setError(err.message); // Access message safely
