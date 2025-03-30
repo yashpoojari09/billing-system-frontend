@@ -142,47 +142,47 @@ export const deleteInventoryItem = async (id: string) => {
     throw error;
   }
 };
-
 //customers
+const tenantId="0c5f9551-b759-435d-87dc-4e5cf0ef807e"
 
 // Fetch Customers
 export const getCustomers = async () => {
-  const response = await axios.get(`${API_URL}/customers`, { headers: getAuthHeaders() });
+  const response = await axios.get(`${API_URL}/${tenantId}/customers`, { headers: getAuthHeaders() });
   return response.data;
 };
 
 // Add Customer
 export const addCustomer = async (customer: { name: string; email: string }) => {
-  await axios.post(`${API_URL}/customers`, customer, { headers: getAuthHeaders() });
+  await axios.post(`${API_URL}/${tenantId}/customers`, customer, { headers: getAuthHeaders() });
 };
 
 // Update Customer
 export const updateCustomer = async (customerId: string, customer: { name: string; email: string }) => {
-  await axios.put(`${API_URL}/customers/${customerId}`, customer, { headers: getAuthHeaders() });
+  await axios.put(`${API_URL}/${tenantId}/customers/${customerId}`, customer, { headers: getAuthHeaders() });
 };
 
 // Delete Customer
 export const deleteCustomer = async (customerId: string) => {
-  await axios.delete(`${API_URL}/customers/${customerId}`, { headers: getAuthHeaders() });
+  await axios.delete(`${API_URL}/${tenantId}/customers/${customerId}`, { headers: getAuthHeaders() });
 };
 
 // Taxation
 export const getTaxRules = async () => {
-  const response = await axios.get(`${API_URL}/taxation`, { headers: getAuthHeaders() });
+  const response = await axios.get(`${API_URL}/${tenantId}/taxation`, { headers: getAuthHeaders() });
   return response.data;
 };
 
 export const createTaxRule = async (data: { taxRate: number; region: string }) => {
-  const response = await axios.post(`${API_URL}/taxation`, data, { headers: getAuthHeaders() });
+  const response = await axios.post(`${API_URL}/${tenantId}/taxation`, data, { headers: getAuthHeaders() });
   return response.data;
 };
 
 export const updateTaxRule = async (taxId: string, data: { taxRate: number; region: string }) => {
-  const response = await axios.put(`${API_URL}/taxation/${taxId}`, data, { headers: getAuthHeaders() });
+  const response = await axios.put(`${API_URL}/${tenantId}/taxation/${taxId}`, data, { headers: getAuthHeaders() });
   return response.data;
 };
 
 export const deleteTaxRule = async (taxId: string) => {
-  const response = await axios.delete(`${API_URL}/taxation/${taxId}`, { headers: getAuthHeaders() });
+  const response = await axios.delete(`${API_URL}/${tenantId}/taxation/${taxId}`, { headers: getAuthHeaders() });
   return response.data;
 };

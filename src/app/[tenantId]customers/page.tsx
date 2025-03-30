@@ -5,11 +5,14 @@ import CustomersTable from "./CustomersTable";
 import AddCustomerForm from "./AddCustomerForm";
 import { useRouter } from "next/navigation";
 import Button from "@/components/ui/Button";
+import { useParams } from "next/navigation";
 
 
 export default function CustomersPage() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const router = useRouter();
+  const params = useParams();
+  const tenantId = params?.tenantId;
 
    // ✅ Check for accessToken on page load
    useEffect(() => {
@@ -28,7 +31,7 @@ export default function CustomersPage() {
 
   return (
     <div className="max-w-5xl mx-auto py-10">
-      <h1 className="text-2xl font-bold mb-6 text-center">Customers Management</h1>
+      <h1 className="text-2xl font-bold mb-6 text-center">Customers Management: {tenantId}</h1>
 
       <div className="flex justify-end mb-4">
         <Button type="button" onClick={() => setIsAddModalOpen(true)}>
