@@ -49,7 +49,7 @@ const ForgotPasswordForm = () => {
           {...register("email")}  // Register email field
           error={errors.email?.message}  // Show validation error if any
         />
-        <Button title="Send Reset Link" type="submit" />  {/* Submit button */}
+      <Button type="submit">Send Reset Link</Button>
         
         <p className="text-white text-center mt-2">
           <a href="/auth/login" className="underline text-blue-300">Back to Login</a>
