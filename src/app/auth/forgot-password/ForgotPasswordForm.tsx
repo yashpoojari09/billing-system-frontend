@@ -39,15 +39,11 @@ const ForgotPasswordForm = () => {
   };
 
   return (
-    <div className="bg-[#001e38] p-8 rounded-lg shadow-lg w-96 mx-auto">
-
-      <h2 className="text-white text-2xl mb-4 text-center">Forgot Password</h2>
-
-      {message && <p className="text-green-500 text-center">{message}</p>}
-
-      {errorMessage && <p className="text-red-500 text-center">{errorMessage}</p>}
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+         {message && <p className="text-green-500 text-center">{message}</p>}
+
+        {errorMessage && <p className="text-red-500 text-center">{errorMessage}</p>}
         <Input
           label="Email"
           {...register("email")}  // Register email field
@@ -59,7 +55,6 @@ const ForgotPasswordForm = () => {
           <a href="/auth/login" className="underline text-blue-300">Back to Login</a>
         </p>
       </form>
-    </div>
   );
 };
 
