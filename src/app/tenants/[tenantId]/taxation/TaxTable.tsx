@@ -52,7 +52,7 @@ export default function TaxationTable() {
             <tr key={tax.id} className="border text-[#001e38]">
               <td className="p-2 border text-sm sm:text-base">{tax.taxRate}%</td>
               <td className="p-2 border text-sm sm:text-base">{tax.region}</td>
-              <td className="p-2 border text-sm sm:text-base text-justify">
+              <td className="p-2 border text-sm sm:text-base justify-centre gap-2">
                 <ButtonEd
                   variant="edit"
                   onClick={() => setEditTaxRule(tax)}

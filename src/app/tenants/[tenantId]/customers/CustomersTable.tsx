@@ -46,7 +46,7 @@ export default function CustomersTable({ customers, setCustomers }: CustomersTab
                 <tr key={customer.id} className="border text-[#001e38]">
                   <td className="p-2 border">{customer.name}</td>
                   <td className="p-2 border">{customer.email}</td>
-                  <td className="p-2 border flex flex-col sm:flex-row justify-center gap-2">
+                  <td className="p-2 border  justify-center gap-2">
                     {/* setEditCustomerId(customer.id) */}
                     <ButtonEd
                       onClick={() => {
