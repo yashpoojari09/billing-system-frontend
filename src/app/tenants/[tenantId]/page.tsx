@@ -1,49 +1,86 @@
-"use client"; // ✅ Required because useRouter() is a Client Component hook
+"use client"; 
 
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Button, ButtonDash } from "@/components/ui/Button"
 
 const TenantDashboard = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const [tenantId, setTenantId] = useState<string | null>(null);
 
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    setTenantId(localStorage.getItem("tenantId"));
 
+    if (!token) {
+      router.push("/");
+    }
 
-    // ✅ Check for accessToken on page load
-    useEffect(() => {
-      const token = localStorage.getItem("accessToken");
-      setTenantId(localStorage.getItem("tenantId"));
-
-      if (!token) {
-        // ❌ If no token, redirect to login
-        router.push("/");
-  
-      }
-    }, [router]);
+    // ✅ Redirect to Customers page by default
+    if (pathname === "/tenants" && tenantId) {
+      router.push(`/tenants/${tenantId}/customers`);
+    }
+  }, [router, pathname, tenantId]);
 
   // Handle logout
   const handleLogout = () => {
-    localStorage.removeItem("tenantId"); // ✅ Clear tenant ID
-    localStorage.removeItem("accessToken"); // ✅ Clear authentication token
-    router.push("/auth/login"); // ✅ Redirect to login
+    localStorage.removeItem("tenantId");
+    localStorage.removeItem("accessToken");
+    router.push("/auth/login");
   };
 
   return (
-    <div className="max-w-5xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
-      <h1 className="text-2xl font-bold mb-4 text-center sm:text-left">Tenant Dashboard: Yashus</h1>
+    <div className="flex min-h-screen">
+      {/* Sidebar */}
+      <div className="w-64 bg-gray-900 text-white p-5 fixed h-full">
+        <h2 className="text-lg font-bold mb-6">Tenant Dashboard</h2>
+        <ul className="space-y-3">
+          <li>
+            <button
+              onClick={() => router.push(`/tenants/${tenantId}/customers`)}
+              className={`w-full text-left px-4 py-2 block rounded ${
+                pathname?.includes("customers") ? "bg-blue-600" : "hover:bg-gray-700"
+              }`}
+            >
+              Customers
+            </button>
+          </li>
+          <li>
+            <button
+              onClick={() => router.push(`/tenants/${tenantId}/inventory`)}
+              className={`w-full text-left px-4 py-2 block rounded ${
+                pathname?.includes("inventory") ? "bg-green-600" : "hover:bg-gray-700"
+              }`}
+            >
+              Inventory
+            </button>
+          </li>
+          <li>
+            <button
+              onClick={() => router.push(`/tenants/${tenantId}/taxation`)}
+              className={`w-full text-left px-4 py-2 block rounded ${
+                pathname?.includes("taxation") ? "bg-yellow-600" : "hover:bg-gray-700"
+              }`}
+            >
+              Taxation
+            </button>
+          </li>
+        </ul>
 
-      <div className="space-y-4 sm:space-y-6">
-        <ButtonDash title="Customers" variant="blue" navigateTo={`/tenants/${tenantId}/customers`} disabled={!tenantId} />
-        <ButtonDash title="Inventory" variant="green" navigateTo={`/tenants/${tenantId}/inventory`} disabled={!tenantId} />
-        <ButtonDash title="Taxation" variant="yellow" navigateTo={`/tenants/${tenantId}/taxation`} disabled={!tenantId} />
+        {/* Logout Button */}
+        <div className="mt-6">
+          <button
+            onClick={handleLogout}
+            className="w-full bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
+          >
+            Logout
+          </button>
+        </div>
       </div>
 
-      {/* Logout Button */}
-      <div className="flex justify-center sm:justify-start mt-6">
-        <Button type="button" onClick={handleLogout} className="w-full sm:w-auto">
-          Logout
-        </Button>
+      {/* Main Content */}
+      <div className="ml-64 flex-1 p-6">
+        <h1 className="text-2xl font-bold mb-4">Welcome to Tenant Dashboard</h1>
       </div>
     </div>
   );
