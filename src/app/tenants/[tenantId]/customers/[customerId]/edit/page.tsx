@@ -52,7 +52,8 @@ export default function EditCustomerPage() {
   };
 
   return (
-    <div className="p-6 max-w-lg mx-auto bg-white shadow-md rounded">
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-96">
       <h2 className="text-xl font-bold mb-4">Edit Customer</h2>
       {error && <p className="text-red-500">{error}</p>}
 
@@ -90,6 +91,7 @@ export default function EditCustomerPage() {
           </button>
         </div>
       </form>
+    </div>
     </div>
   );
 }

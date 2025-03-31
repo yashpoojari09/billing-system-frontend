@@ -1,16 +1,16 @@
 "use client";
 
-import { useState } from "react";
+// import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { deleteCustomer } from "@/utils/api";
-import EditCustomerForm from "./[customerId]/EditCustomerForm";
+// import EditCustomerForm from "./[customerId]/EditCustomerForm";
 import { CustomersTableProps } from "@/types";
 
 
 
 export default function CustomersTable({ customers, setCustomers }: CustomersTableProps) {
   // const [editCustomer, setEditCustomer] = useState<Customer | null>(null);
-  const [editCustomerId, setEditCustomerId] = useState<string | null>(null);
+  // const [editCustomerId, setEditCustomerId] = useState<string | null>(null);
   const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
   const router = useRouter();
 
@@ -46,8 +46,9 @@ export default function CustomersTable({ customers, setCustomers }: CustomersTab
                 <td className="p-2 border">{customer.name}</td>
                 <td className="p-2 border">{customer.email}</td>
                 <td className="p-2 border">
+                {/* setEditCustomerId(customer.id) */}
                   <button
-                    onClick={() => {setEditCustomerId(customer.id)
+                    onClick={() => {
                       router.push(`/tenants/${tenantId}/customers/${customer.id}/edit`); // ✅ Navigate
 
                     }}
@@ -75,7 +76,7 @@ export default function CustomersTable({ customers, setCustomers }: CustomersTab
       </table>
 
       {/* ✅ Show EditCustomerForm */}
-      {editCustomerId && (
+      {/* {editCustomerId && (
         <EditCustomerForm
           customer={customers.find((customer) => customer.id === editCustomerId)!}
           onClose={() => setEditCustomerId(null)}
@@ -83,9 +84,10 @@ export default function CustomersTable({ customers, setCustomers }: CustomersTab
             setCustomers((prev) =>
               prev.map((customer) => (customer.id === onCustomerUpdated.id ? onCustomerUpdated : customer))
             );
-          }}
+          }
+        }
         />
-      )}
+      )} */}
     </div>
   );
 }
