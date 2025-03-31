@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import InventoryTable from "./InventoryTable";
 import AddInventory from "./AddInventoryForm";
 import {Button} from "@/components/ui/Button"
@@ -8,11 +8,24 @@ import { useRouter, useParams } from "next/navigation";
 
 export default function InventoryPage() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  
     const router = useRouter();
     const params = useParams();
 
     const tenantId = params?.tenantId;
 
+   // ✅ Check for accessToken on page load
+      useEffect(() => {
+       const token = localStorage.getItem("accessToken");
+       
+       if (!token) {
+         // ❌ If no token, redirect to login
+         router.push("/");
+   
+       }
+     }, [router]);
+   
+   
   return (
     <div className="max-w-5xl mx-auto py-10">
       <h1 className="text-2xl font-bold mb-6 text-center">Inventory Management</h1>

@@ -9,7 +9,12 @@ import { z } from "zod";
 type InventoryFormValues = z.infer<typeof inventorySchema>;
 
 
-export default function AddInventory({ onClose }: { onClose: () => void }) {
+export default function AddInventory
+({ onClose
+}: { onClose: () => void; 
+  
+}) {
+
   const {
     register,
     handleSubmit,
@@ -22,12 +27,13 @@ export default function AddInventory({ onClose }: { onClose: () => void }) {
   // Handle form submission
   const onSubmit = async (data: InventoryFormValues) => {
     try {
-      await addInventoryItem(data);
+       await addInventoryItem(data);
       reset();
       onClose(); // Refresh inventory list
     } catch (error) {
       console.error("Error adding inventory:", error);
     }
+
   };
 
   return (

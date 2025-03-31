@@ -18,7 +18,7 @@ export interface Customer {
     onUpdate: (updatedCustomer: Customer) => void; // ✅ Add this
 
   }
- // ✅ Handle form submission
+ // ✅ Handle form submission Customer 
  export interface FormData {
   name: string;
   email: string;
@@ -27,3 +27,9 @@ export interface Customer {
 export interface PageProps {
   params: {tenantId: string;};
 }
+/// customer
+
+export interface TaxRuleProps { 
+  id: string; 
+  taxRate: number; 
+  region: string }

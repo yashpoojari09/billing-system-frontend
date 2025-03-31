@@ -1,47 +1,69 @@
 "use client";
-
-import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { createTaxRule } from "@/utils/api";
 import { taxRuleSchema } from "@/utils/validation";
 import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-export default function AddTaxRuleForm({ onAdd }: { onAdd: () => void }) {
-  const [taxRate, setTaxRate] = useState<number | "">("");
-  const [region, setRegion] = useState("");
-  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+type TaxRuleFormValues = z.infer<typeof taxRuleSchema>
 
+export default function AddTaxRuleForm({ onClose }: { onClose: () => void }) {
+  // const [taxRate, setTaxRate] = useState<number | "">("");
+  // const [region, setRegion] = useState("");
+  // const [error, setError] = useState<string | null>(null);
+ const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<TaxRuleFormValues>({
+    resolver: zodResolver(taxRuleSchema),
+  });
+
+  const onSubmit = async (data:TaxRuleFormValues ) => {
     try {
-      taxRuleSchema.parse({ taxRate: Number(taxRate), region });
-      await createTaxRule({ taxRate: Number(taxRate), region });
-      onAdd();
-      setTaxRate("");
-      setRegion("");
-      setError(null);
-    } catch (err) {
-      if (err instanceof z.ZodError) {
-        setError(err.errors[0].message);
+      await createTaxRule(data);
+      reset()
+      onClose();
+      // setTaxRate("");
+      // setRegion("");
+      // setError(null);
+    } catch (error) {
+      console.error("Error adding inventory:", error);
       }
-    }
+    
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white p-4 shadow rounded-lg">
-      <h2 className="text-lg font-bold mb-2 text-[#000000]">Add Tax Rule</h2>
-      {error && <p className="text-red-500">{error}</p>}
-      <input
-        type="number"
-        placeholder="Tax Rate (%)"
-        value={taxRate}
-        onChange={(e) => setTaxRate(e.target.value === "" ? "" : Number(e.target.value))}
-        className="border p-2 w-full mb-2 text-[#000000]"
-      />
-      <input type="text" placeholder="Region" value={region} onChange={(e) => setRegion(e.target.value)} className="border p-2 w-full mb-2 text-[#001e38]" />
-      <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded-md w-full">
-        Add Tax Rule
-      </button>
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-96"></div>
+          <h2 className="text-lg font-bold mb-2 text-[#000000]">Add Tax Rule</h2>
+    <form onSubmit={handleSubmit(onSubmit)} className="bg-white p-4 shadow rounded-lg">
+              {/* Tax Field */}
+              <div>
+                <label className="block text-sm font-medium text-[#001e38]">taxRate</label>
+                <input {...register("taxRate")} className="w-full border p-3 rounded text-[#001e38]" />
+                {errors.taxRate && <p className="text-red-500 text-sm">{errors.taxRate.message}</p>}
+              </div>
+               {/* Region Field */}
+               <div>
+                <label className="block text-sm font-medium text-[#001e38]">taxRate</label>
+                <input {...register("region")} className="w-full border p-3 rounded text-[#001e38]" />
+                {errors.region && <p className="text-red-500 text-sm">{errors.region.message}</p>}
+              </div>
+  {/* Submit Button */}
+  <div className="flex justify-between">
+                <button type="button" onClick={onClose} className="bg-gray-400 text-white px-4 py-2 rounded-md">
+                  Cancel
+                </button>
+                <button type="submit" disabled={isSubmitting} className="bg-green-600 text-white px-4 py-2 rounded-md">
+                  {isSubmitting ? "Adding..." : "Add Item"}
+                </button>
+              </div>
     </form>
+    </div>
+       
+
   );
 }
