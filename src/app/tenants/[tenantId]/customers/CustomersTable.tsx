@@ -43,7 +43,7 @@ export default function CustomersTable({ customers, setCustomers }: CustomersTab
           <tbody>
             {customers.length > 0 ? (
               customers.map((customer) => (
-                <tr key={customer.id} className="text-center">
+                <tr key={customer.id} className="text-center text-[#000000]">
                   <td className="p-2 border">{customer.name}</td>
                   <td className="p-2 border">{customer.email}</td>
                   <td className="p-2 border  justify-center gap-2">
