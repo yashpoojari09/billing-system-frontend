@@ -67,7 +67,7 @@ export const ButtonDash: React.FC<ButtonDashProps> = ({ title, variant = "blue",
   return (
     <button
       {...props}
-      className={`px-4 py-2 rounded w-full transition ${variantClasses[variant]}`}
+      className={`px-4 py-2 rounded w-full transition cursor-pointer ${variantClasses[variant]}`}
       onClick={navigateTo ? handleClick : props.onClick}
     >
       {title}
