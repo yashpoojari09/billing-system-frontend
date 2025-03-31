@@ -38,7 +38,6 @@ export default function AddTaxRuleForm({ onClose }: { onClose: () => void }) {
             <label className="block text-sm font-medium text-[#001e38]">Tax Rate</label>
             <input
             type="number"
-            step="any"
               {...register("taxRate", { valueAsNumber: true })}
               className="w-full border p-3 rounded text-[#001e38]"
             />
