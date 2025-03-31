@@ -49,14 +49,13 @@ export default function CustomersPage() {
   return (
     <div className="max-w-5xl mx-auto py-10">
       <h1 className="text-2xl font-bold mb-6 text-center">Customers Management: {tenantId}</h1>
-      <div className="flex justify-start mb-4">
+      <div className="flex justify-between items-center mb-4">
         <Button type="button" onClick={() => router.push(`/tenants/${tenantId}`)}>
           <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7"></path>Back To Dashboard
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7"></path>
           </svg>
+          Back To Dashboard
         </Button>
-      </div>
-      <div className="flex justify-end mb-4">
         <Button type="button" onClick={() => setIsAddModalOpen(true)}>
           + Add Customer
         </Button>
