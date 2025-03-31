@@ -8,10 +8,19 @@ const TenantDashboard = () => {
   const router = useRouter();
   const [tenantId, setTenantId] = useState<string | null>(null);
 
-  // Load tenantId from localStorage on mount
-  useEffect(() => {
-    setTenantId(localStorage.getItem("tenantId"));
-  }, []);
+
+
+    // ✅ Check for accessToken on page load
+    useEffect(() => {
+      const token = localStorage.getItem("accessToken");
+      setTenantId(localStorage.getItem("tenantId"));
+
+      if (!token) {
+        // ❌ If no token, redirect to login
+        router.push("/");
+  
+      }
+    }, [router]);
 
   // Handle logout
   const handleLogout = () => {
