@@ -15,7 +15,7 @@ export const Button: React.FC<ButtonProps> = ({ type, title, children, ...props 
     <button
       type={type}
       {...props}
-      className="bg-primary text-white px-4 py-2 rounded-md hover:bg-blue-700 transition cursor-pointer"
+      className="bg-primary text-white px-4 py-2 rounded-md hover:bg-blue-700 transition cursor-pointer sm:w-auto"
     >
       {title || children}
     </button>
@@ -32,7 +32,7 @@ export const ButtonEd: React.FC<ButtonPropsEd> = ({ variant, title, children, ..
   return (
     <button
       {...props}
-      className={`px-3 py-1 rounded mr-2  cursor-pointer ${
+      className={`px-3 py-1 rounded mr-2  cursor-pointer sm:w-auto ${
         variant === "edit" ? "bg-blue-500 text-white hover:bg-blue-700" :
         "bg-red-500 text-white hover:bg-red-700"
       }`}
@@ -67,7 +67,7 @@ export const ButtonDash: React.FC<ButtonDashProps> = ({ title, variant = "blue",
   return (
     <button
       {...props}
-      className={`px-4 py-2 rounded w-full transition cursor-pointer ${variantClasses[variant]}`}
+      className={`px-4 py-2 rounded w-full transition cursor-pointer sm:w-auto ${variantClasses[variant]}`}
       onClick={navigateTo ? handleClick : props.onClick}
     >
       {title}
