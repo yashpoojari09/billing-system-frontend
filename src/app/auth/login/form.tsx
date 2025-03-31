@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "@/utils/validation";
 import { loginUser } from "@/utils/api";
 import Input from "@/components/ui/Input";
-import Button from "@/components/ui/Button";
+import {Button} from "@/components/ui/Button";
 import { useState } from "react";
 import { useRouter } from "next/navigation"; // ✅ Import useRouter
 

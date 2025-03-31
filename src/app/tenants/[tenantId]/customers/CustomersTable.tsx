@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { deleteCustomer } from "@/utils/api";
 // import EditCustomerForm from "./[customerId]/EditCustomerForm";
 import { CustomersTableProps } from "@/types";
-
+import { ButtonEd } from "@/components/ui/Button";
 
 
 export default function CustomersTable({ customers, setCustomers }: CustomersTableProps) {
@@ -47,21 +47,20 @@ export default function CustomersTable({ customers, setCustomers }: CustomersTab
                 <td className="p-2 border">{customer.email}</td>
                 <td className="p-2 border">
                 {/* setEditCustomerId(customer.id) */}
-                  <button
+                  <ButtonEd
                     onClick={() => {
                       router.push(`/tenants/${tenantId}/customers/${customer.id}/edit`); // ✅ Navigate
 
                     }}
-                    className="bg-blue-500 text-white px-3 py-1 rounded mr-2"
+                    variant="edit"
                   >
                     Edit
-                  </button>
-                  <button
+                  </ButtonEd>
+                  <ButtonEd
                     onClick={() => handleDelete(customer.id)}
-                    className="bg-red-500 text-white px-3 py-1 rounded"
-                  >
+                 variant="delete" >
                     Delete
-                  </button>
+                  </ButtonEd>
                 </td>
               </tr>
             ))
