@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
 import {API_URL} from "@/utils/api"
 import {FormData} from "@/types"
+import {getAuthHeaders} from "@/utils/api"
 
 export default function EditCustomerPage() {
   const router = useRouter();
@@ -22,7 +23,7 @@ export default function EditCustomerPage() {
     async function fetchCustomer() {
       try {
         const response = await axios.get(
-          `${API_URL}/tenants/${tenantId}/customers/${customerId}`
+          `${API_URL}/tenants/${tenantId}/customers/${customerId}`,{ headers: getAuthHeaders() }
         );
         setFormData({ name: response.data.name, email: response.data.email });
       } catch  {

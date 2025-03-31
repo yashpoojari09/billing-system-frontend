@@ -2,7 +2,7 @@ import axios from "axios";
 export const API_URL="https://billing-system-lemon.vercel.app/api";
 
 // Get tokens from localStorage
-const getAuthHeaders = () => {
+export const getAuthHeaders = () => {
   if (typeof window !== "undefined") {
     const accessToken = localStorage.getItem("accessToken");
     return accessToken ? { Authorization: `Bearer ${accessToken}` } : {};
