@@ -36,6 +36,9 @@ export const customerSchema = z.object({
 
 //taxation
 export const taxRuleSchema = z.object({
-  taxRate: z.number().min(0, "Tax rate must be a positive number"),
-  region: z.string().min(2, "Region name is required"),
+  id: z.string(),
+  taxRate: z.number().refine((val) => val % 1 !== 0, {
+    message: "Tax rate must be a floating-point number",
+  }),
+  region: z.string(),
 });
