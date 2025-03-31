@@ -37,3 +37,28 @@ export const ButtonEd: React.FC<ButtonPropsEd> = ({ variant, title, children, ..
     </button>
   );
 };
+
+
+interface ButtonDashProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  title: string;
+  variant: "blue" | "green" | "yellow"; // Define button color variants
+  navigateTo: string;
+
+}
+
+export const ButtonDash: React.FC<ButtonDashProps> = ({ title, variant = "blue", ...props }) => {
+  const variantClasses = {
+    blue: "bg-blue-500 hover:bg-blue-700 text-white",
+    green: "bg-green-500 hover:bg-green-700 text-white",
+    yellow: "bg-yellow-500 hover:bg-yellow-700 text-white",
+  };
+
+  return (
+    <button
+      {...props}
+      className={`px-4 py-2 rounded w-full transition ${variantClasses[variant]}`}
+    >
+      {title}
+    </button>
+  );
+};

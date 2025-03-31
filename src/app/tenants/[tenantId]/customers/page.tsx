@@ -47,12 +47,6 @@ export default function CustomersPage() {
       );
     };
 
-
-  const handleLogout = () => {
-    localStorage.removeItem("accessToken"); // ✅ Remove access token
-    router.push("/"); // ✅ Redirect to login page
-  };
-
   return (
     <div className="max-w-5xl mx-auto py-10">
       <h1 className="text-2xl font-bold mb-6 text-center">Customers Management: {tenantId}</h1>

@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import {Button} from "@/components/ui/Button"
+import {Button, ButtonDash } from "@/components/ui/Button"
 
 const TenantDashboard = () => {
   const router = useRouter();
@@ -25,27 +25,9 @@ const TenantDashboard = () => {
       <h1 className="text-2xl font-bold mb-4">Tenant Dashboard: Yashus</h1>
 
       <div className="space-y-4">
-        <button
-          className="bg-blue-500 text-white px-4 py-2 rounded w-full"
-          onClick={() => router.push(`/tenants/${tenantId}/customers`)}
-          disabled={!tenantId}
-        >
-          Customers
-        </button>
-        <button
-          className="bg-green-500 text-white px-4 py-2 rounded w-full"
-          onClick={() => router.push(`/tenants/${tenantId}/inventory`)}
-          disabled={!tenantId}
-        >
-          Inventory
-        </button>
-        <button
-          className="bg-yellow-500 text-white px-4 py-2 rounded w-full"
-          onClick={() => router.push(`/tenants/${tenantId}/taxation`)}
-          disabled={!tenantId}
-        >
-          Taxation
-        </button>
+        <ButtonDash title="Customers" variant="blue" navigateTo={`/tenants/${tenantId}/customers`} disabled={!tenantId} />
+        <ButtonDash title="Inventory" variant="green" navigateTo={`/tenants/${tenantId}/inventory`} disabled={!tenantId} />
+        <ButtonDash title="Taxation" variant="yellow" navigateTo={`/tenants/${tenantId}/taxation`} disabled={!tenantId} />
       </div>
 
       {/* Logout Button */}
