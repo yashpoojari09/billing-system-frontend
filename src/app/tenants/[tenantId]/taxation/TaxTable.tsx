@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { getTaxRules, deleteTaxRule } from "@/utils/api";
 import EditTaxRuleForm from "./EditTaxRuleForm";
 import {TaxRuleProps }from "@/types"
+import { ButtonEd } from "@/components/ui/Button";
 
 export default function TaxationTable() {
   const [taxRules, setTaxRules] = useState<TaxRuleProps[]>([]);
@@ -72,12 +73,12 @@ export default function TaxationTable() {
             <h2 className="text-lg font-bold mb-4">Are you sure?</h2>
             <p className="mb-4">Do you really want to delete this inventory item?</p>
             <div className="flex justify-end space-x-3">
-              <button onClick={() => setDeleteTaxId({ isOpen: false, id: null })} className="bg-gray-400 text-white px-4 py-2 rounded-md">
+              <ButtonEd variant="edit" onClick={() => setDeleteTaxId({ isOpen: false, id: null })} className="bg-gray-400 text-white px-4 py-2 rounded-md">
                 Cancel
-              </button>
-              <button onClick={handleDelete} className="bg-red-600 text-white px-4 py-2 rounded-md">
+              </ButtonEd>
+              <ButtonEd variant="delete" onClick={handleDelete} className="bg-red-600 text-white px-4 py-2 rounded-md">
                 Yes, Delete
-              </button>
+              </ButtonEd> 
             </div>
           </div>
         </div>

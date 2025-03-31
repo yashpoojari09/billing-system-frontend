@@ -42,7 +42,7 @@ export default function EditTaxRuleForm({
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-        <h2 className="text-lg font-bold mb-4">Edit Tax Rule</h2>
+        <h2 className="text-lg font-bold mb-4 text-[#000000]">Edit Tax Rule</h2>
 
         {error && <p className="text-red-500">{error}</p>}
 
@@ -52,7 +52,7 @@ export default function EditTaxRuleForm({
             type="number"
             value={taxRate}
             onChange={(e) => setTaxRate(Number(e.target.value))}
-            className="border p-2 w-full mb-2"
+            className="border p-2 w-full mb-2 text-[#000000]"
           />
 
           <label className="block mb-2">Region</label>
@@ -60,7 +60,7 @@ export default function EditTaxRuleForm({
             type="text"
             value={region}
             onChange={(e) => setRegion(e.target.value)}
-            className="border p-2 w-full mb-2"
+            className="border p-2 w-full mb-2 text-[#000000]"
           />
 
           <div className="flex justify-between mt-4">

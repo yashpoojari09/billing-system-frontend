@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { getInventory, deleteInventoryItem } from "@/utils/api";
 import EditInventory from "./EditInventoryForm";
+import { ButtonEd } from "@/components/ui/Button";
 
 type InventoryItem = {
   id: string;
@@ -70,14 +71,14 @@ export default function InventoryTable() {
                   <td className="border p-2 text-[#001e38]">${item.price}</td>
                   <td className="border p-2 space-x-2">
                     {/* Edit Button */}
-                    <button onClick={() => setSelectedItem(item)} className="bg-yellow-500 text-white px-3 py-1 rounded-md">
+                    <ButtonEd variant="edit" onClick={() => setSelectedItem(item)} className="bg-yellow-500 text-white px-3 py-1 rounded-md">
                       Edit
-                    </button>
+                    </ButtonEd>
 
                     {/* Delete Button */}
-                    <button onClick={() => setConfirmDelete({ isOpen: true, id: item.id })} className="bg-red-600 text-white px-3 py-1 rounded-md">
+                    <ButtonEd variant="delete" onClick={() => setConfirmDelete({ isOpen: true, id: item.id })} className="bg-red-600 text-white px-3 py-1 rounded-md">
                       Delete
-                    </button>
+                    </ButtonEd>
                   </td>
                 </tr>
               ))
