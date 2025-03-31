@@ -3,14 +3,12 @@
 import { useState, useEffect } from "react";
 import AddTaxRuleForm from "./AddTaxRuleForm";
 import { Button } from "@/components/ui/Button"
-import { useRouter, useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import TaxTable from "./TaxTable";
 
 export default function TaxTablePage() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const router = useRouter();
-  const params = useParams()
-  const tenantId = params?.tenantId;
 
   // ✅ Check for accessToken on page load
   useEffect(() => {

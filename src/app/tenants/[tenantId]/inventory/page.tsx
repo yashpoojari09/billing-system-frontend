@@ -12,7 +12,6 @@ export default function InventoryPage() {
   const router = useRouter();
   const params = useParams();
 
-  const tenantId = params?.tenantId;
 
   // ✅ Check for accessToken on page load
   useEffect(() => {
