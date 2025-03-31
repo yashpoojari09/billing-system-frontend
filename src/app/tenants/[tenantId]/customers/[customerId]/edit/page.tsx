@@ -3,50 +3,51 @@
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
-import {API_URL} from "@/utils/api"
-import {FormData} from "@/types"
-import {getAuthHeaders} from "@/utils/api"
+import { API_URL } from "@/utils/api";
+import { FormData } from "@/types";
+import { getAuthHeaders } from "@/utils/api";
 import { ButtonDash } from "@/components/ui/Button";
 
 export default function EditCustomerPage() {
   const router = useRouter();
-
   const params = useParams();
   const customerId = params?.customerId as string;
-  const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
+  const tenantId = typeof window !== "undefined" ? localStorage.getItem("tenantId") : null; // Ensure localStorage is accessed on client-side
 
   const [formData, setFormData] = useState({ name: "", email: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // ✅ Fetch customer details when the page loads
   useEffect(() => {
     async function fetchCustomer() {
       try {
         const response = await axios.get(
-          `${API_URL}/tenants/${tenantId}/customers/${customerId}`,{ headers: getAuthHeaders() }
+          `${API_URL}/tenants/${tenantId}/customers/${customerId}`,
+          { headers: getAuthHeaders() }
         );
         setFormData({ name: response.data.name, email: response.data.email });
-      } catch  {
+      } catch {
         setError("Failed to fetch customer details.");
       }
     }
     fetchCustomer();
-  }, [customerId]);
+  }, [customerId, tenantId]);
 
-  // ✅ Handle input changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
- 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.put(`${API_URL}/tenants/${tenantId}/customers/${customerId}`, formData as FormData, { headers: getAuthHeaders() },);
-      router.push(`/tenants/${tenantId}/customers`); // ✅ Redirect back
-    } catch  {
+      await axios.put(
+        `${API_URL}/tenants/${tenantId}/customers/${customerId}`,
+        formData as FormData,
+        { headers: getAuthHeaders() }
+      );
+      router.push(`/tenants/${tenantId}/customers`);
+    } catch {
       setError("Failed to update customer.");
     } finally {
       setLoading(false);
@@ -54,46 +55,56 @@ export default function EditCustomerPage() {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-      <h2 className="text-xl font-bold mb-4 text-[#000000]">Edit Customer</h2>
-      {error && <p className="text-red-500">{error}</p>}
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 px-4">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+        <h2 className="text-xl font-bold mb-4 text-black text-center">Edit Customer</h2>
+        {error && <p className="text-red-500 text-center">{error}</p>}
 
-      <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label className="block text-gray-700">Name</label>
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            className="w-full p-2 border rounded text-[#000000]"
-            required
-          />
-        </div>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-gray-700">Name</label>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              className="w-full p-2 border rounded text-black"
+              required
+            />
+          </div>
 
-        <div className="mb-4">
-          <label className="block text-gray-700">Email</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            className="w-full p-2 border rounded text-[#000000]"
-            required
-          />
-        </div>
+          <div>
+            <label className="block text-gray-700">Email</label>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              className="w-full p-2 border rounded text-black"
+              required
+            />
+          </div>
 
-        <div className="flex justify-end gap-2">
-           <ButtonDash title="cancel"variant="blue" onClick={() => router.back()} className="px-4 py-2 bg-gray-500 text-white rounded cursor-pointer">
-            Cancel
-          </ButtonDash>
-           <ButtonDash title="Save Changes"variant="green" className="px-4 py-2 bg-blue-500 text-white rounded cursor-pointer" disabled={loading}>
-            {loading ? "Updating..." : "Save Changes"}
-          </ButtonDash>
-        </div>
-      </form>
-    </div>
+          <div className="flex flex-col sm:flex-row justify-between gap-2">
+            <ButtonDash
+              title="Cancel"
+              variant="blue"
+              onClick={() => router.back()}
+              className="w-full sm:w-auto px-4 py-2 bg-gray-500 text-white rounded cursor-pointer"
+            >
+              Cancel
+            </ButtonDash>
+            <ButtonDash
+              title="Save Changes"
+              variant="green"
+              className="w-full sm:w-auto px-4 py-2 bg-blue-500 text-white rounded cursor-pointer"
+              disabled={loading}
+            >
+              {loading ? "Updating..." : "Save Changes"}
+            </ButtonDash>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

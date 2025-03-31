@@ -8,15 +8,15 @@ import { addCustomer } from "@/utils/api";
 import { z } from "zod";
 import { Customer } from "@/types";
 import { ButtonDash } from "@/components/ui/Button";
-type CustomerFormValues = z.infer<typeof customerSchema>;
 
+type CustomerFormValues = z.infer<typeof customerSchema>;
 
 export default function AddCustomerForm({
   onClose,
-  onCustomerAdded, // ✅ Accept the function
+  onCustomerAdded,
 }: {
   onClose: () => void;
-  onCustomerAdded: (customer: Customer) => void; // ✅ Define prop type
+  onCustomerAdded: (customer: Customer) => void;
 }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -27,12 +27,11 @@ export default function AddCustomerForm({
     formState: { errors },
   } = useForm<CustomerFormValues>({ resolver: zodResolver(customerSchema) });
 
-
   const onSubmit = async (data: CustomerFormValues) => {
     setIsSubmitting(true);
     try {
-      const newCustomer = await addCustomer(data); // ✅ Get newly added customer
-      onCustomerAdded(newCustomer); // ✅ Update Customers list in parent
+      const newCustomer = await addCustomer(data);
+      onCustomerAdded(newCustomer);
       reset();
       onClose();
     } catch (error) {
@@ -42,28 +41,44 @@ export default function AddCustomerForm({
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-        <h2 className="text-lg font-bold mb-4 text-[#000000]">Add Customer</h2>
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 px-4">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+        <h2 className="text-lg font-bold mb-4 text-black text-center">Add Customer</h2>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700">Name</label>
-            <input {...register("name")} className="w-full border p-2 rounded text-[#000000]" />
+            <input
+              {...register("name")}
+              className="w-full border p-2 rounded text-black"
+            />
             {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 text-[#000000]">Email</label>
-            <input {...register("email")} className="w-full border p-2 rounded" />
+            <label className="block text-sm font-medium text-gray-700">Email</label>
+            <input
+              {...register("email")}
+              className="w-full border p-2 rounded text-black"
+            />
             {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
           </div>
 
-          <div className="flex justify-end gap-2">
-            <ButtonDash title="cancel"variant="blue" onClick={onClose} className="bg-gray-400 text-white px-4 py-2 rounded-md">
+          <div className="flex flex-col sm:flex-row justify-between gap-2">
+            <ButtonDash
+              title="cancel"
+              variant="blue"
+              onClick={onClose}
+              className="w-full sm:w-auto px-4 py-2 bg-gray-400 text-white rounded-md"
+            >
               Cancel
             </ButtonDash>
-            <ButtonDash title="addCustomer"variant="green" disabled={isSubmitting} className="bg-green-600 text-white px-4 py-2 rounded-md">
+            <ButtonDash
+              title="addCustomer"
+              variant="green"
+              disabled={isSubmitting}
+              className="w-full sm:w-auto px-4 py-2 bg-green-600 text-white rounded-md"
+            >
               {isSubmitting ? "Adding..." : "Add Customer"}
             </ButtonDash>
           </div>

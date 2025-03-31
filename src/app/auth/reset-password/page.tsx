@@ -1,10 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { API_URL } from "@/utils/api";
 import ResetPasswordForm from "./ResetPasswordForm";
-import { Suspense } from "react";
 
 const ResetPasswordContent = () => {
   const searchParams = useSearchParams();
@@ -40,12 +39,17 @@ const ResetPasswordContent = () => {
     verifyToken();
   }, [token]);
 
-  if (isValidToken === null) return <p className="text-center">Loading...</p>;
-  if (!isValidToken) return <p className="text-red-500 text-center">{error}</p>;
+  if (isValidToken === null) return <p className="text-center text-lg">Loading...</p>;
+  if (!isValidToken) return <p className="text-red-500 text-center text-lg">{error}</p>;
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <ResetPasswordForm token={token} />
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 px-4">
+      <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
+        <h2 className="text-xl font-bold text-center text-gray-700 mb-4">
+          Reset Your Password
+        </h2>
+        <ResetPasswordForm token={token} />
+      </div>
     </div>
   );
 };
@@ -53,7 +57,7 @@ const ResetPasswordContent = () => {
 // Wrap in Suspense
 export default function ResetPasswordPage() {
   return (
-    <Suspense fallback={<p className="text-center">Loading...</p>}>
+    <Suspense fallback={<p className="text-center text-lg">Loading...</p>}>
       <ResetPasswordContent />
     </Suspense>
   );

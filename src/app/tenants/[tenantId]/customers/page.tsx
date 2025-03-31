@@ -23,7 +23,6 @@ export default function CustomersPage() {
     if (!token) {
       // ❌ If no token, redirect to login
       router.push("/");
-
     }
     fetchCustomers();
   }, [router]);
@@ -47,19 +46,22 @@ export default function CustomersPage() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto py-10">
-      <h1 className="text-2xl font-bold mb-6 text-center">Customers Management: {tenantId}</h1>
-      <div className="flex justify-between items-center mb-4">
-        <Button type="button" onClick={() => router.push(`/tenants/${tenantId}`)}>
+    <div className="max-w-5xl mx-auto py-10 px-4">
+      <h1 className="text-2xl font-bold mb-6 text-center break-words">Customers Management: {tenantId}</h1>
+
+      <div className="flex flex-col sm:flex-row justify-between items-center mb-4 gap-2">
+        <Button type="button" onClick={() => router.push(`/tenants/${tenantId}`)} className="w-full sm:w-auto">
           <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7"></path>
           </svg>
         </Button>
-        <Button type="button" onClick={() => setIsAddModalOpen(true)}>
+        <Button type="button" onClick={() => setIsAddModalOpen(true)} className="w-full sm:w-auto">
           + Add Customer
         </Button>
       </div>
+
       <CustomersTable customers={customers} setCustomers={setCustomers} onCustomerUpdated={handleCustomerUpdated} />
+
       <br />
 
       {/* ✅ Display Add Customer Modal */}
@@ -69,7 +71,6 @@ export default function CustomersPage() {
           onCustomerAdded={handleCustomerAdded} // ✅ Pass function to update list
         />
       )}
-
     </div>
   );
 }

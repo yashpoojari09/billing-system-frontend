@@ -56,10 +56,10 @@ export default function InventoryTable() {
         <table className="w-full border-collapse border border-gray-300">
           <thead>
             <tr className="bg-gray-200 text-[#001e38]">
-              <th className="border p-2 ">Name</th>
-              <th className="border p-2 ">Stock</th>
-              <th className="border p-2 ">Price</th>
-              <th className="border p-2 ">Actions</th>
+              <th className="border p-2">Name</th>
+              <th className="border p-2">Stock</th>
+              <th className="border p-2">Price</th>
+              <th className="border p-2">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -98,15 +98,15 @@ export default function InventoryTable() {
 
       {/* Delete Confirmation Modal */}
       {confirmDelete.isOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 px-4">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
             <h2 className="text-lg font-bold mb-4 text-[#000000]">Are you sure?</h2>
             <p className="mb-4 text-[#000000]">Do you really want to delete this inventory item?</p>
-            <div className="flex justify-end space-x-3">
-            <ButtonDash title="Cancel"variant="blue" onClick={() => setConfirmDelete({ isOpen: false, id: null })} className="bg-gray-400 text-white px-4 py-2 rounded-md">
+            <div className="flex flex-col sm:flex-row justify-end gap-3">
+              <ButtonDash title="Cancel" variant="blue" onClick={() => setConfirmDelete({ isOpen: false, id: null })} className="bg-gray-400 text-white px-4 py-2 rounded-md w-full sm:w-auto">
                 Cancel
               </ButtonDash>
-              <ButtonEd title="Yes, Delete" variant="delete" onClick={handleDelete} className="bg-red-600 text-white px-4 py-2 rounded-md">
+              <ButtonEd title="Yes, Delete" variant="delete" onClick={handleDelete} className="bg-red-600 text-white px-4 py-2 rounded-md w-full sm:w-auto">
                 Yes, Delete
               </ButtonEd>
             </div>

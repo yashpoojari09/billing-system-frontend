@@ -21,20 +21,18 @@ const TenantDashboard = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto py-10">
-      <h1 className="text-2xl font-bold mb-4">Tenant Dashboard: Yashus</h1>
+    <div className="max-w-5xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
+      <h1 className="text-2xl font-bold mb-4 text-center sm:text-left">Tenant Dashboard: Yashus</h1>
 
-      <div className="space-y-4">
+      <div className="space-y-4 sm:space-y-6">
         <ButtonDash title="Customers" variant="blue" navigateTo={`/tenants/${tenantId}/customers`} disabled={!tenantId} />
         <ButtonDash title="Inventory" variant="green" navigateTo={`/tenants/${tenantId}/inventory`} disabled={!tenantId} />
         <ButtonDash title="Taxation" variant="yellow" navigateTo={`/tenants/${tenantId}/taxation`} disabled={!tenantId} />
       </div>
 
       {/* Logout Button */}
-      <div className="justify-centre mt-6">
-        <Button type="button"
-          onClick={handleLogout}
-        >
+      <div className="flex justify-center sm:justify-start mt-6">
+        <Button type="button" onClick={handleLogout} className="w-full sm:w-auto">
           Logout
         </Button>
       </div>

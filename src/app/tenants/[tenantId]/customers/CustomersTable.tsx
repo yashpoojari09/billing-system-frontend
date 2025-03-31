@@ -28,51 +28,55 @@ export default function CustomersTable({ customers, setCustomers }: CustomersTab
   };
 
   return (
-    <div className="bg-white p-4 shadow rounded-lg">
-      <h2 className="text-xl font-bold mb-4 text-[#000000]">Customers List</h2>
+    <div className="bg-white p-4 shadow rounded-lg w-full max-w-4xl mx-auto overflow-x-auto">
+      <h2 className="text-xl font-bold mb-4 text-[#000000] text-center">Customers List</h2>
 
-      <table className="w-full border-collapse border border-gray-300">
-        <thead>
-          <tr className="bg-gray-200 text-[#000000]">
-            <th className="border p-2">Name</th>
-            <th className="border p-2">Email</th>
-            <th className="border p-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {customers.length > 0 ? (
-            customers.map((customer) => (
-              <tr key={customer.id} className="border text-[#001e38]">
-                <td className="p-2 border">{customer.name}</td>
-                <td className="p-2 border">{customer.email}</td>
-                <td className="p-2 border">
-                  {/* setEditCustomerId(customer.id) */}
-                  <ButtonEd
-                    onClick={() => {
-                      router.push(`/tenants/${tenantId}/customers/${customer.id}/edit`); // ✅ Navigate
-
-                    }}
-                    variant="edit"
-                  >
-                    Edit
-                  </ButtonEd>
-                  <ButtonEd
-                    onClick={() => handleDelete(customer.id)}
-                    variant="delete" >
-                    Delete
-                  </ButtonEd>
+      <div className="overflow-x-auto">
+        <table className="w-full border-collapse border border-gray-300 min-w-[350px]">
+          <thead>
+            <tr className="bg-gray-200 text-[#000000]">
+              <th className="border p-2 text-left">Name</th>
+              <th className="border p-2 text-left">Email</th>
+              <th className="border p-2 text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {customers.length > 0 ? (
+              customers.map((customer) => (
+                <tr key={customer.id} className="border text-[#001e38]">
+                  <td className="p-2 border">{customer.name}</td>
+                  <td className="p-2 border">{customer.email}</td>
+                  <td className="p-2 border flex flex-col sm:flex-row justify-center gap-2">
+                    {/* setEditCustomerId(customer.id) */}
+                    <ButtonEd
+                      onClick={() => {
+                        router.push(`/tenants/${tenantId}/customers/${customer.id}/edit`); // ✅ Navigate
+                      }}
+                      variant="edit"
+                      className="w-full sm:w-auto"
+                    >
+                      Edit
+                    </ButtonEd>
+                    <ButtonEd
+                      onClick={() => handleDelete(customer.id)}
+                      variant="delete"
+                      className="w-full sm:w-auto"
+                    >
+                      Delete
+                    </ButtonEd>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={3} className="p-4 text-center text-gray-500">
+                  No customers found.
                 </td>
               </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan={3} className="p-4 text-center text-gray-500">
-                No customers found.
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+            )}
+          </tbody>
+        </table>
+      </div>
 
       {/* ✅ Show EditCustomerForm */}
       {/* {editCustomerId && (

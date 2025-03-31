@@ -42,7 +42,7 @@ export default function EditTaxRuleForm({
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-full sm:w-96">
         <h2 className="text-lg font-bold mb-4 text-[#000000]">Edit Tax Rule</h2>
 
         {error && <p className="text-red-500">{error}</p>}
@@ -64,11 +64,21 @@ export default function EditTaxRuleForm({
             className="border p-2 w-full mb-2 text-[#000000]"
           />
 
-          <div className="flex justify-end gap-2">
-            <ButtonDash  title="cancel" variant="blue" onClick={onClose} className="bg-gray-400 text-white px-4 py-2 rounded-md">
+          <div className="flex justify-end gap-2 mt-4 flex-wrap">
+            <ButtonDash
+              title="Cancel"
+              variant="blue"
+              onClick={onClose}
+              className="bg-gray-400 text-white px-4 py-2 rounded-md w-full sm:w-auto"
+            >
               Cancel
             </ButtonDash>
-            <ButtonDash variant="green" title="Update" disabled={loading} className="bg-blue-600 text-white px-4 py-2 rounded-md">
+            <ButtonDash
+              variant="green"
+              title="Update"
+              disabled={loading}
+              className="bg-blue-600 text-white px-4 py-2 rounded-md w-full sm:w-auto"
+            >
               {loading ? "Updating..." : "Update"}
             </ButtonDash>
           </div>
