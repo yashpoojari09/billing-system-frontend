@@ -58,7 +58,7 @@ const LoginForm = () => {
       <Button type="submit">Login</Button>
       
       <div className="text-sm text-white text-center mt-2">
-        <a href="/auth/forgot-password" className="text-blue-500">Forgot Password?</a>
+        <a href="/auth/forgot-password" className="text-blue-500  hover:text-blue-700 transition duration-300">Forgot Password?</a>
       </div>
     </form>
   );
