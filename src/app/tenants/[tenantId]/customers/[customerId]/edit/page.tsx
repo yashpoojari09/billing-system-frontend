@@ -42,7 +42,7 @@ export default function EditCustomerPage() {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.put(`/api/tenants/${tenantId}/customers/${customerId}`, formData as FormData);
+      await axios.put(`${API_URL}/tenants/${tenantId}/customers/${customerId}`, formData as FormData);
       router.push(`/tenants/${tenantId}/customers`); // ✅ Redirect back
     } catch  {
       setError("Failed to update customer.");
