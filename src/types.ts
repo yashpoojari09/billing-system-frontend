@@ -23,3 +23,7 @@ export interface Customer {
   name: string;
   email: string;
 }
+
+export interface PageProps {
+  params: {tenantId: string;};
+}
