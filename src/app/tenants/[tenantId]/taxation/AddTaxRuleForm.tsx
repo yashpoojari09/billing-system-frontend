@@ -37,7 +37,7 @@ export default function AddTaxRuleForm({ onClose }: { onClose: () => void }) {
           <div>
             <label className="block text-sm font-medium text-[#001e38]">Tax Rate</label>
             <input
-              {...register("taxRate")}
+              {...register("taxRate", { valueAsNumber: true })}
               className="w-full border p-3 rounded text-[#001e38]"
             />
             {errors.taxRate && <p className="text-red-500 text-sm">{errors.taxRate.message}</p>}
