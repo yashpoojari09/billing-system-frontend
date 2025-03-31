@@ -32,14 +32,13 @@ export default function InventoryPage() {
 
       {/* Add Inventory Button */}
       <div className="flex justify-between items-center mb-4">
-        <Button type="button" onClick={() => setIsAddModalOpen(true)} className="bg-blue-600 text-white px-4 py-2 rounded-md">
-          + Add Inventory
-        </Button>
         <Button type="button" onClick={() => router.push(`/tenants/${tenantId}`)}>
           <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7"></path>
           </svg>
-          Back To Dashboard
+        </Button>
+        <Button type="button" onClick={() => setIsAddModalOpen(true)} className="bg-blue-600 text-white px-4 py-2 rounded-md">
+          + Add Inventory
         </Button>
       </div>
 
