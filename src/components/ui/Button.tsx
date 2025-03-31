@@ -10,7 +10,7 @@ const Button: React.FC<ButtonProps> = ({ type, title, children, ...props }) => {
   return (
     <button type={type}
       {...props}
-      className="bg-primary text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
+      className="bg-primary text-white px-4 py-2 rounded-md hover:bg-blue-700 transition cursor-pointer"
     >
     {title || children}
     </button>
