@@ -49,12 +49,12 @@ export default function AddCustomerForm({
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700">Name</label>
-            <input {...register("name")} className="w-full border p-2 rounded" />
+            <input {...register("name")} className="w-full border p-2 rounded text-[#000000]" />
             {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Email</label>
+            <label className="block text-sm font-medium text-gray-700 text-[#000000]">Email</label>
             <input {...register("email")} className="w-full border p-2 rounded" />
             {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
           </div>

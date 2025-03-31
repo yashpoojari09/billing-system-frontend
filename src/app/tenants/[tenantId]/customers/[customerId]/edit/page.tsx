@@ -55,7 +55,7 @@ export default function EditCustomerPage() {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-      <h2 className="text-xl font-bold mb-4">Edit Customer</h2>
+      <h2 className="text-xl font-bold mb-4 text-[#000000]">Edit Customer</h2>
       {error && <p className="text-red-500">{error}</p>}
 
       <form onSubmit={handleSubmit}>
@@ -66,7 +66,7 @@ export default function EditCustomerPage() {
             name="name"
             value={formData.name}
             onChange={handleChange}
-            className="w-full p-2 border rounded"
+            className="w-full p-2 border rounded text-[#000000]"
             required
           />
         </div>
@@ -78,16 +78,16 @@ export default function EditCustomerPage() {
             name="email"
             value={formData.email}
             onChange={handleChange}
-            className="w-full p-2 border rounded"
+            className="w-full p-2 border rounded text-[#000000]"
             required
           />
         </div>
 
         <div className="flex justify-end gap-2">
-          <button type="button" onClick={() => router.back()} className="px-4 py-2 bg-gray-500 text-white rounded">
+          <button type="button" onClick={() => router.back()} className="px-4 py-2 bg-gray-500 text-white rounded cursor-pointer">
             Cancel
           </button>
-          <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded" disabled={loading}>
+          <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded cursor-pointer" disabled={loading}>
             {loading ? "Updating..." : "Save Changes"}
           </button>
         </div>
