@@ -3,7 +3,7 @@
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const TenantDashboard = () => {
+const TenantLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const pathname = usePathname();
   const [tenantId, setTenantId] = useState<string | null>(null);
@@ -17,17 +17,10 @@ const TenantDashboard = () => {
     }
 
     // ✅ Redirect to Customers page by default
-    if (pathname === "/tenants" && tenantId) {
+    if (pathname === `/tenants/${tenantId}` && tenantId) {
       router.push(`/tenants/${tenantId}/customers`);
     }
   }, [router, pathname, tenantId]);
-
-  // Handle logout
-  const handleLogout = () => {
-    localStorage.removeItem("tenantId");
-    localStorage.removeItem("accessToken");
-    router.push("/auth/login");
-  };
 
   return (
     <div className="flex min-h-screen">
@@ -70,7 +63,11 @@ const TenantDashboard = () => {
         {/* Logout Button */}
         <div className="mt-6">
           <button
-            onClick={handleLogout}
+            onClick={() => {
+              localStorage.removeItem("tenantId");
+              localStorage.removeItem("accessToken");
+              router.push("/auth/login");
+            }}
             className="w-full bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
           >
             Logout
@@ -79,11 +76,9 @@ const TenantDashboard = () => {
       </div>
 
       {/* Main Content */}
-      <div className="ml-64 flex-1 p-6">
-        <h1 className="text-2xl font-bold mb-4">Welcome to Tenant Dashboard</h1>
-      </div>
+      <div className="ml-64 flex-1 p-6">{children}</div>
     </div>
   );
 };
 
-export default TenantDashboard;
+export default TenantLayout;
