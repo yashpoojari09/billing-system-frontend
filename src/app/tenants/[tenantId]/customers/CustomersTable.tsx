@@ -1,14 +1,18 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { deleteCustomer } from "@/utils/api";
-import EditCustomerForm from "./EditCustomerForm";
+import EditCustomerForm from "./[customerId]/EditCustomerForm";
 import { CustomersTableProps } from "@/types";
+
 
 
 export default function CustomersTable({ customers, setCustomers }: CustomersTableProps) {
   // const [editCustomer, setEditCustomer] = useState<Customer | null>(null);
   const [editCustomerId, setEditCustomerId] = useState<string | null>(null);
+  const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
+  const router = useRouter();
 
   // ✅ Handle customer deletion
   const handleDelete = async (id: string) => {
@@ -43,7 +47,10 @@ export default function CustomersTable({ customers, setCustomers }: CustomersTab
                 <td className="p-2 border">{customer.email}</td>
                 <td className="p-2 border">
                   <button
-                    onClick={() => setEditCustomerId(customer.id)}
+                    onClick={() => {setEditCustomerId(customer.id)
+                      router.push(`/tenants/${tenantId}/customers/${customer.id}/edit`); // ✅ Navigate
+
+                    }}
                     className="bg-blue-500 text-white px-3 py-1 rounded mr-2"
                   >
                     Edit

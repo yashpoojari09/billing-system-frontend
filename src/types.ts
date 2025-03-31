@@ -18,3 +18,8 @@ export interface Customer {
     onUpdate: (updatedCustomer: Customer) => void; // ✅ Add this
 
   }
+ // ✅ Handle form submission
+ export interface FormData {
+  name: string;
+  email: string;
+}
