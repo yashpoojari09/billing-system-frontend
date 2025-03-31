@@ -4,6 +4,7 @@ import { useState } from "react";
 import { updateTaxRule } from "@/utils/api";
 import { taxRuleSchema } from "@/utils/validation";
 import { z } from "zod";
+import { ButtonDash } from "@/components/ui/Button";
 
 export default function EditTaxRuleForm({
   taxRule,
@@ -64,12 +65,12 @@ export default function EditTaxRuleForm({
           />
 
           <div className="flex justify-between mt-4">
-            <button type="button" onClick={onClose} className="bg-gray-400 text-white px-4 py-2 rounded-md">
+            <ButtonDash  title="cancel" variant="blue" onClick={onClose} className="bg-gray-400 text-white px-4 py-2 rounded-md">
               Cancel
-            </button>
-            <button type="submit" disabled={loading} className="bg-blue-600 text-white px-4 py-2 rounded-md">
+            </ButtonDash>
+            <ButtonDash variant="green" title="submit" disabled={loading} className="bg-blue-600 text-white px-4 py-2 rounded-md">
               {loading ? "Updating..." : "Update"}
-            </button>
+            </ButtonDash>
           </div>
         </form>
       </div>

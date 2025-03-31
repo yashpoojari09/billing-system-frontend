@@ -7,7 +7,7 @@ import { customerSchema } from "@/utils/validation";
 import { addCustomer } from "@/utils/api";
 import { z } from "zod";
 import { Customer } from "@/types";
-
+import { ButtonDash } from "@/components/ui/Button";
 type CustomerFormValues = z.infer<typeof customerSchema>;
 
 
@@ -60,12 +60,12 @@ export default function AddCustomerForm({
           </div>
 
           <div className="flex justify-between">
-            <button type="button" onClick={onClose} className="bg-gray-400 text-white px-4 py-2 rounded-md">
+            <ButtonDash title="cancel"variant="blue" onClick={onClose} className="bg-gray-400 text-white px-4 py-2 rounded-md">
               Cancel
-            </button>
-            <button type="submit" disabled={isSubmitting} className="bg-green-600 text-white px-4 py-2 rounded-md">
+            </ButtonDash>
+            <ButtonDash title="addCustomer"variant="green" disabled={isSubmitting} className="bg-green-600 text-white px-4 py-2 rounded-md">
               {isSubmitting ? "Adding..." : "Add Customer"}
-            </button>
+            </ButtonDash>
           </div>
         </form>
       </div>

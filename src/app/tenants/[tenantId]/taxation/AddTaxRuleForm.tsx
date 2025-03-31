@@ -4,6 +4,7 @@ import { createTaxRule } from "@/utils/api";
 import { taxRuleSchema } from "@/utils/validation";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ButtonDash } from "@/components/ui/Button";
 
 
 type TaxRuleFormValues = z.infer<typeof taxRuleSchema>
@@ -54,12 +55,12 @@ export default function AddTaxRuleForm({ onClose }: { onClose: () => void }) {
               </div>
   {/* Submit Button */}
   <div className="flex justify-between">
-                <button type="button" onClick={onClose} className="bg-gray-400 text-white px-4 py-2 rounded-md">
+                 <ButtonDash title="cancel"variant="blue" onClick={onClose} className="bg-gray-400 text-white px-4 py-2 rounded-md">
                   Cancel
-                </button>
-                <button type="submit" disabled={isSubmitting} className="bg-green-600 text-white px-4 py-2 rounded-md">
+                </ButtonDash>
+                <ButtonDash title="addTaxRule" variant="green" disabled={isSubmitting} className="bg-green-600 text-white px-4 py-2 rounded-md">
                   {isSubmitting ? "Adding..." : "Add Item"}
-                </button>
+                </ButtonDash>
               </div>
     </form>
     </div>

@@ -6,6 +6,7 @@ import axios from "axios";
 import {API_URL} from "@/utils/api"
 import {FormData} from "@/types"
 import {getAuthHeaders} from "@/utils/api"
+import { ButtonDash } from "@/components/ui/Button";
 
 export default function EditCustomerPage() {
   const router = useRouter();
@@ -84,12 +85,12 @@ export default function EditCustomerPage() {
         </div>
 
         <div className="flex justify-end gap-2">
-          <button type="button" onClick={() => router.back()} className="px-4 py-2 bg-gray-500 text-white rounded cursor-pointer">
+           <ButtonDash title="cancel"variant="blue" onClick={() => router.back()} className="px-4 py-2 bg-gray-500 text-white rounded cursor-pointer">
             Cancel
-          </button>
-          <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded cursor-pointer" disabled={loading}>
+          </ButtonDash>
+           <ButtonDash title="cancel"variant="green" className="px-4 py-2 bg-blue-500 text-white rounded cursor-pointer" disabled={loading}>
             {loading ? "Updating..." : "Save Changes"}
-          </button>
+          </ButtonDash>
         </div>
       </form>
     </div>

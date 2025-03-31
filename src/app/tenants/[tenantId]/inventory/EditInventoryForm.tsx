@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { inventorySchema } from "@/utils/validation";
 import { updateInventoryItem } from "@/utils/api";
 import { z } from "zod";
+import { ButtonDash } from "@/components/ui/Button";
 
 type InventoryFormValues = z.infer<typeof inventorySchema>;
 
@@ -61,32 +62,32 @@ export default function EditInventory({
               {/* Name Field */}
               <div>
                 <label className="block text-sm font-medium text-[#001e38]">Name</label>
-                <input {...register("name")} className="w-full border p-2 rounded" />
+                <input {...register("name")} className="w-full border p-2 rounded [#001e38]" />
                 {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
               </div>
 
               {/* Stock Field */}
               <div>
                 <label className="block text-sm font-medium text-[#001e38]">Stock</label>
-                <input type="number" {...register("stock", { valueAsNumber: true })} className="w-full border p-2 rounded" />
-                {errors.stock && <p className="text-red-500 text-sm">{errors.stock.message}</p>}
+                <input type="number" {...register("stock", { valueAsNumber: true })} className="w-full border p-2 rounded text-[#001e38]" />
+                {errors.stock && <p className="text-red-500 text-sm ">{errors.stock.message}</p>}
               </div>
 
               {/* Price Field */}
               <div>
                 <label className="block text-sm font-medium text-[#001e38]">Price</label>
-                <input type="number" {...register("price", { valueAsNumber: true })} className="w-full border p-2 rounded" />
+                <input type="number" {...register("price", { valueAsNumber: true })} className="w-full border p-2 rounded text-[#001e38]" />
                 {errors.price && <p className="text-red-500 text-sm">{errors.price.message}</p>}
               </div>
 
               {/* Submit Button */}
               <div className="flex justify-between">
-                <button type="button" onClick={() => setIsOpen(false)} className="bg-gray-400 text-white px-4 py-2 rounded-md">
+                 <ButtonDash title="cancel"variant="blue"onClick={() => setIsOpen(false)} className="bg-gray-400 text-white px-4 py-2 rounded-md">
                   Cancel
-                </button>
-                <button type="submit" disabled={isSubmitting} className="bg-blue-600 text-white px-4 py-2 rounded-md">
+                </ButtonDash>
+                 <ButtonDash title="cancel"variant="green"disabled={isSubmitting} className="bg-blue-600 text-white px-4 py-2 rounded-md">
                   {isSubmitting ? "Updating..." : "Update Item"}
-                </button>
+                </ButtonDash>
               </div>
             </form>
           </div>

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { getInventory, deleteInventoryItem } from "@/utils/api";
 import EditInventory from "./EditInventoryForm";
-import { ButtonEd } from "@/components/ui/Button";
+import { ButtonDash, ButtonEd } from "@/components/ui/Button";
 
 type InventoryItem = {
   id: string;
@@ -69,7 +69,7 @@ export default function InventoryTable() {
                   <td className="border p-2 text-[#001e38]">{item.name}</td>
                   <td className="border p-2 text-[#001e38]">{item.stock}</td>
                   <td className="border p-2 text-[#001e38]">${item.price}</td>
-                  <td className="border p-2 space-x-2">
+                  <td className="border p-2 space-x-2 text-[#001e38]">
                     {/* Edit Button */}
                     <ButtonEd variant="edit" onClick={() => setSelectedItem(item)} className="bg-yellow-500 text-white px-3 py-1 rounded-md">
                       Edit
@@ -100,15 +100,15 @@ export default function InventoryTable() {
       {confirmDelete.isOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h2 className="text-lg font-bold mb-4">Are you sure?</h2>
-            <p className="mb-4">Do you really want to delete this inventory item?</p>
+            <h2 className="text-lg font-bold mb-4 text-[#000000]">Are you sure?</h2>
+            <p className="mb-4 text-[#000000]">Do you really want to delete this inventory item?</p>
             <div className="flex justify-end space-x-3">
-              <button onClick={() => setConfirmDelete({ isOpen: false, id: null })} className="bg-gray-400 text-white px-4 py-2 rounded-md">
+            <ButtonDash title="cancel"variant="blue" onClick={() => setConfirmDelete({ isOpen: false, id: null })} className="bg-gray-400 text-white px-4 py-2 rounded-md">
                 Cancel
-              </button>
-              <button onClick={handleDelete} className="bg-red-600 text-white px-4 py-2 rounded-md">
+              </ButtonDash>
+              <ButtonEd title="cancel" variant="delete" onClick={handleDelete} className="bg-red-600 text-white px-4 py-2 rounded-md">
                 Yes, Delete
-              </button>
+              </ButtonEd>
             </div>
           </div>
         </div>

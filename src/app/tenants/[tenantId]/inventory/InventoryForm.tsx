@@ -3,6 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { inventorySchema } from "@/utils/validation";
 import { addInventoryItem, updateInventoryItem } from "@/utils/api";
 import { useEffect } from "react";
+import { ButtonDash } from "@/components/ui/Button";
 
 type InventoryFormProps = {
   initialData?: { id?: string; name: string; stock: number; price: number } | null;
@@ -49,9 +50,9 @@ export default function InventoryForm({ initialData, onSuccess }: InventoryFormP
       <input {...register("price")} type="number" placeholder="Price" className="w-full p-2 border rounded text-[#001e38]" />
       {errors.price && <p className="text-red-500">{errors.price.message}</p>}
 
-      <button type="submit" className="bg-[#001e38] text-white px-4 py-2 rounded">
+       <ButtonDash title="cancel"variant="green" className="bg-[#001e38] text-white px-4 py-2 rounded">
         {initialData ? "Update" : "Add"} Inventory
-      </button>
+      </ButtonDash>
     </form>
   );
 }
