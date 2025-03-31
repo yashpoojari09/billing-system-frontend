@@ -79,13 +79,7 @@ export default function CustomersPage() {
     onCustomerAdded={handleCustomerAdded} // ✅ Pass function to update list
   />
 )}
-        <Button type="button"
-          onClick={handleLogout} 
-          className="bg-red-600 text-white px-4 py-2 rounded-md"
-        >
-          Logout
-        </Button>
-
+  
     </div>
   );
 }
