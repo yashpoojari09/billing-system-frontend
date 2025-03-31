@@ -6,7 +6,7 @@ import { forgotPassword } from "@/utils/api";
 import { useState } from "react";
 import { z } from "zod";
 import Input from "@/components/ui/Input";
-import Button from "@/components/ui/Button";
+import {Button}from "@/components/ui/Button";
 
 
 type ForgotPasswordInputs = z.infer<typeof forgotPasswordSchema>;

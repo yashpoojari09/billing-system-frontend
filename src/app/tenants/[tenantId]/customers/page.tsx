@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import CustomersTable from "./CustomersTable";
 import AddCustomerForm from "./AddCustomerForm";
 import { useRouter } from "next/navigation";
-import Button from "@/components/ui/Button";
+import {Button} from "@/components/ui/Button";
 import { useParams } from "next/navigation";
 import { getCustomers } from "@/utils/api"; // ✅ Ensure this is imported
 import {Customer} from "@/types"
