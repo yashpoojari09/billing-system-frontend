@@ -66,7 +66,7 @@ export default function AddCustomerForm({
 
           <div className="flex flex-col sm:flex-row justify-between gap-2">
             <ButtonDash
-              title="cancel"
+              title="Cancel"
               variant="blue"
               onClick={onClose}
               className="w-full sm:w-auto px-4 py-2 bg-gray-400 text-white rounded-md"
@@ -74,7 +74,7 @@ export default function AddCustomerForm({
               Cancel
             </ButtonDash>
             <ButtonDash
-              title="addCustomer"
+              title="Add Customer"
               variant="green"
               disabled={isSubmitting}
               className="w-full sm:w-auto px-4 py-2 bg-green-600 text-white rounded-md"
