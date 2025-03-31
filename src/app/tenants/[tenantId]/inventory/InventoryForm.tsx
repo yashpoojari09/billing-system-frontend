@@ -40,13 +40,13 @@ export default function InventoryForm({ initialData, onSuccess }: InventoryFormP
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="p-4 bg-white rounded shadow-md space-y-4">
-      <input {...register("name")} placeholder="Name" className="w-full p-2 border rounded" />
+      <input {...register("name")} placeholder="Name" className="w-full p-2 border rounded text-[#001e38]" />
       {errors.name && <p className="text-red-500">{errors.name.message}</p>}
 
-      <input {...register("stock")} type="number" placeholder="Stock" className="w-full p-2 border rounded" />
+      <input {...register("stock")} type="number" placeholder="Stock" className="w-full p-2 border rounded text-[#001e38]" />
       {errors.stock && <p className="text-red-500">{errors.stock.message}</p>}
 
-      <input {...register("price")} type="number" placeholder="Price" className="w-full p-2 border rounded" />
+      <input {...register("price")} type="number" placeholder="Price" className="w-full p-2 border rounded text-[#001e38]" />
       {errors.price && <p className="text-red-500">{errors.price.message}</p>}
 
       <button type="submit" className="bg-[#001e38] text-white px-4 py-2 rounded">

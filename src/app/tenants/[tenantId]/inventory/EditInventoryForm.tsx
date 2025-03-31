@@ -55,26 +55,26 @@ export default function EditInventory({
       {isOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-            <h2 className="text-lg font-bold mb-4">Edit Inventory Item</h2>
+            <h2 className="text-lg font-bold mb-4 text-[#001e38]">Edit Inventory Item</h2>
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               {/* Name Field */}
               <div>
-                <label className="block text-sm font-medium">Name</label>
+                <label className="block text-sm font-medium text-[#001e38]">Name</label>
                 <input {...register("name")} className="w-full border p-2 rounded" />
                 {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
               </div>
 
               {/* Stock Field */}
               <div>
-                <label className="block text-sm font-medium">Stock</label>
+                <label className="block text-sm font-medium text-[#001e38]">Stock</label>
                 <input type="number" {...register("stock", { valueAsNumber: true })} className="w-full border p-2 rounded" />
                 {errors.stock && <p className="text-red-500 text-sm">{errors.stock.message}</p>}
               </div>
 
               {/* Price Field */}
               <div>
-                <label className="block text-sm font-medium">Price</label>
+                <label className="block text-sm font-medium text-[#001e38]">Price</label>
                 <input type="number" {...register("price", { valueAsNumber: true })} className="w-full border p-2 rounded" />
                 {errors.price && <p className="text-red-500 text-sm">{errors.price.message}</p>}
               </div>

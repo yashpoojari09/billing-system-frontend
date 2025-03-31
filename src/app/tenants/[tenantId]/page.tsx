@@ -31,7 +31,7 @@ const TenantDashboard = () => {
       </div>
 
       {/* Logout Button */}
-      <div className="justify-right mt-6">
+      <div className="justify-centre mt-6">
         <Button type="button"
           onClick={handleLogout}
         >
