@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import {Button, ButtonDash } from "@/components/ui/Button"
+import { Button, ButtonDash } from "@/components/ui/Button"
 
 const TenantDashboard = () => {
   const router = useRouter();

@@ -3,12 +3,12 @@
 import { useState, useEffect } from "react";
 import { getTaxRules, deleteTaxRule } from "@/utils/api";
 import EditTaxRuleForm from "./EditTaxRuleForm";
-import {TaxRuleProps }from "@/types"
+import { TaxRuleProps } from "@/types"
 import { ButtonEd } from "@/components/ui/Button";
 
 export default function TaxationTable() {
   const [taxRules, setTaxRules] = useState<TaxRuleProps[]>([]);
-  const [editTaxRule, setEditTaxRule] = useState<TaxRuleProps| null>(null);
+  const [editTaxRule, setEditTaxRule] = useState<TaxRuleProps | null>(null);
   const [deleteTaxId, setDeleteTaxId] = useState<{ isOpen: boolean; id: string | null }>({
     isOpen: false,
     id: null,
@@ -22,19 +22,19 @@ export default function TaxationTable() {
     const data = await getTaxRules();
     setTaxRules(data);
   };
-   // Handle delete confirmation
-    const handleDelete = async () => {
-      if (!deleteTaxId.id) return;
-  
-      try {
-        await deleteTaxRule(deleteTaxId.id);
-        setTaxRules((prev) => prev.filter((item) => item.id !== deleteTaxId.id));
-        setDeleteTaxId({ isOpen: false, id: null });
-      } catch (error) {
-        console.error("Error deleting inventory:", error);
-      }
-    };
-  
+  // Handle delete confirmation
+  const handleDelete = async () => {
+    if (!deleteTaxId.id) return;
+
+    try {
+      await deleteTaxRule(deleteTaxId.id);
+      setTaxRules((prev) => prev.filter((item) => item.id !== deleteTaxId.id));
+      setDeleteTaxId({ isOpen: false, id: null });
+    } catch (error) {
+      console.error("Error deleting inventory:", error);
+    }
+  };
+
 
   return (
     <div className="bg-white p-4 shadow rounded-lg">
@@ -53,12 +53,12 @@ export default function TaxationTable() {
               <td className="p-2 border">{tax.taxRate}%</td>
               <td className="p-2 border">{tax.region}</td>
               <td className="p-2 border">
-                <button onClick={() => setEditTaxRule(tax)} className="bg-blue-500 text-white px-3 py-1 rounded mr-2">
+                <ButtonEd variant="edit" onClick={() => setEditTaxRule(tax)} className="bg-blue-500 text-white px-3 py-1 rounded mr-2">
                   Edit
-                </button>
-                <button onClick={() => setDeleteTaxId({ isOpen: true, id:tax.id })} className="bg-red-500 text-white px-3 py-1 rounded">
+                </ButtonEd>
+                <ButtonEd variant="delete" onClick={() => setDeleteTaxId({ isOpen: true, id: tax.id })} className="bg-red-500 text-white px-3 py-1 rounded">
                   Delete
-                </button>
+                </ButtonEd>
               </td>
             </tr>
           ))}
@@ -66,7 +66,7 @@ export default function TaxationTable() {
       </table>
 
       {editTaxRule && <EditTaxRuleForm taxRule={editTaxRule} onClose={() => setEditTaxRule(null)} />}
-        {/* Delete Confirmation Modal */}
+      {/* Delete Confirmation Modal */}
       {deleteTaxId.isOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded-lg shadow-lg">
@@ -78,7 +78,7 @@ export default function TaxationTable() {
               </ButtonEd>
               <ButtonEd variant="delete" onClick={handleDelete} className="bg-red-600 text-white px-4 py-2 rounded-md">
                 Yes, Delete
-              </ButtonEd> 
+              </ButtonEd>
             </div>
           </div>
         </div>

@@ -46,7 +46,7 @@ export default function CustomersTable({ customers, setCustomers }: CustomersTab
                 <td className="p-2 border">{customer.name}</td>
                 <td className="p-2 border">{customer.email}</td>
                 <td className="p-2 border">
-                {/* setEditCustomerId(customer.id) */}
+                  {/* setEditCustomerId(customer.id) */}
                   <ButtonEd
                     onClick={() => {
                       router.push(`/tenants/${tenantId}/customers/${customer.id}/edit`); // ✅ Navigate
@@ -58,7 +58,7 @@ export default function CustomersTable({ customers, setCustomers }: CustomersTab
                   </ButtonEd>
                   <ButtonEd
                     onClick={() => handleDelete(customer.id)}
-                 variant="delete" >
+                    variant="delete" >
                     Delete
                   </ButtonEd>
                 </td>

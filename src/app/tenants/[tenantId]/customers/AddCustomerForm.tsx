@@ -16,7 +16,7 @@ export default function AddCustomerForm({
   onCustomerAdded, // ✅ Accept the function
 }: {
   onClose: () => void;
-  onCustomerAdded: (customer:Customer) => void; // ✅ Define prop type
+  onCustomerAdded: (customer: Customer) => void; // ✅ Define prop type
 }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
