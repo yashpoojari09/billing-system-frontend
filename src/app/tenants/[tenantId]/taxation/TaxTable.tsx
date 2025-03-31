@@ -49,7 +49,7 @@ export default function TaxationTable() {
         </thead>
         <tbody>
           {taxRules.map((tax) => (
-            <tr key={tax.id} className="border text-[#001e38]">
+            <tr key={tax.id} className="text-center">
               <td className="p-2 border text-sm sm:text-base">{tax.taxRate}%</td>
               <td className="p-2 border text-sm sm:text-base">{tax.region}</td>
               <td className="p-2 border text-sm sm:text-base justify-centre gap-2">
