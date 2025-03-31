@@ -103,10 +103,10 @@ export default function InventoryTable() {
             <h2 className="text-lg font-bold mb-4 text-[#000000]">Are you sure?</h2>
             <p className="mb-4 text-[#000000]">Do you really want to delete this inventory item?</p>
             <div className="flex justify-end space-x-3">
-            <ButtonDash title="cancel"variant="blue" onClick={() => setConfirmDelete({ isOpen: false, id: null })} className="bg-gray-400 text-white px-4 py-2 rounded-md">
+            <ButtonDash title="Cancel"variant="blue" onClick={() => setConfirmDelete({ isOpen: false, id: null })} className="bg-gray-400 text-white px-4 py-2 rounded-md">
                 Cancel
               </ButtonDash>
-              <ButtonEd title="cancel" variant="delete" onClick={handleDelete} className="bg-red-600 text-white px-4 py-2 rounded-md">
+              <ButtonEd title="Yes, Delete" variant="delete" onClick={handleDelete} className="bg-red-600 text-white px-4 py-2 rounded-md">
                 Yes, Delete
               </ButtonEd>
             </div>

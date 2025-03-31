@@ -54,11 +54,11 @@ export default function AddTaxRuleForm({ onClose }: { onClose: () => void }) {
                 {errors.region && <p className="text-red-500 text-sm">{errors.region.message}</p>}
               </div>
   {/* Submit Button */}
-  <div className="flex justify-between">
+  <div className="flex justify-end gap-2">
                  <ButtonDash title="cancel"variant="blue" onClick={onClose} className="bg-gray-400 text-white px-4 py-2 rounded-md">
                   Cancel
                 </ButtonDash>
-                <ButtonDash title="addTaxRule" variant="green" disabled={isSubmitting} className="bg-green-600 text-white px-4 py-2 rounded-md">
+                <ButtonDash title="Add TaxRule" variant="green" disabled={isSubmitting} className="bg-green-600 text-white px-4 py-2 rounded-md">
                   {isSubmitting ? "Adding..." : "Add Item"}
                 </ButtonDash>
               </div>

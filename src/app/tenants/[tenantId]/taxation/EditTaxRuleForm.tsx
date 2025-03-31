@@ -64,11 +64,11 @@ export default function EditTaxRuleForm({
             className="border p-2 w-full mb-2 text-[#000000]"
           />
 
-          <div className="flex justify-between mt-4">
+          <div className="flex justify-end gap-2">
             <ButtonDash  title="cancel" variant="blue" onClick={onClose} className="bg-gray-400 text-white px-4 py-2 rounded-md">
               Cancel
             </ButtonDash>
-            <ButtonDash variant="green" title="submit" disabled={loading} className="bg-blue-600 text-white px-4 py-2 rounded-md">
+            <ButtonDash variant="green" title="Update" disabled={loading} className="bg-blue-600 text-white px-4 py-2 rounded-md">
               {loading ? "Updating..." : "Update"}
             </ButtonDash>
           </div>

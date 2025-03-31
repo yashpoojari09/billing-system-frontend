@@ -88,7 +88,7 @@ export default function EditCustomerPage() {
            <ButtonDash title="cancel"variant="blue" onClick={() => router.back()} className="px-4 py-2 bg-gray-500 text-white rounded cursor-pointer">
             Cancel
           </ButtonDash>
-           <ButtonDash title="cancel"variant="green" className="px-4 py-2 bg-blue-500 text-white rounded cursor-pointer" disabled={loading}>
+           <ButtonDash title="Save Changes"variant="green" className="px-4 py-2 bg-blue-500 text-white rounded cursor-pointer" disabled={loading}>
             {loading ? "Updating..." : "Save Changes"}
           </ButtonDash>
         </div>

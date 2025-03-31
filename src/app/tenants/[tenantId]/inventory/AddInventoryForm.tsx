@@ -71,7 +71,7 @@ export default function AddInventory
               <ButtonDash title="cancel" variant="blue" onClick={onClose} className="bg-gray-400 text-white px-4 py-2 rounded-md">
                 Cancel
               </ButtonDash>
-              <ButtonDash title="cancel" variant="green" disabled={isSubmitting} className="bg-green-600 text-white px-4 py-2 rounded-md">
+              <ButtonDash title="Add Item" variant="green" disabled={isSubmitting} className="bg-green-600 text-white px-4 py-2 rounded-md">
                 {isSubmitting ? "Adding..." : "Add Item"}
               </ButtonDash>
             </div>
