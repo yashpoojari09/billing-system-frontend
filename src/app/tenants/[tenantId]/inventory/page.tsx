@@ -32,11 +32,7 @@ export default function InventoryPage() {
 
       {/* Add Inventory Button */}
       <div className="flex flex-col sm:flex-row justify-between items-center mb-4 space-y-3 sm:space-y-0 sm:space-x-4">
-        <Button type="button" onClick={() => router.push(`/tenants/${tenantId}`)} className="w-full sm:w-auto">
-          <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7"></path>
-          </svg>
-        </Button>
+
         <Button type="button" onClick={() => setIsAddModalOpen(true)} className="bg-blue-600 text-white px-4 py-2 rounded-md w-full sm:w-auto">
           + Add Inventory
         </Button>
@@ -49,4 +45,4 @@ export default function InventoryPage() {
       {isAddModalOpen && <AddInventory onClose={() => setIsAddModalOpen(false)} />}
     </div>
   );
-}
+}     
