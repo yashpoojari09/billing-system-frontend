@@ -292,6 +292,13 @@ export const getTaxRules = async () => {
 };
 
 export const createTaxRule = async (data: { taxRate: number; region: string }) => {
+  const isValidFloat = (value: any) => {
+    return !isNaN(value) && parseFloat(value) === value;
+  };
+  const taxRate = parseFloat(data.taxRate.toString()); // Ensure taxRate is a floating-point number
+  if (!isValidFloat(taxRate)) {
+    throw new Error("Tax rate must be a valid floating-point number.");
+  }
   const tenantId = localStorage.getItem("tenantId");
   if (!tenantId) throw new Error("Tenant ID is missing. Please log in again.");
   
