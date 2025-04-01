@@ -53,16 +53,6 @@ api.interceptors.response.use(
 
 export default api;
 
-const refreshToken = async () => {
-  try {
-    const res = await axios.post(`${API_URL}/auth/refresh`, {}, { withCredentials: true });
-    localStorage.setItem("accessToken", res.data.accessToken);
-    return res.data.accessToken;
-  } catch (err) {
-    logoutUser(); // If refresh token is invalid, log the user out
-  }
-};
-
 export const loginUser = async (email: string, password: string) => {
   try {
     const response = await axios.post(`${API_URL}/auth/login`, { email, password}, 
