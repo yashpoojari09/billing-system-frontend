@@ -47,17 +47,17 @@ const TenantLayout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div className="relative flex min-h-screen">
-      {/* ✅ Overlay (closes sidebar when clicked) */}
+      {/* ✅ Overlay (semi-transparent, closes sidebar when clicked) */}
       {isSidebarOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-10 md:hidden"
+          className="fixed inset-0 bg-black bg-opacity-30 z-20 md:hidden"
           onClick={() => setIsSidebarOpen(false)} // Close sidebar when clicking outside
         />
       )}
 
       {/* ✅ Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 w-64 bg-gray-900 text-white p-5 transition-transform duration-300 z-20 ${
+        className={`fixed inset-y-0 left-0 w-64 bg-gray-900 text-white p-5 transition-transform duration-300 z-30 ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-64"
         } md:translate-x-0 md:w-64 md:static`}
       >
@@ -106,16 +106,18 @@ const TenantLayout = ({ children }: { children: React.ReactNode }) => {
         </div>
       </div>
 
-      {/* ✅ Hamburger Button */}
-      <button
-        className="absolute top-4 left-4 text-white md:hidden bg-gray-900 p-2 rounded z-30"
-        onClick={(e) => {
-          e.stopPropagation(); // Prevents click from bubbling to overlay
-          setIsSidebarOpen(!isSidebarOpen);
-        }}
-      >
-        <FiMenu size={24} />
-      </button>
+      {/* ✅ Hamburger Button (Hidden when Sidebar is Open) */}
+      {!isSidebarOpen && (
+        <button
+          className="absolute top-4 left-4 text-white md:hidden bg-gray-900 p-2 rounded z-40"
+          onClick={(e) => {
+            e.stopPropagation(); // Prevents click from bubbling to overlay
+            setIsSidebarOpen(true);
+          }}
+        >
+          <FiMenu size={24} />
+        </button>
+      )}
 
       {/* ✅ Main Content */}
       <div className="flex-1 p-6 ml-0 md:ml-64">{children}</div>
