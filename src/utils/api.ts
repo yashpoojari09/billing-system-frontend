@@ -43,7 +43,7 @@ api.interceptors.response.use(
       } catch (refreshError) {
         console.log("Refresh token expired. Logging out...");
         localStorage.removeItem("accessToken");
-        window.location.href = "/login";
+        window.location.href = "/auth/login";
         return Promise.reject(refreshError);
       }
     }
