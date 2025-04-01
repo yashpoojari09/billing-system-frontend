@@ -1,13 +1,14 @@
-"use client"; 
+"use client";
 
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState, useCallback } from "react";
+import { FiMenu } from "react-icons/fi"; // Import Hamburger icon
 
 const TenantLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const pathname = usePathname();
   const [tenantId, setTenantId] = useState<string | null>(null);
-   
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Sidebar state
 
   // ✅ Memoize handleLogout function to avoid unnecessary re-renders
   const handleLogout = useCallback(() => {
@@ -31,22 +32,32 @@ const TenantLayout = ({ children }: { children: React.ReactNode }) => {
     }
   }, [handleLogout]);
 
-// ✅ Redirect to `/customers` only after `tenantId` is available
-useEffect(() => {
-  if (tenantId && pathname === `/tenants/${tenantId}`) {
-    router.push(`/tenants/${tenantId}/customers`);
-  }
-}, [tenantId, pathname, router]);
+  // ✅ Redirect to `/customers` only after `tenantId` is available
+  useEffect(() => {
+    if (tenantId && pathname === `/tenants/${tenantId}`) {
+      router.push(`/tenants/${tenantId}/customers`);
+    }
+  }, [tenantId, pathname, router]);
+
+  // ✅ Function to handle menu click and close sidebar
+  const handleNavigation = (path: string) => {
+    router.push(path);
+    setIsSidebarOpen(false); // Close sidebar after clicking
+  };
 
   return (
     <div className="flex min-h-screen">
-      {/* Sidebar */}
-      <div className="w-64 bg-gray-900 text-white p-5 fixed h-full">
+      {/* Mobile-Friendly Sidebar */}
+      <div
+        className={`fixed inset-y-0 left-0 w-64 bg-gray-900 text-white p-5 transition-transform duration-300 ${
+          isSidebarOpen ? "translate-x-0" : "-translate-x-64"
+        } md:translate-x-0 md:w-64 md:static`}
+      >
         <h2 className="text-lg font-bold mb-6">Tenant Dashboard</h2>
         <ul className="space-y-3">
           <li>
             <button
-              onClick={() => router.push(`/tenants/${tenantId}/customers`)}
+              onClick={() => handleNavigation(`/tenants/${tenantId}/customers`)}
               className={`w-full text-left px-4 py-2 block rounded ${
                 pathname?.includes("customers") ? "bg-blue-600" : "hover:bg-gray-700"
               }`}
@@ -56,7 +67,7 @@ useEffect(() => {
           </li>
           <li>
             <button
-              onClick={() => router.push(`/tenants/${tenantId}/inventory`)}
+              onClick={() => handleNavigation(`/tenants/${tenantId}/inventory`)}
               className={`w-full text-left px-4 py-2 block rounded ${
                 pathname?.includes("inventory") ? "bg-green-600" : "hover:bg-gray-700"
               }`}
@@ -66,7 +77,7 @@ useEffect(() => {
           </li>
           <li>
             <button
-              onClick={() => router.push(`/tenants/${tenantId}/taxation`)}
+              onClick={() => handleNavigation(`/tenants/${tenantId}/taxation`)}
               className={`w-full text-left px-4 py-2 block rounded ${
                 pathname?.includes("taxation") ? "bg-yellow-600" : "hover:bg-gray-700"
               }`}
@@ -79,11 +90,7 @@ useEffect(() => {
         {/* Logout Button */}
         <div className="mt-6">
           <button
-            onClick={() => {
-              localStorage.removeItem("tenantId");
-              localStorage.removeItem("accessToken");
-              router.push("/auth/login");
-            }}
+            onClick={handleLogout}
             className="w-full bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
           >
             Logout
@@ -91,8 +98,16 @@ useEffect(() => {
         </div>
       </div>
 
+      {/* Hamburger Button for Mobile */}
+      <button
+        className="absolute top-4 left-4 text-white md:hidden bg-gray-900 p-2 rounded"
+        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+      >
+        <FiMenu size={24} />
+      </button>
+
       {/* Main Content */}
-      <div className="ml-64 flex-1 p-6">{children}</div>
+      <div className="flex-1 p-6 ml-0 md:ml-64">{children}</div>
     </div>
   );
 };
