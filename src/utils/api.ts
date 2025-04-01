@@ -53,6 +53,16 @@ api.interceptors.response.use(
 
 export default api;
 
+const refreshToken = async () => {
+  try {
+    const res = await axios.post(`${API_URL}/auth/refresh`, {}, { withCredentials: true });
+    localStorage.setItem("accessToken", res.data.accessToken);
+    return res.data.accessToken;
+  } catch (err) {
+    logoutUser(); // If refresh token is invalid, log the user out
+  }
+};
+
 export const loginUser = async (email: string, password: string) => {
   try {
     const response = await axios.post(`${API_URL}/auth/login`, { email, password}, 
@@ -125,7 +135,7 @@ export const getInventory = async () => {
   try {
     const tenantId = localStorage.getItem("tenantId");
     if (!tenantId) throw new Error("Tenant ID is missing. Please log in again.");
-    const response = await axios.get(`${API_URL}/tenants/${tenantId}/inventory`, { 
+    const response = await api.get(`${API_URL}/tenants/${tenantId}/inventory`, { 
       headers: getAuthHeaders(), 
       withCredentials: true // ✅ Ensures cookies (refresh token) are sent
     });
@@ -142,7 +152,7 @@ export const addInventoryItem = async (data: { name: string; stock: number; pric
     const tenantId = localStorage.getItem("tenantId");
     if (!tenantId) throw new Error("Tenant ID is missing. Please log in again.");
     
-    const response = await axios.post(`${API_URL}/tenants/${tenantId}/inventory`, data,
+    const response = await api.post(`${API_URL}/tenants/${tenantId}/inventory`, data,
        { headers: getAuthHeaders(),    withCredentials: true // ✅ Ensures cookies (refresh token) are sent
        });
     return response.data;
@@ -158,7 +168,7 @@ export const updateInventoryItem = async (id: string, data: { name: string; stoc
     const tenantId = localStorage.getItem("tenantId");
     if (!tenantId) throw new Error("Tenant ID is missing. Please log in again.");
     
-    const response = await axios.put(`${API_URL}/tenants/${tenantId}/inventory/${id}`, data, 
+    const response = await api.put(`${API_URL}/tenants/${tenantId}/inventory/${id}`, data, 
       { headers: getAuthHeaders(),       withCredentials: true // ✅ Ensures cookies (refresh token) are sent
       });
     return response.data;
@@ -173,7 +183,7 @@ export const deleteInventoryItem = async (id: string) => {
   try {
     const tenantId = localStorage.getItem("tenantId");
     if (!tenantId) throw new Error("Tenant ID is missing. Please log in again.");
-        const response = await axios.delete(`${API_URL}/tenants/${tenantId}/inventory/${id}`,
+        const response = await api.delete(`${API_URL}/tenants/${tenantId}/inventory/${id}`,
            { headers: getAuthHeaders(),       withCredentials: true // ✅ Ensures cookies (refresh token) are sent
            });
     return response.data;
@@ -194,7 +204,7 @@ export const getCustomers = async () => {
       throw new Error("Tenant ID is missing. Please log in again.");
     }
 
-    const response = await axios.get(`${API_URL}/tenants/${tenantId}/customers`, { headers: getAuthHeaders() ,
+    const response = await api.get(`${API_URL}/tenants/${tenantId}/customers`, { headers: getAuthHeaders() ,
       withCredentials: true // ✅ Ensures cookies (refresh token) are sent
 
     });
@@ -219,7 +229,7 @@ export const addCustomer = async (customer: { name: string; email: string }) => 
       throw new Error("Tenant ID is missing. Please log in again.");
     }
 
-    const response = await axios.post(`${API_URL}/tenants/${tenantId}/customers`, customer,
+    const response = await api.post(`${API_URL}/tenants/${tenantId}/customers`, customer,
        { headers: getAuthHeaders(),       withCredentials: true // ✅ Ensures cookies (refresh token) are sent
        });
 
@@ -241,7 +251,7 @@ export const updateCustomer = async (customerId: string, customer: { name: strin
   const tenantId = localStorage.getItem("tenantId");
   if (!tenantId) throw new Error("Tenant ID is missing. Please log in again.");
   
- const response = await axios.put(`${API_URL}/tenants/${tenantId}/customers/${customerId}`, customer,{ 
+ const response = await api.put(`${API_URL}/tenants/${tenantId}/customers/${customerId}`, customer,{ 
   headers: { 
     ...getAuthHeaders(), 
     "Content-Type": "application/json" ,
@@ -273,7 +283,7 @@ export const deleteCustomer = async (customerId: string) => {
   const tenantId = localStorage.getItem("tenantId");
   if (!tenantId) throw new Error("Tenant ID is missing. Please log in again.");
   
-  await axios.delete(`${API_URL}/tenants/${tenantId}/customers/${customerId}`, { headers: getAuthHeaders() ,
+  await api.delete(`${API_URL}/tenants/${tenantId}/customers/${customerId}`, { headers: getAuthHeaders() ,
     withCredentials: true // ✅ Ensures cookies (refresh token) are sent
 
   });
@@ -284,7 +294,7 @@ export const getTaxRules = async () => {
   const tenantId = localStorage.getItem("tenantId");
   if (!tenantId) throw new Error("Tenant ID is missing. Please log in again.");
   
-  const response = await axios.get(`${API_URL}/tenants/${tenantId}/taxation`, { headers: getAuthHeaders(),
+  const response = await api.get(`${API_URL}/tenants/${tenantId}/taxation`, { headers: getAuthHeaders(),
     withCredentials: true // ✅ Ensures cookies (refresh token) are sent
 
    });
@@ -295,7 +305,7 @@ export const createTaxRule = async (data: { taxRate: number; region: string }) =
   const tenantId = localStorage.getItem("tenantId");
   if (!tenantId) throw new Error("Tenant ID is missing. Please log in again.");
   
-  const response = await axios.post(`${API_URL}/tenants/${tenantId}/taxation`, data, { headers: getAuthHeaders() ,
+  const response = await api.post(`${API_URL}/tenants/${tenantId}/taxation`, data, { headers: getAuthHeaders() ,
     withCredentials: true // ✅ Ensures cookies (refresh token) are sent
 
   });
@@ -306,7 +316,7 @@ export const updateTaxRule = async (taxId: string, data: { taxRate: number; regi
   const tenantId = localStorage.getItem("tenantId");
   if (!tenantId) throw new Error("Tenant ID is missing. Please log in again.");
   
-  const response = await axios.put(`${API_URL}/tenants/${tenantId}/taxation/${taxId}`, data, { headers: getAuthHeaders(),
+  const response = await api.put(`${API_URL}/tenants/${tenantId}/taxation/${taxId}`, data, { headers: getAuthHeaders(),
     withCredentials: true // ✅ Ensures cookies (refresh token) are sent
 
    });
@@ -317,7 +327,7 @@ export const deleteTaxRule = async (taxId: string) => {
   const tenantId = localStorage.getItem("tenantId");
   if (!tenantId) throw new Error("Tenant ID is missing. Please log in again.");
   
-  const response = await axios.delete(`${API_URL}/tenants/${tenantId}/taxation/${taxId}`, { headers: getAuthHeaders(),
+  const response = await api.delete(`${API_URL}/tenants/${tenantId}/taxation/${taxId}`, { headers: getAuthHeaders(),
     withCredentials: true // ✅ Ensures cookies (refresh token) are sent
 
    });
