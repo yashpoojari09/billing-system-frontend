@@ -292,8 +292,8 @@ export const getTaxRules = async () => {
 };
 
 export const createTaxRule = async (data: { taxRate: number; region: string }) => {
-  const isValidFloat = (value: any) => {
-    return !isNaN(value) && parseFloat(value) === value;
+  const isValidFloat = (value: number | string): boolean => {
+    return !isNaN(Number(value)) && parseFloat(String(value)) === parseFloat(String(value));
   };
   const taxRate = parseFloat(data.taxRate.toString()); // Ensure taxRate is a floating-point number
   if (!isValidFloat(taxRate)) {

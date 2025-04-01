@@ -1,34 +1,35 @@
 "use client"; 
 
 import { useRouter, usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 const TenantLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const pathname = usePathname();
   const [tenantId, setTenantId] = useState<string | null>(null);
+   
 
-// ✅ Fetch `tenantId` on mount
-useEffect(() => {
-  const token = localStorage.getItem("accessToken");
-  const storedTenantId = localStorage.getItem("tenantId");
-
-  if (!token) {
-    handleLogout(); // ⬅️ Force logout if token is missing
-    return;
-  }
-
-  if (storedTenantId) {
-    setTenantId(storedTenantId);
-  }
-}, [router]);
-
-  // ✅ Handle logout function
-  const handleLogout = () => {
+  // ✅ Memoize handleLogout function to avoid unnecessary re-renders
+  const handleLogout = useCallback(() => {
     localStorage.removeItem("tenantId");
     localStorage.removeItem("accessToken");
     router.push("/auth/login");
-  };
+  }, [router]);
+
+  // ✅ Fetch `tenantId` on mount
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    const storedTenantId = localStorage.getItem("tenantId");
+
+    if (!token) {
+      handleLogout(); // ⬅️ Force logout if token is missing
+      return;
+    }
+
+    if (storedTenantId) {
+      setTenantId(storedTenantId);
+    }
+  }, [handleLogout]);
 
 // ✅ Redirect to `/customers` only after `tenantId` is available
 useEffect(() => {
