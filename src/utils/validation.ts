@@ -34,13 +34,7 @@ export const customerSchema = z.object({
   email: z.string().email("Invalid email address"),
 });
 
-//taxation
 export const taxRuleSchema = z.object({
-  id: z.string(),
-  taxRate: z.number()
-    .min(0, { message: "Tax rate must be a positive number" }) // Ensures it's positive
-    .refine((val) => Number.isFinite(val), {
-      message: "Tax rate must be a valid number",
-    }),
-  region: z.string().min(1, { message: "Region is required" }), // Ensure region is not empty
+  taxRate: z.number().min(0, { message: "Tax rate must be a positive number" }),
+  region: z.string().min(1, { message: "Region is required" }),
 });
