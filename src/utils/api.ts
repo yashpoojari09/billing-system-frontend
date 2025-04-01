@@ -12,17 +12,46 @@ export const getAuthHeaders = () => {
 // API instance with interceptor for authentication
 const api = axios.create({
   baseURL: API_URL,
+  withCredentials: true, // Send HTTP-only cookies
+
 });
 
 api.interceptors.request.use(
   (config) => {
     Object.entries(getAuthHeaders()).forEach(([key, value]) => {
-      config.headers?.set(key, value as string);
+      config.headers = config.headers || {};
+      config.headers[key] = value as string;
     });
     return config;
   },
   (error) => Promise.reject(error)
 );
+
+
+// Interceptor for handling expired tokens
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+    if (error.response.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      try {
+        const res = await axios.post(`${API_URL}/auth/refresh`, {}, { withCredentials: true });
+        localStorage.setItem("accessToken", res.data.accessToken);
+        originalRequest.headers["Authorization"] = `Bearer ${res.data.accessToken}`;
+        return api.request(originalRequest); // ✅ Use `api` instead of `axios`
+      } catch (refreshError) {
+        console.log("Refresh token expired. Logging out...");
+        localStorage.removeItem("accessToken");
+        window.location.href = "/login";
+        return Promise.reject(refreshError);
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
+export default api;
 
 export const loginUser = async (email: string, password: string) => {
   try {
@@ -38,19 +67,6 @@ export const loginUser = async (email: string, password: string) => {
     }
   }
 };
-/// Refresh Token
-export const refreshAccessToken = async () => {
-  try {
-    const response = await axios.get(`${API_URL}/auth/refresh`, { withCredentials: true }, );
-     // ✅ Store the new access token in localStorage
-     localStorage.setItem("accessToken", response.data.accessToken);
-    return response.data.accessToken;
-  } catch (error) {
-    console.error("Error refreshing token", error);
-    return null;
-  }
-};
-
 
 export const forgotPassword = async (email: string) => {
   try {
@@ -94,18 +110,20 @@ export const resetPassword = async (token:string, input: z.infer<typeof resetPas
 };
 
 // Logout function
-export const logoutUser = () => {
-  localStorage.removeItem("accessToken");
-  localStorage.removeItem("refreshToken");
-  window.location.href = "/login"; // Redirect to login page
+export const logoutUser = async () => {
+  localStorage.removeItem("accessToken"); // No need to remove refresh token
+  await axios.post(`${API_URL}/auth/logout`, {}, { withCredentials: true }); // Call backend logout API
+  window.location.href = "/login"; // Redirect to login
 };
+
 
 // Inventory api 
 // Fetch Inventory Items
 export const getInventory = async () => {
   try {
-    const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
-
+    const tenantId = localStorage.getItem("tenantId");
+    if (!tenantId) throw new Error("Tenant ID is missing. Please log in again.");
+    
     const response = await axios.get(`${API_URL}/tenants/${tenantId}/inventory`, { headers: getAuthHeaders() });
     return response.data;
   } catch (error) {
@@ -117,8 +135,9 @@ export const getInventory = async () => {
 // Add New Inventory Item
 export const addInventoryItem = async (data: { name: string; stock: number; price: number }) => {
   try {
-    const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
-
+    const tenantId = localStorage.getItem("tenantId");
+    if (!tenantId) throw new Error("Tenant ID is missing. Please log in again.");
+    
     const response = await axios.post(`${API_URL}/tenants/${tenantId}/inventory`, data, { headers: getAuthHeaders() });
     return response.data;
   } catch (error) {
@@ -130,8 +149,9 @@ export const addInventoryItem = async (data: { name: string; stock: number; pric
 // Update Inventory Item
 export const updateInventoryItem = async (id: string, data: { name: string; stock: number; price: number }) => {
   try {
-    const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
-
+    const tenantId = localStorage.getItem("tenantId");
+    if (!tenantId) throw new Error("Tenant ID is missing. Please log in again.");
+    
     const response = await axios.put(`${API_URL}/tenants/${tenantId}/inventory/${id}`, data, { headers: getAuthHeaders() });
     return response.data;
   } catch (error) {
@@ -143,8 +163,9 @@ export const updateInventoryItem = async (id: string, data: { name: string; stoc
 // Delete Inventory Item
 export const deleteInventoryItem = async (id: string) => {
   try {
-    const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
-    const response = await axios.delete(`${API_URL}/tenants/${tenantId}/inventory/${id}`, { headers: getAuthHeaders() });
+    const tenantId = localStorage.getItem("tenantId");
+    if (!tenantId) throw new Error("Tenant ID is missing. Please log in again.");
+        const response = await axios.delete(`${API_URL}/tenants/${tenantId}/inventory/${id}`, { headers: getAuthHeaders() });
     return response.data;
   } catch (error) {
     console.error("Error deleting inventory:", error);
@@ -157,7 +178,8 @@ export const deleteInventoryItem = async (id: string) => {
 export const getCustomers = async () => {
   try {
     const tenantId = localStorage.getItem("tenantId");
-
+    if (!tenantId) throw new Error("Tenant ID is missing. Please log in again.");
+    
     if (!tenantId) {
       throw new Error("Tenant ID is missing. Please log in again.");
     }
@@ -177,8 +199,9 @@ export const getCustomers = async () => {
 };
 export const addCustomer = async (customer: { name: string; email: string }) => {
   try {
-    const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
-
+    const tenantId = localStorage.getItem("tenantId");
+    if (!tenantId) throw new Error("Tenant ID is missing. Please log in again.");
+    
     if (!tenantId) {
       throw new Error("Tenant ID is missing. Please log in again.");
     }
@@ -200,8 +223,9 @@ export const addCustomer = async (customer: { name: string; email: string }) => 
 
 // Update Customer
 export const updateCustomer = async (customerId: string, customer: { name: string; email: string }) => {
-  const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
-
+  const tenantId = localStorage.getItem("tenantId");
+  if (!tenantId) throw new Error("Tenant ID is missing. Please log in again.");
+  
  const response = await axios.put(`${API_URL}/tenants/${tenantId}/customers/${customerId}`, customer,{ 
   headers: { 
     ...getAuthHeaders(), 
@@ -229,36 +253,41 @@ export const updateCustomer = async (customerId: string, customer: { name: strin
 // }
 // Delete Customer
 export const deleteCustomer = async (customerId: string) => {
-  const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
-
+  const tenantId = localStorage.getItem("tenantId");
+  if (!tenantId) throw new Error("Tenant ID is missing. Please log in again.");
+  
   await axios.delete(`${API_URL}/tenants/${tenantId}/customers/${customerId}`, { headers: getAuthHeaders() });
 };
 
 // Taxation
 export const getTaxRules = async () => {
-  const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
-
+  const tenantId = localStorage.getItem("tenantId");
+  if (!tenantId) throw new Error("Tenant ID is missing. Please log in again.");
+  
   const response = await axios.get(`${API_URL}/tenants/${tenantId}/taxation`, { headers: getAuthHeaders() });
   return response.data;
 };
 
 export const createTaxRule = async (data: { taxRate: number; region: string }) => {
-  const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
-
+  const tenantId = localStorage.getItem("tenantId");
+  if (!tenantId) throw new Error("Tenant ID is missing. Please log in again.");
+  
   const response = await axios.post(`${API_URL}/tenants/${tenantId}/taxation`, data, { headers: getAuthHeaders() });
   return response.data;
 };
 
 export const updateTaxRule = async (taxId: string, data: { taxRate: number; region: string }) => {
-  const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
-
+  const tenantId = localStorage.getItem("tenantId");
+  if (!tenantId) throw new Error("Tenant ID is missing. Please log in again.");
+  
   const response = await axios.put(`${API_URL}/tenants/${tenantId}/taxation/${taxId}`, data, { headers: getAuthHeaders() });
   return response.data;
 };
 
 export const deleteTaxRule = async (taxId: string) => {
-  const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
-
+  const tenantId = localStorage.getItem("tenantId");
+  if (!tenantId) throw new Error("Tenant ID is missing. Please log in again.");
+  
   const response = await axios.delete(`${API_URL}/tenants/${tenantId}/taxation/${taxId}`, { headers: getAuthHeaders() });
   return response.data;
 };
