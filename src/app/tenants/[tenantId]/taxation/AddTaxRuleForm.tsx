@@ -17,9 +17,13 @@ export default function AddTaxRuleForm({ onClose }: { onClose: () => void }) {
   } = useForm<TaxRuleFormValues>({
     resolver: zodResolver(taxRuleSchema),
   });
-
   const onSubmit = async (data: TaxRuleFormValues) => {
+    const parsedTaxRate = parseFloat(data.taxRate?.toString() || "");
     try {
+      if (isNaN(parsedTaxRate)) {
+        alert("Please enter a valid tax rate.");
+        return;
+      }
       await createTaxRule(data);
       reset();
       onClose();
@@ -42,7 +46,6 @@ export default function AddTaxRuleForm({ onClose }: { onClose: () => void }) {
               {...register("taxRate",{
                 required: "Tax rate is required",
                 valueAsNumber: true, // Ensures the value is stored as a number
-                validate: (value) => !isNaN(value) && parseFloat(value.toString()) === value || "Tax rate must be a valid number",
               })}
               
               className="w-full border p-3 rounded text-[#001e38]"
