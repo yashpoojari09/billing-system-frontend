@@ -8,19 +8,27 @@ const TenantLayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   const [tenantId, setTenantId] = useState<string | null>(null);
 
-  useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-    setTenantId(localStorage.getItem("tenantId"));
+// ✅ Fetch `tenantId` on mount
+useEffect(() => {
+  const token = localStorage.getItem("accessToken");
+  const storedTenantId = localStorage.getItem("tenantId");
 
-    if (!token) {
-      router.push("/");
-    }
+  if (!token) {
+    router.push("/auth/login"); // Redirect to login if no token
+    return;
+  }
 
-    // ✅ Redirect to Customers page by default
-    if (pathname === `/tenants/${tenantId}` && tenantId) {
-      router.push(`/tenants/${tenantId}/customers`);
-    }
-  }, [router, pathname, tenantId]);
+  if (storedTenantId) {
+    setTenantId(storedTenantId);
+  }
+}, [router]);
+
+// ✅ Redirect to `/customers` only after `tenantId` is available
+useEffect(() => {
+  if (tenantId && pathname === `/tenants/${tenantId}`) {
+    router.push(`/tenants/${tenantId}/customers`);
+  }
+}, [tenantId, pathname, router]);
 
   return (
     <div className="flex min-h-screen">

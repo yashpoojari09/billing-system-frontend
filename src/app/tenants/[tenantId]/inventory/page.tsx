@@ -4,14 +4,12 @@ import { useState, useEffect } from "react";
 import InventoryTable from "./InventoryTable";
 import AddInventory from "./AddInventoryForm";
 import { Button } from "@/components/ui/Button";
-import { useRouter, useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function InventoryPage() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   const router = useRouter();
-  const params = useParams();
-
 
   // ✅ Check for accessToken on page load
   useEffect(() => {
@@ -19,7 +17,7 @@ export default function InventoryPage() {
 
     if (!token) {
       // ❌ If no token, redirect to login
-      router.push("/");
+      router.push("/auth/login");
 
     }
   }, [router]);
