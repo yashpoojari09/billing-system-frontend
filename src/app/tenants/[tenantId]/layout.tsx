@@ -14,7 +14,7 @@ useEffect(() => {
   const storedTenantId = localStorage.getItem("tenantId");
 
   if (!token) {
-    router.push("/auth/login"); // Redirect to login if no token
+    handleLogout(); // ⬅️ Force logout if token is missing
     return;
   }
 
@@ -22,6 +22,13 @@ useEffect(() => {
     setTenantId(storedTenantId);
   }
 }, [router]);
+
+  // ✅ Handle logout function
+  const handleLogout = () => {
+    localStorage.removeItem("tenantId");
+    localStorage.removeItem("accessToken");
+    router.push("/auth/login");
+  };
 
 // ✅ Redirect to `/customers` only after `tenantId` is available
 useEffect(() => {
