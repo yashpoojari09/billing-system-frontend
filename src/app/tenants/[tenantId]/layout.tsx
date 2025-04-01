@@ -1,28 +1,29 @@
 "use client";
 
 import { useRouter, usePathname } from "next/navigation";
-import { useEffect, useState, useCallback, useRef } from "react";
-import { FiMenu } from "react-icons/fi";
+import { useEffect, useState, useCallback } from "react";
+import { FiMenu } from "react-icons/fi"; // Import Hamburger icon
 
 const TenantLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const pathname = usePathname();
   const [tenantId, setTenantId] = useState<string | null>(null);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const sidebarRef = useRef<HTMLDivElement>(null); // Sidebar reference
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Sidebar state
 
+  // ✅ Memoize handleLogout function to avoid unnecessary re-renders
   const handleLogout = useCallback(() => {
     localStorage.removeItem("tenantId");
     localStorage.removeItem("accessToken");
     router.push("/auth/login");
   }, [router]);
 
+  // ✅ Fetch `tenantId` on mount
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
     const storedTenantId = localStorage.getItem("tenantId");
 
     if (!token) {
-      handleLogout();
+      handleLogout(); // ⬅️ Force logout if token is missing
       return;
     }
 
@@ -31,39 +32,32 @@ const TenantLayout = ({ children }: { children: React.ReactNode }) => {
     }
   }, [handleLogout]);
 
+  // ✅ Redirect to `/customers` only after `tenantId` is available
   useEffect(() => {
     if (tenantId && pathname === `/tenants/${tenantId}`) {
       router.push(`/tenants/${tenantId}/customers`);
     }
   }, [tenantId, pathname, router]);
 
+  // ✅ Function to handle menu click and close sidebar
   const handleNavigation = (path: string) => {
     router.push(path);
-    setIsSidebarOpen(false); // Close sidebar after clicking a menu item
+    setIsSidebarOpen(false); // Close sidebar after clicking
   };
 
-  // ✅ Close sidebar when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        isSidebarOpen &&
-        sidebarRef.current &&
-        !sidebarRef.current.contains(event.target as Node)
-      ) {
-        setIsSidebarOpen(false); // Close sidebar if clicking outside
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [isSidebarOpen]);
-
   return (
-    <div className="flex min-h-screen relative">
-      {/* Sidebar */}
+    <div className="relative flex min-h-screen">
+      {/* ✅ Overlay (closes sidebar when clicked) */}
+      {isSidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-10 md:hidden"
+          onClick={() => setIsSidebarOpen(false)} // Close sidebar when clicking outside
+        />
+      )}
+
+      {/* ✅ Sidebar */}
       <div
-        ref={sidebarRef}
-        className={`fixed inset-y-0 left-0 w-64 bg-gray-900 text-white p-5 transition-transform duration-300 ${
+        className={`fixed inset-y-0 left-0 w-64 bg-gray-900 text-white p-5 transition-transform duration-300 z-20 ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-64"
         } md:translate-x-0 md:w-64 md:static`}
       >
@@ -101,7 +95,7 @@ const TenantLayout = ({ children }: { children: React.ReactNode }) => {
           </li>
         </ul>
 
-        {/* Logout Button */}
+        {/* ✅ Logout Button */}
         <div className="mt-6">
           <button
             onClick={handleLogout}
@@ -112,23 +106,18 @@ const TenantLayout = ({ children }: { children: React.ReactNode }) => {
         </div>
       </div>
 
-      {/* Overlay (to close sidebar when clicking outside) */}
-      {isSidebarOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 md:hidden"
-          onClick={() => setIsSidebarOpen(false)}
-        ></div>
-      )}
-
-      {/* Hamburger Button */}
+      {/* ✅ Hamburger Button */}
       <button
-        className="absolute top-4 left-4 text-white md:hidden bg-gray-900 p-2 rounded"
-        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+        className="absolute top-4 left-4 text-white md:hidden bg-gray-900 p-2 rounded z-30"
+        onClick={(e) => {
+          e.stopPropagation(); // Prevents click from bubbling to overlay
+          setIsSidebarOpen(!isSidebarOpen);
+        }}
       >
         <FiMenu size={24} />
       </button>
 
-      {/* Main Content */}
+      {/* ✅ Main Content */}
       <div className="flex-1 p-6 ml-0 md:ml-64">{children}</div>
     </div>
   );
