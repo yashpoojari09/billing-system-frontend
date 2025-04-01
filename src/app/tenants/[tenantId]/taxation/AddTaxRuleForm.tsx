@@ -38,7 +38,13 @@ export default function AddTaxRuleForm({ onClose }: { onClose: () => void }) {
             <label className="block text-sm font-medium text-[#001e38]">Tax Rate</label>
             <input
             type="number"
-              {...register("taxRate")}
+            step="any" // This allows for decimal number
+              {...register("taxRate",{
+                required: "Tax rate is required",
+                valueAsNumber: true, // Ensures the value is stored as a number
+                validate: (value) => !isNaN(value) && parseFloat(value.toString()) === value || "Tax rate must be a valid number",
+              })}
+              
               className="w-full border p-3 rounded text-[#001e38]"
             />
             {errors.taxRate && <p className="text-red-500 text-sm">{errors.taxRate.message}</p>}
