@@ -18,12 +18,7 @@ export default function AddTaxRuleForm({ onClose }: { onClose: () => void }) {
     resolver: zodResolver(taxRuleSchema),
   });
   const onSubmit = async (data: TaxRuleFormValues) => {
-    const parsedTaxRate = parseFloat(data.taxRate?.toString() || "");
     try {
-      if (isNaN(parsedTaxRate)) {
-        alert("Please enter a valid tax rate.");
-        return;
-      }
       await createTaxRule(data);
       reset();
       onClose();
