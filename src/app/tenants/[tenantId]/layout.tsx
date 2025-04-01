@@ -1,29 +1,28 @@
 "use client";
 
 import { useRouter, usePathname } from "next/navigation";
-import { useEffect, useState, useCallback } from "react";
-import { FiMenu } from "react-icons/fi"; // Import Hamburger icon
+import { useEffect, useState, useCallback, useRef } from "react";
+import { FiMenu } from "react-icons/fi";
 
 const TenantLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const pathname = usePathname();
   const [tenantId, setTenantId] = useState<string | null>(null);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Sidebar state
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const sidebarRef = useRef<HTMLDivElement>(null); // Sidebar reference
 
-  // ✅ Memoize handleLogout function to avoid unnecessary re-renders
   const handleLogout = useCallback(() => {
     localStorage.removeItem("tenantId");
     localStorage.removeItem("accessToken");
     router.push("/auth/login");
   }, [router]);
 
-  // ✅ Fetch `tenantId` on mount
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
     const storedTenantId = localStorage.getItem("tenantId");
 
     if (!token) {
-      handleLogout(); // ⬅️ Force logout if token is missing
+      handleLogout();
       return;
     }
 
@@ -32,23 +31,38 @@ const TenantLayout = ({ children }: { children: React.ReactNode }) => {
     }
   }, [handleLogout]);
 
-  // ✅ Redirect to `/customers` only after `tenantId` is available
   useEffect(() => {
     if (tenantId && pathname === `/tenants/${tenantId}`) {
       router.push(`/tenants/${tenantId}/customers`);
     }
   }, [tenantId, pathname, router]);
 
-  // ✅ Function to handle menu click and close sidebar
   const handleNavigation = (path: string) => {
     router.push(path);
-    setIsSidebarOpen(false); // Close sidebar after clicking
+    setIsSidebarOpen(false); // Close sidebar after clicking a menu item
   };
 
+  // ✅ Close sidebar when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        isSidebarOpen &&
+        sidebarRef.current &&
+        !sidebarRef.current.contains(event.target as Node)
+      ) {
+        setIsSidebarOpen(false); // Close sidebar if clicking outside
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isSidebarOpen]);
+
   return (
-    <div className="flex min-h-screen">
-      {/* Mobile-Friendly Sidebar */}
+    <div className="flex min-h-screen relative">
+      {/* Sidebar */}
       <div
+        ref={sidebarRef}
         className={`fixed inset-y-0 left-0 w-64 bg-gray-900 text-white p-5 transition-transform duration-300 ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-64"
         } md:translate-x-0 md:w-64 md:static`}
@@ -98,7 +112,15 @@ const TenantLayout = ({ children }: { children: React.ReactNode }) => {
         </div>
       </div>
 
-      {/* Hamburger Button for Mobile */}
+      {/* Overlay (to close sidebar when clicking outside) */}
+      {isSidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 md:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        ></div>
+      )}
+
+      {/* Hamburger Button */}
       <button
         className="absolute top-4 left-4 text-white md:hidden bg-gray-900 p-2 rounded"
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
