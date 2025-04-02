@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { getInventory, deleteInventoryItem } from "@/utils/api";
+import { useState } from "react";
+import { deleteInventoryItem } from "@/utils/api";
 import EditInventory from "./EditInventoryForm";
 import { ButtonDash, ButtonEd } from "@/components/ui/Button";
 
@@ -12,30 +12,27 @@ type InventoryItem = {
   price: number;
 };
 
-export default function InventoryTable() {
-  const [inventory, setInventory] = useState<InventoryItem[]>([]);
+export default function InventoryTable({ inventory, fetchInventory }: { inventory: InventoryItem[]; fetchInventory: () => void }) {
+  // const [setInventory] = useState<InventoryItem[]>([]);
   const [editInventoryItem , setEditInventoryItem] = useState<InventoryItem | null>(null);
-
-
-
   const [confirmDelete, setConfirmDelete] = useState<{ isOpen: boolean; id: string | null }>({
     isOpen: false,
     id: null,
   });
 
-  // Fetch inventory data
-  useEffect(() => {
-    fetchInventory();
-  }, []);
+  // // Fetch inventory data
+  // useEffect(() => {
+  //   fetchInventory();
+  // }, []);
 
-  const fetchInventory = async () => {
-    try {
-      const data = await getInventory();
-      setInventory(data);
-    } catch (error) {
-      console.error("Error fetching inventory:", error);
-    }
-  };
+  // const fetchInventory = async () => {
+  //   try {
+  //     const data = await getInventory();
+  //     setInventory(data);
+  //   } catch (error) {
+  //     console.error("Error fetching inventory:", error);
+  //   }
+  // };
 
  
 
@@ -45,7 +42,8 @@ export default function InventoryTable() {
 
     try {
       await deleteInventoryItem(confirmDelete.id);
-      setInventory((prev) => prev.filter((item) => item.id !== confirmDelete.id));
+      fetchInventory();
+      // setInventory((prev) => prev.filter((item) => item.id !== confirmDelete.id));
       setConfirmDelete({ isOpen: false, id: null });
     } catch (error) {
       console.error("Error deleting inventory:", error);
@@ -102,7 +100,7 @@ export default function InventoryTable() {
       </div>
 
       {/* Edit Confirmation Modal */}
-      {editInventoryItem && <EditInventory inventoryItem={editInventoryItem} onClose={() => setEditInventoryItem(null)} />}
+      {editInventoryItem && <EditInventory inventoryItem={editInventoryItem} onClose={() => setEditInventoryItem(null)}  fetchInventory={fetchInventory}/>}
 
       {/* Delete Confirmation Modal */}
       {confirmDelete.isOpen && (

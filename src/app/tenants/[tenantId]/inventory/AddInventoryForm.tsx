@@ -9,7 +9,7 @@ import { ButtonDash } from "@/components/ui/Button";
 
 type InventoryFormValues = z.infer<typeof inventorySchema>;
 
-export default function AddInventory({ onClose }: { onClose: () => void }) {
+export default function AddInventory({ onClose, fetchInventory }: { onClose: () => void; fetchInventory: () => void }) {
   const {
     register,
     handleSubmit,
@@ -23,6 +23,7 @@ export default function AddInventory({ onClose }: { onClose: () => void }) {
   const onSubmit = async (data: InventoryFormValues) => {
     try {
       await addInventoryItem(data);
+      fetchInventory(); // ✅ Refresh inventory after adding
       reset();
       onClose(); // Refresh inventory list
     } catch (error) {

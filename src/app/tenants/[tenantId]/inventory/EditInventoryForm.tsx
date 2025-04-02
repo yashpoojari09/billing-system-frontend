@@ -7,13 +7,16 @@ import { z } from "zod";
 import { ButtonDash } from "@/components/ui/Button";
 
 
-export default function EditInventoryForm({
-  inventoryItem,
-  onClose,
-}: {
-  inventoryItem: { id: string; name: string; stock: number; price: number };
-  onClose: () => void;
-}) {
+
+type InventoryItem = {
+  id: string;
+  name: string;
+  stock: number;
+  price: number;
+};
+
+export default function EditInventoryForm(
+  { inventoryItem, onClose, fetchInventory }: { inventoryItem: InventoryItem; onClose: () => void; fetchInventory: () => void }) {
   const [name, setName] = useState<string>(inventoryItem.name);
   const [stock, setStock] = useState<number>(inventoryItem.stock);
   const [price, setPrice] = useState<number>(inventoryItem.price);
@@ -29,7 +32,7 @@ export default function EditInventoryForm({
 
       setLoading(true);
       await updateInventoryItem(inventoryItem.id, { name, stock, price });
-
+      fetchInventory(); // ✅ Refresh inventory after editing
       setLoading(false);
       onClose(); // Close the modal after successful update
     } catch (err) {

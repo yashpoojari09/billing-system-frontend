@@ -5,23 +5,33 @@ import InventoryTable from "./InventoryTable";
 import AddInventory from "./AddInventoryForm";
 import { Button } from "@/components/ui/Button";
 import { useRouter } from "next/navigation";
+import { getInventory } from "@/utils/api";
+
 
 export default function InventoryPage() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [inventory, setInventory] = useState([]); // ✅ Store inventory data here
 
   const router = useRouter();
 
-  // ✅ Check for accessToken on page load
-  useEffect(() => {
-    const token = localStorage.getItem("accessToken");
+ // ✅ Fetch inventory data
+ const fetchInventory = async () => {
+  try {
+    const data = await getInventory();
+    setInventory(data);
+  } catch (error) {
+    console.error("Error fetching inventory:", error);
+  }
+};
 
-    if (!token) {
-      // ❌ If no token, redirect to login
-      router.push("/auth/login");
-
-    }
-  }, [router]);
-
+// ✅ Check for accessToken on page load
+useEffect(() => {
+  const token = localStorage.getItem("accessToken");
+  if (!token) {
+    router.push("/auth/login");
+  }
+  fetchInventory(); // ✅ Fetch inventory on mount
+}, [router]);
 
   return (
     <div className="max-w-5xl mx-auto py-10 px-4">
@@ -36,10 +46,10 @@ export default function InventoryPage() {
       </div>
 
       {/* Inventory Table */}
-      <InventoryTable />
+      <InventoryTable inventory={inventory} fetchInventory={fetchInventory}/>
 
       {/* Add Inventory Modal */}
-      {isAddModalOpen && <AddInventory onClose={() => setIsAddModalOpen(false)} />}
+      {isAddModalOpen && <AddInventory onClose={() => setIsAddModalOpen(false)}  fetchInventory={fetchInventory}/>}
     </div>
   );
 }     
