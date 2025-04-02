@@ -1,27 +1,19 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { getTaxRules, deleteTaxRule } from "@/utils/api";
+import { useState } from "react";
+import { deleteTaxRule } from "@/utils/api";
 import EditTaxRuleForm from "./EditTaxRuleForm";
 import { TaxRuleProps } from "@/types";
 import { ButtonEd } from "@/components/ui/Button";
 
-export default function TaxationTable() {
-  const [taxRules, setTaxRules] = useState<TaxRuleProps[]>([]);
+export default function TaxationTable({fetchTaxRules, taxRules}: { taxRules: TaxRuleProps[]; fetchTaxRules: () => void }) {
   const [editTaxRule, setEditTaxRule] = useState<TaxRuleProps | null>(null);
   const [deleteTaxId, setDeleteTaxId] = useState<{ isOpen: boolean; id: string | null }>({
     isOpen: false,
     id: null,
   });
 
-  useEffect(() => {
-    fetchTaxRules();
-  }, []);
 
-  const fetchTaxRules = async () => {
-    const data = await getTaxRules();
-    setTaxRules(data);
-  };
 
   // Handle delete confirmation
   const handleDelete = async () => {
@@ -29,7 +21,7 @@ export default function TaxationTable() {
 
     try {
       await deleteTaxRule(deleteTaxId.id);
-      setTaxRules((prev) => prev.filter((item) => item.id !== deleteTaxId.id));
+      fetchTaxRules()
       setDeleteTaxId({ isOpen: false, id: null });
     } catch (error) {
       console.error("Error deleting inventory:", error);
@@ -73,7 +65,7 @@ export default function TaxationTable() {
         </tbody>
       </table>
 
-      {editTaxRule && <EditTaxRuleForm taxRule={editTaxRule} onClose={() => setEditTaxRule(null)} />}
+      {editTaxRule && <EditTaxRuleForm taxRules={editTaxRule} onClose={() => setEditTaxRule(null)}  fetchTaxRules={fetchTaxRules}/>}
       {/* Delete Confirmation Modal */}
       {deleteTaxId.isOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">

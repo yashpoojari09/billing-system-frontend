@@ -8,7 +8,7 @@ import { ButtonDash } from "@/components/ui/Button";
 
 type TaxRuleFormValues = z.infer<typeof taxRuleSchema>;
 
-export default function AddTaxRuleForm({ onClose }: { onClose: () => void }) {
+export default function AddTaxRuleForm({ onClose, fetchTaxRules }: { onClose: () => void, fetchTaxRules:() => void }) {
   const {
     register,
     handleSubmit,
@@ -21,6 +21,7 @@ export default function AddTaxRuleForm({ onClose }: { onClose: () => void }) {
   const onSubmit = async (data: TaxRuleFormValues) => {
     try {
       await createTaxRule(data);
+      fetchTaxRules();
       reset();
       onClose();
     } catch (error) {

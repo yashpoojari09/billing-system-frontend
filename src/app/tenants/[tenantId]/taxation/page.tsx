@@ -5,21 +5,28 @@ import AddTaxRuleForm from "./AddTaxRuleForm";
 import { Button } from "@/components/ui/Button"
 import { useRouter } from "next/navigation";
 import TaxTable from "./TaxTable";
+import { getTaxRules } from "@/utils/api";
+import { TaxRuleProps } from "@/types";
+
 
 export default function TaxTablePage() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [taxRules, setTaxRules] = useState<TaxRuleProps[]>([]);
   const router = useRouter();
 
   // ✅ Check for accessToken on page load
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
-
     if (!token) {
-      // ❌ If no token, redirect to login
-      router.push("/");
-
+      router.push("/auth/login");
     }
+    fetchTaxRules();
   }, [router]);
+
+  const fetchTaxRules = async () => {
+    const data = await getTaxRules();
+    setTaxRules(data);
+  };
 
   return (
     <div className="max-w-5xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
@@ -35,10 +42,10 @@ export default function TaxTablePage() {
         </Button>
       </div>
       {/* TaxTableTable Table */}
-      <TaxTable />
+      <TaxTable taxRules={taxRules} fetchTaxRules={fetchTaxRules}/>
 
       {/* Add TaxTableTable Modal */}
-      {isAddModalOpen && <AddTaxRuleForm onClose={() => setIsAddModalOpen(false)} />}
+      {isAddModalOpen && <AddTaxRuleForm onClose={() => setIsAddModalOpen(false)} fetchTaxRules={fetchTaxRules}/>}
     </div>
   );
 }

@@ -5,16 +5,18 @@ import { updateTaxRule } from "@/utils/api";
 import { taxRuleSchema } from "@/utils/validation";
 import { z } from "zod";
 import { ButtonDash } from "@/components/ui/Button";
+import { TaxRuleProps } from "@/types";
 
 export default function EditTaxRuleForm({
-  taxRule,
-  onClose,
+  taxRules,
+  onClose, fetchTaxRules
 }: {
-  taxRule: { id: string; taxRate: number; region: string };
+  taxRules: TaxRuleProps;
   onClose: () => void;
+  fetchTaxRules: () => void;
 }) {
-  const [taxRate, setTaxRate] = useState<number>(taxRule.taxRate);
-  const [region, setRegion] = useState<string>(taxRule.region);
+  const [taxRate, setTaxRate] = useState<number>(taxRules.taxRate);
+  const [region, setRegion] = useState<string>(taxRules.region);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -26,8 +28,8 @@ export default function EditTaxRuleForm({
       taxRuleSchema.parse({ taxRate, region });
 
       setLoading(true);
-      await updateTaxRule(taxRule.id, { taxRate, region });
-
+      await updateTaxRule(taxRules.id, { taxRate, region });
+      fetchTaxRules();
       setLoading(false);
       onClose(); // Close the modal after successful update
     } catch (err) {
