@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, usePathname } from "next/navigation";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { FiMenu } from "react-icons/fi";
 
 const TenantLayout = ({ children }: { children: React.ReactNode }) => {
@@ -9,6 +9,7 @@ const TenantLayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   const [tenantId, setTenantId] = useState<string | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const sidebarRef = useRef<HTMLDivElement>(null);
 
   const handleLogout = useCallback(() => {
     localStorage.removeItem("tenantId");
@@ -41,28 +42,35 @@ const TenantLayout = ({ children }: { children: React.ReactNode }) => {
     setIsSidebarOpen(false);
   };
 
-  return (
-    <div className="relative flex min-h-screen bg-gray-100">
-      {/* Overlay */}
-      {isSidebarOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-30 z-20 md:hidden"
-          onClick={() => setIsSidebarOpen(false)}
-        />
-      )}
+  // ✅ Close sidebar when clicking outside (for mobile & desktop)
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (isSidebarOpen && sidebarRef.current && !sidebarRef.current.contains(event.target as Node)) {
+        setIsSidebarOpen(false);
+      }
+    }
 
-      {/* Sidebar */}
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isSidebarOpen]);
+
+  return (
+    <div className="relative flex min-h-screen">
+      {/* ✅ Sidebar (Mobile & Desktop) */}
       <div
-        className={`fixed inset-y-0 left-0 w-64 bg-gray-900 text-white p-5 transition-transform duration-300 z-30 
-          ${isSidebarOpen ? "translate-x-0" : "-translate-x-64"} md:translate-x-0 md:w-64 md:static`}
+        ref={sidebarRef}
+        className={`fixed inset-y-0 left-0 w-64 bg-gray-900 text-white p-5 transition-transform duration-300 z-30 md:relative ${
+          isSidebarOpen ? "translate-x-0" : "-translate-x-64 md:translate-x-0"
+        }`}
       >
         <h2 className="text-lg font-bold mb-6">Tenant Dashboard</h2>
         <ul className="space-y-3">
           <li>
             <button
               onClick={() => handleNavigation(`/tenants/${tenantId}/customers`)}
-              className={`w-full text-left px-4 py-2 block rounded cursor-pointer 
-                ${pathname?.includes("customers") ? "bg-blue-600" : "hover:bg-gray-700"}`}
+              className={`w-full text-left px-4 py-2 block rounded cursor-pointer ${
+                pathname?.includes("customers") ? "bg-blue-600" : "hover:bg-gray-700"
+              }`}
             >
               Customers
             </button>
@@ -70,8 +78,9 @@ const TenantLayout = ({ children }: { children: React.ReactNode }) => {
           <li>
             <button
               onClick={() => handleNavigation(`/tenants/${tenantId}/inventory`)}
-              className={`w-full text-left px-4 py-2 block rounded cursor-pointer 
-                ${pathname?.includes("inventory") ? "bg-green-600" : "hover:bg-gray-700"}`}
+              className={`w-full text-left px-4 py-2 block rounded cursor-pointer ${
+                pathname?.includes("inventory") ? "bg-green-600" : "hover:bg-gray-700"
+              }`}
             >
               Inventory
             </button>
@@ -79,13 +88,15 @@ const TenantLayout = ({ children }: { children: React.ReactNode }) => {
           <li>
             <button
               onClick={() => handleNavigation(`/tenants/${tenantId}/taxation`)}
-              className={`w-full text-left px-4 py-2 block rounded cursor-pointer 
-                ${pathname?.includes("taxation") ? "bg-yellow-600" : "hover:bg-gray-700"}`}
+              className={`w-full text-left px-4 py-2 block rounded cursor-pointer ${
+                pathname?.includes("taxation") ? "bg-yellow-600" : "hover:bg-gray-700"
+              }`}
             >
               Taxation
             </button>
           </li>
         </ul>
+
         <div className="mt-6">
           <button
             onClick={handleLogout}
@@ -96,28 +107,19 @@ const TenantLayout = ({ children }: { children: React.ReactNode }) => {
         </div>
       </div>
 
-      {/* Main Content with Top Navigation */}
-      <div className="flex-1 flex flex-col">
-        {/* Top Navbar */}
-        <div className="bg-black shadow-md p-4 flex items-center justify-between md:px-6">
-          <button
-            className="text-gray-900 md:hidden"
-            onClick={() => setIsSidebarOpen(true)}
-          >
-            <FiMenu size={24} />
-          </button>
-          <h2 className="text-lg font-semibold">Tenant Dashboard</h2>
-          <button
-            onClick={handleLogout}
-            className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
-          >
-            Logout
-          </button>
-        </div>
-
-        {/* Page Content */}
-        <div className="p-6">{children}</div>
+      {/* ✅ Sticky Header (Navigation & Logout) */}
+      <div className="fixed w-full bg-gray-900 text-white p-4 flex justify-between items-center z-40 md:hidden">
+        <button onClick={() => setIsSidebarOpen(true)} className="text-white">
+          <FiMenu size={24} />
+        </button>
+        <h2 className="text-lg font-bold">Tenant Dashboard</h2>
+        <button onClick={handleLogout} className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded">
+          Logout
+        </button>
       </div>
+
+      {/* ✅ Main Content (With Padding for Header) */}
+      <div className="flex-1 p-6 mt-16">{children}</div>
     </div>
   );
 };
