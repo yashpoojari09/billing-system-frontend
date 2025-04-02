@@ -14,7 +14,6 @@ type InventoryItem = {
 
 export default function InventoryTable() {
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
-  const [selectedItem] = useState<InventoryItem | null>(null);
   const [editInventoryItem , setEditInventoryItem] = useState<InventoryItem | null>(null);
 
 
