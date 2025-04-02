@@ -2,66 +2,61 @@
 
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState, useCallback } from "react";
-import { FiMenu } from "react-icons/fi"; // Import Hamburger icon
+import { FiMenu } from "react-icons/fi";
+import { IoMdClose } from "react-icons/io";
 
 const TenantLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const pathname = usePathname();
   const [tenantId, setTenantId] = useState<string | null>(null);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Sidebar state
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  // ✅ Memoize handleLogout function to avoid unnecessary re-renders
   const handleLogout = useCallback(() => {
     localStorage.removeItem("tenantId");
     localStorage.removeItem("accessToken");
     router.push("/auth/login");
   }, [router]);
 
-  // ✅ Fetch `tenantId` on mount
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
     const storedTenantId = localStorage.getItem("tenantId");
-
     if (!token) {
-      handleLogout(); // ⬅️ Force logout if token is missing
+      handleLogout();
       return;
     }
-
     if (storedTenantId) {
       setTenantId(storedTenantId);
     }
   }, [handleLogout]);
 
-  // ✅ Redirect to `/customers` only after `tenantId` is available
   useEffect(() => {
     if (tenantId && pathname === `/tenants/${tenantId}`) {
       router.push(`/tenants/${tenantId}/customers`);
     }
   }, [tenantId, pathname, router]);
 
-  // ✅ Function to handle menu click and close sidebar
   const handleNavigation = (path: string) => {
     router.push(path);
-    setIsSidebarOpen(false); // Close sidebar after clicking
+    setIsSidebarOpen(false);
   };
 
   return (
-    <div className="relative flex min-h-screen">
-      {/* ✅ Overlay (semi-transparent, closes sidebar when clicked) */}
-      {isSidebarOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-30 z-20 md:hidden"
-          onClick={() => setIsSidebarOpen(false)} // Close sidebar when clicking outside
-        />
-      )}
-
-      {/* ✅ Sidebar */}
+    <div className="flex min-h-screen bg-gray-100">
+      {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 w-64 bg-gray-900 text-white p-5 transition-transform duration-300 z-30 ${
-          isSidebarOpen ? "translate-x-0" : "-translate-x-64"
-        } md:translate-x-0 md:w-64 md:static`}
+        className={`fixed inset-y-0 left-0 w-72 bg-gray-900 text-white p-5 z-30 transform transition-transform duration-300 ease-in-out 
+        ${isSidebarOpen ? "translate-x-0" : "-translate-x-72 md:translate-x-0"}`}
       >
-        <h2 className="text-lg font-bold mb-6">Tenant Dashboard</h2>
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-lg font-bold">Tenant Dashboard</h2>
+          <button
+            className="text-white md:hidden"
+            onClick={() => setIsSidebarOpen(false)}
+          >
+            <IoMdClose size={24} />
+          </button>
+        </div>
+
         <ul className="space-y-3">
           <li>
             <button
@@ -95,7 +90,7 @@ const TenantLayout = ({ children }: { children: React.ReactNode }) => {
           </li>
         </ul>
 
-        {/* ✅ Logout Button */}
+        {/* Logout Button */}
         <div className="mt-6">
           <button
             onClick={handleLogout}
@@ -106,21 +101,27 @@ const TenantLayout = ({ children }: { children: React.ReactNode }) => {
         </div>
       </div>
 
-      {/* ✅ Hamburger Button (Hidden when Sidebar is Open) */}
-      {!isSidebarOpen && (
-        <button
-          className="absolute top-4 left-4 text-white md:hidden bg-gray-900 p-2 rounded z-40"
-          onClick={(e) => {
-            e.stopPropagation(); // Prevents click from bubbling to overlay
-            setIsSidebarOpen(true);
-          }}
-        >
-          <FiMenu size={24} />
-        </button>
-      )}
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col min-h-screen">
+        {/* Top Navbar */}
+        <div className="bg-white shadow-md p-4 flex justify-between items-center md:pl-72">
+          <button
+            className="text-gray-700 md:hidden"
+            onClick={() => setIsSidebarOpen(true)}
+          >
+            <FiMenu size={24} />
+          </button>
+          <h2 className="text-xl font-semibold">Tenant Dashboard</h2>
+          <button
+            onClick={handleLogout}
+            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+          >
+            Logout
+          </button>
+        </div>
 
-      {/* ✅ Main Content */}
-      <div className="flex-1 p-6 ml-0 md:ml-64">{children}</div>
+        <div className="flex-1 p-6">{children}</div>
+      </div>
     </div>
   );
 };
