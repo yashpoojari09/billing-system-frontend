@@ -99,7 +99,7 @@ const TenantLayout = ({ children }: { children: React.ReactNode }) => {
       {/* Main Content with Top Navigation */}
       <div className="flex-1 flex flex-col">
         {/* Top Navbar */}
-        <div className="bg-white shadow-md p-4 flex items-center justify-between md:px-6">
+        <div className="bg-black shadow-md p-4 flex items-center justify-between md:px-6">
           <button
             className="text-gray-900 md:hidden"
             onClick={() => setIsSidebarOpen(true)}
