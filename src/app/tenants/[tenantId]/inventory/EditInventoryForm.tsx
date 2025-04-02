@@ -6,7 +6,6 @@ import { inventorySchema } from "@/utils/validation";
 import { z } from "zod";
 import { ButtonDash } from "@/components/ui/Button";
 
-type InventoryFormValues = z.infer<typeof inventorySchema>;
 
 export default function EditInventoryForm({
   inventoryItem,
