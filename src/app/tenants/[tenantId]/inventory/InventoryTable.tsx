@@ -14,11 +14,9 @@ type InventoryItem = {
 
 export default function InventoryTable() {
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
-  const [selectedItem, setSelectedItem] = useState<InventoryItem | null>(null);
-  const [confirmEdit, setConfirmEdit] = useState<{ isOpen: boolean; id: string | null }>({
-    isOpen: false,
-    id: null,
-  });
+  const [selectedItem] = useState<InventoryItem | null>(null);
+  const [editInventoryItem , setEditInventoryItem] = useState<InventoryItem | null>(null);
+
 
 
   const [confirmDelete, setConfirmDelete] = useState<{ isOpen: boolean; id: string | null }>({
@@ -40,23 +38,7 @@ export default function InventoryTable() {
     }
   };
 
-  // Function to handle edit button click
-  const handleEdit= async() => {
-    if (!confirmEdit.id) return;
-    try {
-      const itemToEdit = inventory.find((item) => item.id === confirmEdit.id);
-      if (itemToEdit) {
-        await EditInventory({
-          inventory: itemToEdit,
-          onUpdate: fetchInventory,
-        });
-      }
-      setInventory((prev) => prev.filter((item) => item.id !== confirmEdit.id));
-      setConfirmEdit({ isOpen: false, id: null });
-    } catch (error) {
-      console.error("Error deleting inventory:", error);
-    }
-  };
+ 
 
   // Handle delete confirmation
   const handleDelete = async () => {
@@ -95,7 +77,10 @@ export default function InventoryTable() {
                   <td className="border p-2 text-[#001e38]">${item.price}</td>
                   <td className="border p-2 space-x-2 text-[#001e38]">
                     {/* Edit Button */}
-                    <ButtonEd variant="edit" onClick={() => setConfirmEdit({isOpen: true, id: item.id})} className="bg-yellow-500 text-white px-3 py-1 rounded-md">
+                    <ButtonEd variant="edit"
+                  onClick={() => setEditInventoryItem(item)}
+                  className="bg-blue-500 text-white px-3 py-1 rounded mb-2 sm:mb-0 sm:mr-2 w-full sm:w-auto"
+               >
                       Edit
                     </ButtonEd>
 
@@ -118,36 +103,7 @@ export default function InventoryTable() {
       </div>
 
       {/* Edit Confirmation Modal */}
-{confirmEdit.isOpen && (
-  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 px-4">
-    <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-      <h2 className="text-lg font-bold mb-4 text-[#000000]">Are you sure?</h2>
-      <p className="mb-4 text-[#000000]">Do you really want to edit this inventory item?</p>
-      <div className="flex flex-col sm:flex-row justify-end gap-3">
-        <ButtonDash 
-          title="Cancel" 
-          variant="blue" 
-          onClick={() => setConfirmDelete({ isOpen: false, id: null })} 
-          className="bg-gray-400 text-white px-4 py-2 rounded-md w-full sm:w-auto"
-        >
-          Cancel
-        </ButtonDash>
-        <ButtonEd 
-          title="Yes, Edit" 
-          variant="edit" 
-          onClick={handleEdit
-          }
-          className="bg-blue-600 text-white px-4 py-2 rounded-md w-full sm:w-auto"
-        >
-          Yes, Edit
-        </ButtonEd>
-      </div>
-    </div>
-  </div>
-)}
-
-{/* Edit Inventory Form (Shows only after confirmation) */}
-{selectedItem && <EditInventory inventory={selectedItem} onUpdate={fetchInventory} />}
+      {editInventoryItem && <EditInventory inventoryItem={editInventoryItem} onClose={() => setEditInventoryItem(null)} />}
 
       {/* Delete Confirmation Modal */}
       {confirmDelete.isOpen && (

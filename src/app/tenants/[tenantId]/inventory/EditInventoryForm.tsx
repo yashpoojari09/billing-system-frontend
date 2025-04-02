@@ -1,136 +1,118 @@
 "use client";
 
 import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { inventorySchema } from "@/utils/validation";
 import { updateInventoryItem } from "@/utils/api";
+import { inventorySchema } from "@/utils/validation";
 import { z } from "zod";
 import { ButtonDash } from "@/components/ui/Button";
 
 type InventoryFormValues = z.infer<typeof inventorySchema>;
 
-export default function EditInventory({
-  inventory,
-  onUpdate,
+export default function EditInventoryForm({
+  inventoryItem,
+  onClose,
 }: {
-  inventory: { id: string; name: string; stock: number; price: number };
-  onUpdate: () => void;
+  inventoryItem: { id: string; name: string; stock: number; price: number };
+  onClose: () => void;
 }) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [name, setName] = useState<string>(inventoryItem.name);
+  const [stock, setStock] = useState<number>(inventoryItem.stock);
+  const [price, setPrice] = useState<number>(inventoryItem.price);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors, isSubmitting },
-  } = useForm<InventoryFormValues>({
-    resolver: zodResolver(inventorySchema),
-    defaultValues: {
-      name: inventory.name,
-      stock: inventory.stock,
-      price: inventory.price,
-    },
-  });
+  const handleUpdate = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-  // Handle form submission
-  const onSubmit = async (data: InventoryFormValues) => {
     try {
-      await updateInventoryItem(inventory.id, data);
-      reset();
-      setIsOpen(false);
-      onUpdate(); // Refresh inventory list
-    } catch (error) {
-      console.error("Error updating inventory:", error);
+      // Validate input using Zod
+      inventorySchema.parse({ name, stock, price });
+
+      setLoading(true);
+      await updateInventoryItem(inventoryItem.id, { name, stock, price });
+
+      setLoading(false);
+      onClose(); // Close the modal after successful update
+    } catch (err) {
+      setLoading(false);
+      if (err instanceof z.ZodError) {
+        setError(err.errors[0].message);
+      } else {
+        setError("Failed to update inventory item. Please try again.");
+      }
     }
   };
 
   return (
-    <>
-      {/* Button to open modal */}
-      <button
-        onClick={() => setIsOpen(true)}
-        className="bg-yellow-500 text-white px-3 py-1 rounded-md"
-      >
-        Edit
-      </button>
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 px-4">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+        <h2 className="text-lg font-bold mb-4 text-[#001e38] text-center">
+          Edit Inventory Item
+        </h2>
 
-      {/* Modal */}
-      {isOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 px-4">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-            <h2 className="text-lg font-bold mb-4 text-[#001e38] text-center">
-              Edit Inventory Item
-            </h2>
+        {error && <p className="text-red-500 text-sm text-center">{error}</p>}
 
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-              {/* Name Field */}
-              <div>
-                <label className="block text-sm font-medium text-[#001e38]">
-                  Name
-                </label>
-                <input
-                  {...register("name")}
-                  className="w-full border p-3 rounded text-[#001e38]"
-                />
-                {errors.name && (
-                  <p className="text-red-500 text-sm">{errors.name.message}</p>
-                )}
-              </div>
-
-              {/* Stock Field */}
-              <div>
-                <label className="block text-sm font-medium text-[#001e38]">
-                  Stock
-                </label>
-                <input
-                  type="number"
-                  {...register("stock", { valueAsNumber: true })}
-                  className="w-full border p-3 rounded text-[#001e38]"
-                />
-                {errors.stock && (
-                  <p className="text-red-500 text-sm">{errors.stock.message}</p>
-                )}
-              </div>
-
-              {/* Price Field */}
-              <div>
-                <label className="block text-sm font-medium text-[#001e38]">
-                  Price
-                </label>
-                <input
-                  type="number"
-                  {...register("price", { valueAsNumber: true })}
-                  className="w-full border p-3 rounded text-[#001e38]"
-                />
-                {errors.price && (
-                  <p className="text-red-500 text-sm">{errors.price.message}</p>
-                )}
-              </div>
-
-              {/* Submit Button */}
-              <div className="flex flex-col sm:flex-row justify-end gap-2">
-                <ButtonDash
-                  title="Cancel"
-                  variant="blue"
-                  onClick={() => setIsOpen(false)}
-                  className="bg-gray-400 text-white px-4 py-2 rounded-md w-full sm:w-auto"
-                >
-                  Cancel
-                </ButtonDash>
-                <ButtonDash
-                  title="Update Item"
-                  variant="green"
-                  disabled={isSubmitting}
-                  className="bg-blue-600 text-white px-4 py-2 rounded-md w-full sm:w-auto"
-                >
-                  {isSubmitting ? "Updating..." : "Update Item"}
-                </ButtonDash>
-              </div>
-            </form>
+        <form onSubmit={handleUpdate} className="space-y-4">
+          {/* Name Field */}
+          <div>
+            <label className="block text-sm font-medium text-[#001e38]">
+              Name
+            </label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full border p-3 rounded text-[#001e38]"
+            />
           </div>
-        </div>
-      )}
-    </>
+
+          {/* Stock Field */}
+          <div>
+            <label className="block text-sm font-medium text-[#001e38]">
+              Stock
+            </label>
+            <input
+              type="number"
+              value={stock}
+              onChange={(e) => setStock(Number(e.target.value))}
+              className="w-full border p-3 rounded text-[#001e38]"
+            />
+          </div>
+
+          {/* Price Field */}
+          <div>
+            <label className="block text-sm font-medium text-[#001e38]">
+              Price
+            </label>
+            <input
+              type="number"
+              value={price}
+              onChange={(e) => setPrice(Number(e.target.value))}
+              className="w-full border p-3 rounded text-[#001e38]"
+            />
+          </div>
+
+          {/* Submit Buttons */}
+          <div className="flex justify-end gap-2 flex-wrap">
+            <ButtonDash
+              title="Cancel"
+              variant="blue"
+              onClick={onClose}
+              className="bg-gray-400 text-white px-4 py-2 rounded-md w-full sm:w-auto"
+            >
+              Cancel
+            </ButtonDash>
+            <ButtonDash
+              title="Update Item"
+              variant="green"
+              disabled={loading}
+              className="bg-blue-600 text-white px-4 py-2 rounded-md w-full sm:w-auto"
+            >
+              {loading ? "Updating..." : "Update Item"}
+            </ButtonDash>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 }
