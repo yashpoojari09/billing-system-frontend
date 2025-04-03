@@ -1,4 +1,5 @@
 import axios from "axios";
+import { InvoiceItem } from "@/types";
 export const API_URL="https://billing-system-lemon.vercel.app/api";
 
 // Get tokens from localStorage
@@ -334,7 +335,7 @@ export const deleteTaxRule = async (taxId: string) => {
 //Submit invoice
 
 // ✅ Submit invoice
-export const submitInvoice = async (tenantId: string, customerId: string, items: any[]) => {
+export const submitInvoice = async (tenantId: string, customerId: string, items: InvoiceItem[]) => {
   try {
     await axios.post(`${API_URL}/tenants/${tenantId}/invoice`, {
       customerId,
