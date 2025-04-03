@@ -5,11 +5,8 @@ import { getCustomers, getInventory, createInvoice } from "@/utils/api";
 import { CustomerInvoice, InvoiceItem, Product } from "@/types";
 import { Button } from "@/components/ui/Button";
 
-interface InvoiceFormProps {
-  tenantId: string;
-}
 
-const InvoiceForm = ({ tenantId }: InvoiceFormProps) => {
+const InvoiceForm = () => {
   const [customers, setCustomers] = useState<CustomerInvoice[]>([]);
   const [filteredCustomers, setFilteredCustomers] = useState<CustomerInvoice[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
@@ -62,7 +59,7 @@ const InvoiceForm = ({ tenantId }: InvoiceFormProps) => {
       return;
     }
 
-    const { id, name, email, phone } = selectedCustomer;
+    const { name, email, phone } = selectedCustomer;
 
     const invoiceData = {
       name,
@@ -84,7 +81,7 @@ const InvoiceForm = ({ tenantId }: InvoiceFormProps) => {
 
   return (
     <div className="p-6 max-w-2xl mx-auto bg-white rounded shadow">
-      <h1 className="text-xl font-bold mb-4">Generate Invoice</h1>
+      <h1 className="text-lg font-bold mb-4 text-[#001e38] text-center">Generate Invoice</h1>
 
       {/* 🔍 Search Customer by Email */}
       <input

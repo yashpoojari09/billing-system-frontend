@@ -84,7 +84,6 @@ export const forgotPassword = async (email: string) => {
 
 import { z } from "zod";
 import { resetPasswordSchema } from "./validation";
-import { ApiError } from "next/dist/server/api-utils";
 
 // Reste Password
 export const resetPassword = async (token:string, input: z.infer<typeof resetPasswordSchema>) => {
@@ -342,12 +341,14 @@ export const createInvoice = async (invoiceData: InvoiceRequest) => {
     if (!token) {
       return { success: false, error: "Unauthorized: No token provided" };
     }
+    const tenantId = localStorage.getItem("tenantId");
 
-    const response = await api.post(`${API_URL}/api/customers/invoice`, invoiceData, {
+    const response = await api.post(`${API_URL}/tenants/${tenantId}invoice`, invoiceData, {
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
+        ...getAuthHeaders(),
+
+        "Content-Type": "application/json"
+          },
     });
 
     if (response.status === 201) {
