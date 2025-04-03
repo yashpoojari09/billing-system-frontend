@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getCustomersByEmail, getInventory, createInvoice } from "@/utils/api";
+import { searchCustomerByEmail , getInventory, createInvoice } from "@/utils/api";
 import { InvoiceItem, Product, CustomerInvoice } from "@/types";
 import { Button } from "@/components/ui/Button";
 
@@ -25,7 +25,7 @@ const InvoiceForm = () => {
 
     if (email.length > 3) {
       setLoading(true);
-      const foundCustomer = await getCustomersByEmail(email);
+      const foundCustomer = await searchCustomerByEmail(email);
       setCustomer(foundCustomer);
       setLoading(false);
     }

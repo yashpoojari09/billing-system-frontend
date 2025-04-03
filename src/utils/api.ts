@@ -365,14 +365,15 @@ export const createInvoice = async (invoiceData: InvoiceRequest) => {
   }
 };
 
-export const getCustomersByEmail = async (email: string) => {
+const searchCustomerByEmail = async (email: string) => {
   try {
-    const tenantId = localStorage.getItem("tenantId");
-
-    const res = await fetch(`/${API_URL}/tenants/${tenantId}/customers/email?email=${email}`);
-    return await res.json();
+    const response = await fetch(`/api/customers/search?email=${email}`);
+    if (!response.ok) throw new Error("Customer not found");
+    
+    const customer = await response.json();
+    console.log("Customer Found:", customer);
+    return customer;
   } catch (error) {
-    console.error("Error fetching customer:", error);
+    console.error("Error searching customer:", error);
     return null;
   }
-};
