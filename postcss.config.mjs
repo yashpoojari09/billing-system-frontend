@@ -1,4 +1,11 @@
 const config = {
+  
+  plugins: ["@tailwindcss/postcss"],
+};
+
+export default config;
+
+module.exports = {
   theme: {
     extend: {
       boxShadow: {
@@ -6,9 +13,5 @@ const config = {
       },
     },
   },
-  plugins: ["@tailwindcss/postcss"],
+  plugins: [require("@tailwindcss/forms")],
 };
-
-export default config;
-
-
