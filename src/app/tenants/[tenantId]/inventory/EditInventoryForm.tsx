@@ -22,7 +22,6 @@ export default function EditInventoryForm(
   const [price, setPrice] = useState<number>(inventoryItem.price);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -47,7 +46,7 @@ export default function EditInventoryForm(
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 px-4">
-      <div className="bg-white p-6 rounded-lg shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a] w-full max-w-md">
+      <div className="bg-white p-6 rounded-lg  w-full max-w-md">
         <h2 className="text-lg font-bold mb-4 text-[#001e38] text-center">
           Edit Inventory Item
         </h2>
@@ -105,12 +104,11 @@ export default function EditInventoryForm(
               Cancel
             </ButtonDash>
             <ButtonDash
-              title="Update Item"
+              title={loading ? "Updating..." : "Update Item"}
               variant="green"
               disabled={loading}
               className="bg-blue-600 text-white px-4 py-2 rounded-md w-full sm:w-auto"
             >
-              {loading ? "Updating..." : "Update Item"}
             </ButtonDash>
           </div>
         </form>

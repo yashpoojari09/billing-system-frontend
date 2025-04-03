@@ -32,7 +32,7 @@ export default function TaxationTable({fetchTaxRules, taxRules, isLoading}: { ta
     <div className="bg-white p-4 shadow rounded-lg">
       <h2 className="text-xl font-bold mb-4 text-[#001e38]">Taxation Rules</h2>
       {isLoading ? ( // ✅ Show loading while fetching
-        <div className="text-center text-gray-600">Loading customers...</div>
+        <div className="text-center text-gray-600">Loading Taxation Rules...</div>
       ) : (
       <table className="w-full border-collapse border border-gray-300">
         <thead>

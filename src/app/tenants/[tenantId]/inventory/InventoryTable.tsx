@@ -4,7 +4,6 @@ import { useState } from "react";
 import { deleteInventoryItem } from "@/utils/api";
 import EditInventory from "./EditInventoryForm";
 import { ButtonDash, ButtonEd } from "@/components/ui/Button";
-import { boolean } from "zod";
 
 type InventoryItem = {
   id: string;
@@ -14,7 +13,7 @@ type InventoryItem = {
   
 };
 
-export default function InventoryTable({ inventory, fetchInventory, isLoading }: { inventory: InventoryItem[]; fetchInventory: () => void; isLoading:Boolean; }) {
+export default function InventoryTable({ inventory, fetchInventory, isLoading }: { inventory: InventoryItem[]; fetchInventory: () => void; isLoading: boolean; }) {
   // const [setInventory] = useState<InventoryItem[]>([]);
   const [editInventoryItem , setEditInventoryItem] = useState<InventoryItem | null>(null);
   const [confirmDelete, setConfirmDelete] = useState<{ isOpen: boolean; id: string | null }>({
@@ -44,6 +43,7 @@ export default function InventoryTable({ inventory, fetchInventory, isLoading }:
 
     try {
       await deleteInventoryItem(confirmDelete.id);
+
       fetchInventory();
       // setInventory((prev) => prev.filter((item) => item.id !== confirmDelete.id));
       setConfirmDelete({ isOpen: false, id: null });
@@ -58,8 +58,8 @@ export default function InventoryTable({ inventory, fetchInventory, isLoading }:
 
       {/* Table */}
       <div className="overflow-x-auto">
-      {isLoading ? ( // ✅ Show loading while fetching
-        <div className="text-center text-gray-600">Loading customers...</div>
+      { isLoading ? ( // ✅ Show loading while fetching
+        <div className="text-center text-gray-600">Loading Inventory...</div>
       ) : (
         <table className="w-full border-collapse border border-gray-300">
           <thead>

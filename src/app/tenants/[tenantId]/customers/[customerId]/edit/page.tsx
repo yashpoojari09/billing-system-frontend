@@ -95,12 +95,12 @@ export default function EditCustomerPage() {
               Cancel
             </ButtonDash>
             <ButtonDash
-              title="Save Changes"
+              title={loading ? "Updating..." : "Save Changes"}
               variant="green"
               className="w-full sm:w-auto px-4 py-2 bg-blue-500 text-white rounded cursor-pointer"
               disabled={loading}
             >
-              {loading ? "Updating..." : "Save Changes"}
+              
             </ButtonDash>
           </div>
         </form>

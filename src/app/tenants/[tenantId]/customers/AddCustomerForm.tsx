@@ -74,12 +74,12 @@ export default function AddCustomerForm({
               Cancel
             </ButtonDash>
             <ButtonDash
-              title="Add Customer"
+              title={isSubmitting ? "Adding..." : "Add Customer"}
               variant="green"
               disabled={isSubmitting}
               className="w-full sm:w-auto px-4 py-2 bg-green-600 text-white rounded-md"
             >
-              {isSubmitting ? "Adding..." : "Add Customer"}
+              
             </ButtonDash>
           </div>
         </form>

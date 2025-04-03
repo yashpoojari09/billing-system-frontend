@@ -81,12 +81,11 @@ export default function AddInventory({ onClose, fetchInventory }: { onClose: () 
                 Cancel
               </ButtonDash>
               <ButtonDash
-                title="Add Item"
-                variant="green"
+              title={isSubmitting ? "Adding..." : "Add Item"}
+              variant="green"
                 disabled={isSubmitting}
                 className="bg-green-600 text-white px-4 py-2 rounded-md w-full sm:w-auto"
               >
-                {isSubmitting ? "Adding..." : "Add Item"}
               </ButtonDash>
             </div>
           </form>
