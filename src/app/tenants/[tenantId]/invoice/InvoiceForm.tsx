@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getInventory, getCustomers, API_URL } from "@/utils/api";
-import axios from "axios";
+import { getCustomers, getInventory, submitInvoice } from "@/utils/api";
 import { CustomerInvoice, InvoiceItem, Product } from "@/types";
 
 interface InvoiceFormProps {
@@ -16,26 +15,12 @@ const InvoiceForm = ({ tenantId }: InvoiceFormProps) => {
   const [invoiceItems, setInvoiceItems] = useState<InvoiceItem[]>([{ productId: "", quantity: 1 }]);
 
   useEffect(() => {
-    fetchCustomers();
-    fetchProducts();
+    loadData();
   }, []);
 
-  const fetchCustomers = async () => {
-    try {
-      const data = await getCustomers();
-      setCustomers(data);
-    } catch (error) {
-      console.error("Failed to fetch customers:", error);
-    }
-  };
-
-  const fetchProducts = async () => {
-    try {
-      const data = await getInventory();
-      setProducts(data);
-    } catch (error) {
-      console.error("Error fetching inventory:", error);
-    }
+  const loadData = async () => {
+    setCustomers(await getCustomers());
+    setProducts(await getInventory());
   };
 
   const handleProductChange = (index: number, productId: string) => {
@@ -58,18 +43,9 @@ const InvoiceForm = ({ tenantId }: InvoiceFormProps) => {
     setInvoiceItems(invoiceItems.filter((_, i) => i !== index));
   };
 
-  const submitInvoice = async () => {
-    try {
-      await axios.post(`${API_URL}/tenants/${tenantId}/invoice`, {
-        customerId: selectedCustomer,
-        items: invoiceItems,
-      });
-
-      alert("Invoice generated successfully!");
-    } catch (error) {
-      alert("Error generating invoice.");
-      console.error(error);
-    }
+  const handleSubmit = async () => {
+    const result = await submitInvoice(tenantId, selectedCustomer, invoiceItems);
+    alert(result.success ? "Invoice generated successfully!" : "Error generating invoice.");
   };
 
   return (
@@ -115,7 +91,7 @@ const InvoiceForm = ({ tenantId }: InvoiceFormProps) => {
         ➕ Add Item
       </button>
 
-      <button className="bg-green-500 text-white px-4 py-2 rounded mt-4 w-full" onClick={submitInvoice}>
+      <button className="bg-green-500 text-white px-4 py-2 rounded mt-4 w-full" onClick={handleSubmit}>
         Generate Invoice
       </button>
     </div>

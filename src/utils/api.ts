@@ -330,3 +330,19 @@ export const deleteTaxRule = async (taxId: string) => {
    });
   return response.data;
 };
+
+//Submit invoice
+
+// ✅ Submit invoice
+export const submitInvoice = async (tenantId: string, customerId: string, items: any[]) => {
+  try {
+    await axios.post(`${API_URL}/tenants/${tenantId}/invoice`, {
+      customerId,
+      items,
+    });
+    return { success: true };
+  } catch (error) {
+    console.error("Error generating invoice:", error);
+    return { success: false };
+  }
+};
