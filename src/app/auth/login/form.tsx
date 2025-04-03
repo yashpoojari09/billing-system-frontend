@@ -17,6 +17,8 @@ interface LoginFormData {
 
 const LoginForm = () => {
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false); // ✅ Loading state
+
   const router = useRouter(); 
   const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
@@ -25,6 +27,7 @@ const LoginForm = () => {
   const onSubmit = async (data: LoginFormData) => {
     try {
       setError("");
+      setLoading(true);
       const response = await loginUser(data.email, data.password);
         // ✅ Store only the access token in localStorage
     localStorage.setItem("accessToken", response.accessToken);
@@ -39,6 +42,7 @@ const LoginForm = () => {
         } catch (err) {
       if (err instanceof Error) {
         setError(err.message); // Access message safely
+        setLoading(false); // ❌ Stop loading if an error occurs
       } else {
         setError("An unknown error occurred."); // Fallback for non-Error types
       }
@@ -46,6 +50,7 @@ const LoginForm = () => {
   };
 
   return (
+
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-4">
       {error && <p className="text-red-500">{error}</p>}
       
@@ -55,12 +60,15 @@ const LoginForm = () => {
       <Input label="Password" {...register("password")} type="password" />
       {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
       
-      <Button type="submit">Login</Button>
+      <Button type="submit" disabled={loading} className={`transition duration-300 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}>
+      {loading ? "Loading..." : "Login"}
+      </Button>
       
       <div className="text-sm text-white text-center mt-2">
         <a href="/auth/forgot-password" className="text-blue-500  hover:text-blue-700 transition duration-300">Forgot Password?</a>
       </div>
     </form>
+    
   );
 };
 

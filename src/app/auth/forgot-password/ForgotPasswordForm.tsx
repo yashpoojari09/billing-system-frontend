@@ -40,7 +40,7 @@ const ForgotPasswordForm = () => {
 
   return (
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-4">
          {message && <p className="text-green-500 text-center">{message}</p>}
 
         {errorMessage && <p className="text-red-500 text-center">{errorMessage}</p>}
@@ -49,10 +49,10 @@ const ForgotPasswordForm = () => {
           {...register("email")}  // Register email field
           error={errors.email?.message}  // Show validation error if any
         />
-      <Button type="reset">Send Reset Link</Button>
+      <Button type="submit">Send Reset Link</Button>
         
         <p className="text-white text-center mt-2">
-          <a href="/auth/login" className="underline text-blue-500  hover:text-blue-700 transition duration-300">Back to Login</a>
+          <a href="/auth/login" className="text-blue-500  hover:text-blue-700 transition duration-300">Back to Login</a>
         </p>
       </form>
   );

@@ -8,9 +8,10 @@ import { CustomersTableProps } from "@/types";
 import { ButtonEd } from "@/components/ui/Button";
 
 
-export default function CustomersTable({ customers, setCustomers }: CustomersTableProps) {
+export default function CustomersTable({ customers, setCustomers, isLoading }: CustomersTableProps) {
   // const [editCustomer, setEditCustomer] = useState<Customer | null>(null);
   // const [editCustomerId, setEditCustomerId] = useState<string | null>(null);
+  
   const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
   const router = useRouter();
 
@@ -32,6 +33,9 @@ export default function CustomersTable({ customers, setCustomers }: CustomersTab
       <h2 className="text-xl font-bold mb-4 text-[#000000] text-center">Customers List</h2>
 
       <div className="overflow-x-auto">
+      {isLoading ? ( // ✅ Show loading while fetching
+        <div className="text-center text-gray-600">Loading customers...</div>
+      ) : (
         <table className="w-full border-collapse border border-gray-300 min-w-[350px]">
           <thead>
             <tr className="bg-gray-200 text-[#000000]">
@@ -76,6 +80,7 @@ export default function CustomersTable({ customers, setCustomers }: CustomersTab
             )}
           </tbody>
         </table>
+      )}
       </div>
 
       {/* ✅ Show EditCustomerForm */}

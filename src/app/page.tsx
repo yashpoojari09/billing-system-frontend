@@ -2,7 +2,7 @@ export default function Home() {
   return (
     <main className="flex flex-col items-center justify-center min-h-screen px-4 text-center">
       {/* Title */}
-      <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#54f2ff]">
+      <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-blue-700">
         Welcome to Billing Login
       </h1>
 
@@ -14,7 +14,7 @@ export default function Home() {
       {/* Login Button */}
       <a
         href="/auth/login"
-        className="mt-4 px-6 py-3 bg-[#015a5f] text-white text-sm sm:text-lg rounded-md hover:bg-[#40888f] transition-all"
+        className="mt-4 px-6 py-3 bg-blue-700 text-white text-sm sm:text-lg rounded-md hover:bg-blue-600 transition-all"
       >
         Login
       </a>

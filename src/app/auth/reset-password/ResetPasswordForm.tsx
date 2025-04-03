@@ -44,8 +44,8 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({ token }) => {
 
  
   return (
-    <div className="bg-white p-6 rounded shadow-md w-96">
-      <h2 className="text-xl font-semibold mb-4 text-center">Reset Password</h2>
+    <div className="bg-dark p-6 rounded-lg shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a] w-full max-w-md">
+      <h2 className="text-xl sm:text-2xl font-bold text-white text-center mb-4">Reset Password</h2>
 
       {error && <p className="text-red-500 text-center">{error}</p>}
       {message && <p className="text-green-500 text-center">{message}</p>}

@@ -15,7 +15,7 @@ export const Button: React.FC<ButtonProps> = ({ type, title, children, ...props 
     <button
       type={type}
       {...props}
-      className="bg-primary text-white px-4 py-2 rounded-md hover:bg-blue-700 transition cursor-pointer sm:w-auto"
+      className="bg-blue-700 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition cursor-pointer sm:w-auto"
     >
       {title || children}
     </button>

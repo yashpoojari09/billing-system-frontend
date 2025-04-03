@@ -79,7 +79,7 @@ const TenantLayout = ({ children }: { children: React.ReactNode }) => {
             <button
               onClick={() => handleNavigation(`/tenants/${tenantId}/inventory`)}
               className={`w-full text-left px-4 py-2 block rounded cursor-pointer ${
-                pathname?.includes("inventory") ? "bg-green-600" : "hover:bg-gray-700"
+                pathname?.includes("inventory") ? "bg-blue-600" : "hover:bg-gray-700"
               }`}
             >
               Inventory
@@ -89,7 +89,7 @@ const TenantLayout = ({ children }: { children: React.ReactNode }) => {
             <button
               onClick={() => handleNavigation(`/tenants/${tenantId}/taxation`)}
               className={`w-full text-left px-4 py-2 block rounded cursor-pointer ${
-                pathname?.includes("taxation") ? "bg-yellow-600" : "hover:bg-gray-700"
+                pathname?.includes("taxation") ? "bg-blue-600" : "hover:bg-gray-700"
               }`}
             >
               Taxation
@@ -97,10 +97,10 @@ const TenantLayout = ({ children }: { children: React.ReactNode }) => {
           </li>
         </ul>
 
-        <div className="mt-6">
+        <div className="mt-100">
           <button
             onClick={handleLogout}
-            className="w-full bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded cursor-pointer"
+            className="w-full bg-gray-700 hover:bg-gray-600 text-white  px-4 py-2 rounded cursor-pointer"
           >
             Logout
           </button>

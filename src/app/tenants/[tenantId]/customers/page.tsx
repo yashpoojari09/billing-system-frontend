@@ -11,6 +11,7 @@ import { Customer } from "@/types"
 export default function CustomersPage() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [customers, setCustomers] = useState<Customer[]>([]); // ✅ Explicitly type the state as an array of any
+  const [isLoading, setIsLoading] = useState(true); // ✅ Loading state
 
   const router = useRouter();
   const params = useParams();
@@ -29,11 +30,15 @@ export default function CustomersPage() {
 
   const fetchCustomers = async () => {
     try {
+      setIsLoading(true); // ✅ Show loading before fetch
+
       const data = await getCustomers();
       setCustomers(data);
     } catch (error) {
       console.error("Failed to fetch customers:", error);
     }
+    setIsLoading(false); // ✅ Hide loading after fetch
+
   };
 
   const handleCustomerAdded = (newCustomer: Customer) => {
@@ -55,7 +60,7 @@ export default function CustomersPage() {
         </Button>
       </div>
 
-      <CustomersTable customers={customers} setCustomers={setCustomers} onCustomerUpdated={handleCustomerUpdated} />
+      <CustomersTable isLoading={isLoading} customers={customers} setCustomers={setCustomers} onCustomerUpdated={handleCustomerUpdated} />
 
       <br />
 
