@@ -364,3 +364,15 @@ export const createInvoice = async (invoiceData: InvoiceRequest) => {
     };
   }
 };
+
+export const getCustomersByEmail = async (email: string) => {
+  try {
+    const tenantId = localStorage.getItem("tenantId");
+
+    const res = await fetch(`/${API_URL}/tenants/${tenantId}/customers/email?email=${email}`);
+    return await res.json();
+  } catch (error) {
+    console.error("Error fetching customer:", error);
+    return null;
+  }
+};

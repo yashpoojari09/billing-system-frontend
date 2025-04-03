@@ -1,36 +1,34 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getCustomers, getInventory, createInvoice } from "@/utils/api";
-import { CustomerInvoice, InvoiceItem, Product } from "@/types";
+import { getCustomersByEmail, getInventory, createInvoice } from "@/utils/api";
+import { InvoiceItem, Product, CustomerInvoice } from "@/types";
 import { Button } from "@/components/ui/Button";
 
-
 const InvoiceForm = () => {
-  const [customers, setCustomers] = useState<CustomerInvoice[]>([]);
-  const [filteredCustomers, setFilteredCustomers] = useState<CustomerInvoice[]>([]);
-  const [products, setProducts] = useState<Product[]>([]);
-  const [selectedCustomer, setSelectedCustomer] = useState<CustomerInvoice | null>(null);
   const [searchEmail, setSearchEmail] = useState("");
+  const [customer, setCustomer] = useState<CustomerInvoice | null>(null);
+  const [products, setProducts] = useState<Product[]>([]);
   const [invoiceItems, setInvoiceItems] = useState<InvoiceItem[]>([{ productId: "", quantity: 1 }]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    loadData();
+    loadInventory();
   }, []);
 
-  useEffect(() => {
-    setFilteredCustomers(
-      customers.filter((customer) =>
-        customer.email.toLowerCase().includes(searchEmail.toLowerCase())
-      )
-    );
-  }, [searchEmail, customers]);
-
-  const loadData = async () => {
-    const customerData = await getCustomers();
-    setCustomers(customerData);
-    setFilteredCustomers(customerData);
+  const loadInventory = async () => {
     setProducts(await getInventory());
+  };
+
+  const handleEmailChange = async (email: string) => {
+    setSearchEmail(email);
+
+    if (email.length > 3) {
+      setLoading(true);
+      const foundCustomer = await getCustomersByEmail(email);
+      setCustomer(foundCustomer);
+      setLoading(false);
+    }
   };
 
   const handleProductChange = (index: number, productId: string) => {
@@ -54,17 +52,15 @@ const InvoiceForm = () => {
   };
 
   const handleSubmit = async () => {
-    if (!selectedCustomer) {
-      alert("Please select a customer.");
+    if (!searchEmail || !customer) {
+      alert("Please enter a valid email to find or create a customer.");
       return;
     }
 
-    const { name, email, phone } = selectedCustomer;
-
     const invoiceData = {
-      name,
-      email,
-      phone,
+      name: customer.name,
+      email: customer.email,
+      phone: customer.phone,
       products: invoiceItems.map((item) => ({
         productId: item.productId,
         quantity: item.quantity,
@@ -81,35 +77,32 @@ const InvoiceForm = () => {
 
   return (
     <div className="p-6 max-w-2xl mx-auto bg-white rounded shadow">
-      <h1 className="text-lg font-bold mb-4 text-[#001e38] text-center">Generate Invoice</h1>
+      <h1 className="text-xl font-bold mb-4">Generate Invoice</h1>
 
       {/* 🔍 Search Customer by Email */}
       <input
         type="text"
-        placeholder="Search by Email..."
+        placeholder="Enter Customer Email..."
         className="border p-2 w-full mb-2"
         value={searchEmail}
-        onChange={(e) => setSearchEmail(e.target.value)}
+        onChange={(e) => handleEmailChange(e.target.value)}
       />
 
-      <label className="block mb-2">Select Customer:</label>
-      <select
-        className="border p-2 w-full mb-4"
-        value={selectedCustomer?.id || ""}
-        onChange={(e) => {
-          const customer = customers.find((c) => c.id === e.target.value) || null;
-          setSelectedCustomer(customer);
-        }}
-      >
-        <option value="">Select</option>
-        {filteredCustomers.map((customer) => (
-          <option key={customer.id} value={customer.id}>
-            {customer.name} ({customer.email})
-          </option>
-        ))}
-      </select>
+      {loading && <p className="text-gray-500">Searching...</p>}
 
-      <h2 className="text-lg font-semibold mb-2">Invoice Items</h2>
+      {customer ? (
+        <div className="p-2 border rounded bg-gray-100">
+          <p><strong>Name:</strong> {customer.name}</p>
+          <p><strong>Email:</strong> {customer.email}</p>
+          <p><strong>Phone:</strong> {customer.phone}</p>
+        </div>
+      ) : (
+        searchEmail && !loading && (
+          <p className="text-red-500">Customer not found. A new customer will be created.</p>
+        )
+      )}
+
+      <h2 className="text-lg font-semibold mt-4 mb-2">Invoice Items</h2>
 
       {invoiceItems.map((item, index) => (
         <div key={index} className="flex gap-2 mb-2">
@@ -132,7 +125,7 @@ const InvoiceForm = () => {
             onChange={(e) => handleQuantityChange(index, e.target.value)}
             min="1"
           />
-          <Button type="submit"className="bg-red-500 text-white px-2 rounded" onClick={() => removeItem(index)}>
+          <Button type="submit" className="bg-red-500 text-white px-2 rounded" onClick={() => removeItem(index)}>
             ❌
           </Button>
         </div>
