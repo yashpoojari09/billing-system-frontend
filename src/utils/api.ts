@@ -356,11 +356,11 @@ export const createInvoice = async (invoiceData: InvoiceRequest) => {
     } else {
       return { success: false, error: response.data.error || "Unknown error" };
     }
-  } catch (error: any) {
+  } catch (error) {
     console.error("Error creating invoice:", error);
     return {
       success: false,
-      error: error.response?.data?.error || "Server error",
+      error: axios.isAxiosError(error) && error.response?.data?.error ? error.response.data.error : "Server error",
     };
   }
 };
