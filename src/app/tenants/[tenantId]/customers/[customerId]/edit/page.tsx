@@ -56,7 +56,7 @@ export default function EditCustomerPage() {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 px-4">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+      <div className="bg-white p-6 rounded-lg shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a] w-full max-w-md">
         <h2 className="text-xl font-bold mb-4 text-black text-center">Edit Customer</h2>
         {error && <p className="text-red-500 text-center">{error}</p>}
 

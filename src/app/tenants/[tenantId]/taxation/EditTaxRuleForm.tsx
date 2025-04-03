@@ -44,7 +44,7 @@ export default function EditTaxRuleForm({
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white p-6 rounded-lg w-full sm:w-96">
+      <div className="bg-white p-6 rounded-lg shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a] w-full sm:w-96">
         <h2 className="text-lg font-bold mb-4 text-[#000000]">Edit Tax Rule</h2>
 
         {error && <p className="text-red-500">{error}</p>}
