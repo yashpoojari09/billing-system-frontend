@@ -33,3 +33,27 @@ export interface TaxRuleProps {
   id: string; 
   taxRate: number; 
   region: string }
+
+  // Invoice type inputs
+ export  interface CustomerInvoice {
+    id: string;
+    name: string;
+    email: string;
+  }
+  
+  export interface Product {
+    id: string;
+    name: string;
+    price: number;
+  }
+  
+  export interface InvoiceItem {
+    productId: string;
+    quantity: number;
+  }
+  
+ export interface InvoiceData {
+    customerId: string;
+    items: InvoiceItem[];
+  }
+  // invoice type inputs

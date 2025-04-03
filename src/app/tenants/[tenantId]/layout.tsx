@@ -95,6 +95,16 @@ const TenantLayout = ({ children }: { children: React.ReactNode }) => {
               Taxation
             </button>
           </li>
+          <li>
+            <button
+              onClick={() => handleNavigation(`/tenants/${tenantId}/invoice`)}
+              className={`w-full text-left px-4 py-2 block rounded cursor-pointer ${
+                pathname?.includes("invoice") ? "bg-blue-600" : "hover:bg-gray-700"
+              }`}
+            >
+              Invoice
+            </button>
+          </li>
         </ul>
 
         <div className="mt-100">
