@@ -9,7 +9,7 @@ export interface Customer {
     customers: Customer[];
     setCustomers: React.Dispatch<React.SetStateAction<Customer[]>>;
     onCustomerUpdated: (updatedCustomer: Customer) => void; // ✅ Callback to update list
-    isLoading: Boolean
+    isLoading: boolean
   }
 
   export interface EditCustomerFormProps {
