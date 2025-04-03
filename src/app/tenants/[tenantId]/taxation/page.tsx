@@ -12,6 +12,8 @@ import { TaxRuleProps } from "@/types";
 export default function TaxTablePage() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [taxRules, setTaxRules] = useState<TaxRuleProps[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
   const router = useRouter();
 
   // ✅ Check for accessToken on page load
@@ -24,9 +26,17 @@ export default function TaxTablePage() {
   }, [router]);
 
   const fetchTaxRules = async () => {
+    try{
+      setIsLoading(true); // ✅ Show loading before fetch
     const data = await getTaxRules();
     setTaxRules(data);
+  } catch (error) {
+    console.error("Error fetching inventory:", error);
+  }
+  setIsLoading(false); // ✅ Show loading before fetch
+
   };
+
 
   return (
     <div className="max-w-5xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
@@ -42,7 +52,7 @@ export default function TaxTablePage() {
         </Button>
       </div>
       {/* TaxTableTable Table */}
-      <TaxTable taxRules={taxRules} fetchTaxRules={fetchTaxRules}/>
+      <TaxTable isLoading={isLoading} taxRules={taxRules} fetchTaxRules={fetchTaxRules}/>
 
       {/* Add TaxTableTable Modal */}
       {isAddModalOpen && <AddTaxRuleForm onClose={() => setIsAddModalOpen(false)} fetchTaxRules={fetchTaxRules}/>}

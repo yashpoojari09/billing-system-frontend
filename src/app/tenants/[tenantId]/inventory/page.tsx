@@ -11,17 +11,21 @@ import { getInventory } from "@/utils/api";
 export default function InventoryPage() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [inventory, setInventory] = useState([]); // ✅ Store inventory data here
+  const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
 
  // ✅ Fetch inventory data
  const fetchInventory = async () => {
   try {
+    setIsLoading(true); // ✅ Show loading before fetch
     const data = await getInventory();
     setInventory(data);
   } catch (error) {
     console.error("Error fetching inventory:", error);
   }
+  setIsLoading(false); // ✅ Show loading before fetch
+
 };
 
 // ✅ Check for accessToken on page load
@@ -46,7 +50,7 @@ useEffect(() => {
       </div>
 
       {/* Inventory Table */}
-      <InventoryTable inventory={inventory} fetchInventory={fetchInventory}/>
+      <InventoryTable isLoading={isLoading} inventory={inventory} fetchInventory={fetchInventory}/>
 
       {/* Add Inventory Modal */}
       {isAddModalOpen && <AddInventory onClose={() => setIsAddModalOpen(false)}  fetchInventory={fetchInventory}/>}

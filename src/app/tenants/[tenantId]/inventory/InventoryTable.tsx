@@ -4,15 +4,17 @@ import { useState } from "react";
 import { deleteInventoryItem } from "@/utils/api";
 import EditInventory from "./EditInventoryForm";
 import { ButtonDash, ButtonEd } from "@/components/ui/Button";
+import { boolean } from "zod";
 
 type InventoryItem = {
   id: string;
   name: string;
   stock: number;
   price: number;
+  
 };
 
-export default function InventoryTable({ inventory, fetchInventory }: { inventory: InventoryItem[]; fetchInventory: () => void }) {
+export default function InventoryTable({ inventory, fetchInventory, isLoading }: { inventory: InventoryItem[]; fetchInventory: () => void; isLoading:Boolean; }) {
   // const [setInventory] = useState<InventoryItem[]>([]);
   const [editInventoryItem , setEditInventoryItem] = useState<InventoryItem | null>(null);
   const [confirmDelete, setConfirmDelete] = useState<{ isOpen: boolean; id: string | null }>({
@@ -56,6 +58,9 @@ export default function InventoryTable({ inventory, fetchInventory }: { inventor
 
       {/* Table */}
       <div className="overflow-x-auto">
+      {isLoading ? ( // ✅ Show loading while fetching
+        <div className="text-center text-gray-600">Loading customers...</div>
+      ) : (
         <table className="w-full border-collapse border border-gray-300">
           <thead>
             <tr className="bg-gray-200 text-[#001e38]">
@@ -97,6 +102,7 @@ export default function InventoryTable({ inventory, fetchInventory }: { inventor
             )}
           </tbody>
         </table>
+      )}
       </div>
 
       {/* Edit Confirmation Modal */}

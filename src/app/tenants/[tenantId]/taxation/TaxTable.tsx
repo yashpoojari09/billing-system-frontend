@@ -6,7 +6,7 @@ import EditTaxRuleForm from "./EditTaxRuleForm";
 import { TaxRuleProps } from "@/types";
 import { ButtonEd } from "@/components/ui/Button";
 
-export default function TaxationTable({fetchTaxRules, taxRules}: { taxRules: TaxRuleProps[]; fetchTaxRules: () => void }) {
+export default function TaxationTable({fetchTaxRules, taxRules, isLoading}: { taxRules: TaxRuleProps[]; fetchTaxRules: () => void; isLoading:boolean }) {
   const [editTaxRule, setEditTaxRule] = useState<TaxRuleProps | null>(null);
   const [deleteTaxId, setDeleteTaxId] = useState<{ isOpen: boolean; id: string | null }>({
     isOpen: false,
@@ -31,6 +31,9 @@ export default function TaxationTable({fetchTaxRules, taxRules}: { taxRules: Tax
   return (
     <div className="bg-white p-4 shadow rounded-lg">
       <h2 className="text-xl font-bold mb-4 text-[#001e38]">Taxation Rules</h2>
+      {isLoading ? ( // ✅ Show loading while fetching
+        <div className="text-center text-gray-600">Loading customers...</div>
+      ) : (
       <table className="w-full border-collapse border border-gray-300">
         <thead>
           <tr className="bg-gray-200 text-[#001e38]">
@@ -64,6 +67,7 @@ export default function TaxationTable({fetchTaxRules, taxRules}: { taxRules: Tax
           ))}
         </tbody>
       </table>
+      )}
 
       {editTaxRule && <EditTaxRuleForm taxRules={editTaxRule} onClose={() => setEditTaxRule(null)}  fetchTaxRules={fetchTaxRules}/>}
       {/* Delete Confirmation Modal */}
