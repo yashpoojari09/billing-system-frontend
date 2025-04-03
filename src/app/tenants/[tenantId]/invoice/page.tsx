@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter } from "next/router";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import InvoiceForm from "./InvoiceForm";
 
 const InvoicePage = () => {

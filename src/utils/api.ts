@@ -1,5 +1,5 @@
 import axios from "axios";
-import { InvoiceItem } from "@/types";
+import {InvoiceRequest} from "@/types";
 export const API_URL="https://billing-system-lemon.vercel.app/api";
 
 // Get tokens from localStorage
@@ -84,6 +84,7 @@ export const forgotPassword = async (email: string) => {
 
 import { z } from "zod";
 import { resetPasswordSchema } from "./validation";
+import { ApiError } from "next/dist/server/api-utils";
 
 // Reste Password
 export const resetPassword = async (token:string, input: z.infer<typeof resetPasswordSchema>) => {
@@ -335,15 +336,30 @@ export const deleteTaxRule = async (taxId: string) => {
 //Submit invoice
 
 // ✅ Submit invoice
-export const submitInvoice = async (tenantId: string, customerId: string, items: InvoiceItem[]) => {
+export const createInvoice = async (invoiceData: InvoiceRequest) => {
   try {
-    await axios.post(`${API_URL}/tenants/${tenantId}/invoice`, {
-      customerId,
-      items,
+    const token = localStorage.getItem("accessToken"); // Ensure authentication
+    if (!token) {
+      return { success: false, error: "Unauthorized: No token provided" };
+    }
+
+    const response = await api.post(`${API_URL}/api/customers/invoice`, invoiceData, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     });
-    return { success: true };
-  } catch (error) {
-    console.error("Error generating invoice:", error);
-    return { success: false };
+
+    if (response.status === 201) {
+      return { success: true, data: response.data };
+    } else {
+      return { success: false, error: response.data.error || "Unknown error" };
+    }
+  } catch (error: any) {
+    console.error("Error creating invoice:", error);
+    return {
+      success: false,
+      error: error.response?.data?.error || "Server error",
+    };
   }
 };
