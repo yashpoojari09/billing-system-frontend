@@ -367,7 +367,9 @@ export const createInvoice = async (invoiceData: InvoiceRequest) => {
 
 export const searchCustomerByEmail = async (email: string) => {
   try {
-    const response = await fetch(`/api/customers/search?email=${email}`);
+    const tenantId = localStorage.getItem("tenantId");
+
+    const response = await fetch(`${API_URL}/tenants/${tenantId}/customers/search?email=${email}`);
     if (!response.ok) throw new Error("Customer not found");
     
     const customer = await response.json();
