@@ -14,7 +14,7 @@ export default function EditCustomerPage() {
   const customerId = params?.customerId as string;
   const tenantId = typeof window !== "undefined" ? localStorage.getItem("tenantId") : null; // Ensure localStorage is accessed on client-side
 
-  const [formData, setFormData] = useState({ name: "", email: "" });
+  const [formData, setFormData] = useState({ name: "", email: "", phone: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -25,7 +25,9 @@ export default function EditCustomerPage() {
           `${API_URL}/tenants/${tenantId}/customers/${customerId}`,
           { headers: getAuthHeaders() }
         );
-        setFormData({ name: response.data.name, email: response.data.email });
+        setFormData({ name: response.data.name,
+           email: response.data.email, 
+           phone: response.data.phone });
       } catch {
         setError("Failed to fetch customer details.");
       }
@@ -79,6 +81,17 @@ export default function EditCustomerPage() {
               type="email"
               name="email"
               value={formData.email}
+              onChange={handleChange}
+              className="w-full p-2 border rounded text-black"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-gray-700">Phone</label>
+            <input
+              type="phone"
+              name="phone"
+              value={formData.phone}
               onChange={handleChange}
               className="w-full p-2 border rounded text-black"
               required

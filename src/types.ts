@@ -2,6 +2,7 @@ export interface Customer {
     id: string;
     name: string;
     email: string;
+    phone: string;
     [key: string]: unknown;
   }
   
@@ -22,6 +23,7 @@ export interface Customer {
  export interface FormData {
   name: string;
   email: string;
+  phone: string;
 }
 
 export interface PageProps {

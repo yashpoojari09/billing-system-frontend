@@ -41,6 +41,8 @@ export default function CustomersTable({ customers, setCustomers, isLoading }: C
             <tr className="bg-gray-200 text-[#000000]">
               <th className="border p-2 text-left">Name</th>
               <th className="border p-2 text-left">Email</th>
+              <th className="border p-2 text-left">Phone</th>
+
               <th className="border p-2 text-center">Actions</th>
             </tr>
           </thead>
@@ -50,6 +52,8 @@ export default function CustomersTable({ customers, setCustomers, isLoading }: C
                 <tr key={customer.id} className="text-center text-[#000000]">
                   <td className="p-2 border">{customer.name}</td>
                   <td className="p-2 border">{customer.email}</td>
+                  <td className="p-2 border">{customer.phone}</td>
+
                   <td className="p-2 border  justify-center gap-2">
                     {/* setEditCustomerId(customer.id) */}
                     <ButtonEd
