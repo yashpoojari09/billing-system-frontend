@@ -365,7 +365,7 @@ export const createInvoice = async (invoiceData: InvoiceRequest) => {
   }
 };
 
-const searchCustomerByEmail = async (email: string) => {
+export const searchCustomerByEmail = async (email: string) => {
   try {
     const response = await fetch(`/api/customers/search?email=${email}`);
     if (!response.ok) throw new Error("Customer not found");
@@ -376,4 +376,4 @@ const searchCustomerByEmail = async (email: string) => {
   } catch (error) {
     console.error("Error searching customer:", error);
     return null;
-  }
+  }}

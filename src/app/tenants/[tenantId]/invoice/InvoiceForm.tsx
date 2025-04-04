@@ -76,14 +76,14 @@ const InvoiceForm = () => {
   };
 
   return (
-    <div className="p-6 max-w-2xl mx-auto bg-white rounded shadow">
+    <div className="text-lg font-bold mb-4 text-[#001e38] text-center">
       <h1 className="text-xl font-bold mb-4">Generate Invoice</h1>
 
       {/* 🔍 Search Customer by Email */}
       <input
         type="text"
         placeholder="Enter Customer Email..."
-        className="border p-2 w-full mb-2"
+        className="border p-2 w-full mb-2 text-[#001e38] "
         value={searchEmail}
         onChange={(e) => handleEmailChange(e.target.value)}
       />
@@ -91,7 +91,7 @@ const InvoiceForm = () => {
       {loading && <p className="text-gray-500">Searching...</p>}
 
       {customer ? (
-        <div className="p-2 border rounded bg-gray-100">
+        <div className="p-2 border rounded bg-gray-100 text-[#001e38] ">
           <p><strong>Name:</strong> {customer.name}</p>
           <p><strong>Email:</strong> {customer.email}</p>
           <p><strong>Phone:</strong> {customer.phone}</p>
@@ -102,12 +102,12 @@ const InvoiceForm = () => {
         )
       )}
 
-      <h2 className="text-lg font-semibold mt-4 mb-2">Invoice Items</h2>
+      <h2 className="text-lg font-semibold mt-4 mb-2 text-[#001e38] ">Invoice Items</h2>
 
       {invoiceItems.map((item, index) => (
         <div key={index} className="flex gap-2 mb-2">
           <select
-            className="border p-2 w-1/2"
+            className="border p-2 w-1/2 text-[#001e38] "
             value={item.productId}
             onChange={(e) => handleProductChange(index, e.target.value)}
           >
@@ -120,7 +120,7 @@ const InvoiceForm = () => {
           </select>
           <input
             type="number"
-            className="border p-2 w-1/4"
+            className="border p-2 w-1/4 text-[#001e38] "
             value={item.quantity}
             onChange={(e) => handleQuantityChange(index, e.target.value)}
             min="1"
