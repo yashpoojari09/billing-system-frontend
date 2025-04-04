@@ -11,7 +11,8 @@ const InvoiceForm = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [invoiceItems, setInvoiceItems] = useState<InvoiceItem[]>([{ productId: "", quantity: 1 }]);
   const [loading, setLoading] = useState(false);
-  const [submitting, setSubmitting] = useState(false); // Loading for invoice submission
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     loadInventory();
@@ -23,26 +24,29 @@ const InvoiceForm = () => {
       setProducts(inventory);
     } catch (error) {
       console.error("Error loading inventory:", error);
+      setError("Failed to load inventory. Please try again.");
     }
-  };
-
-  const handleEmailChange = (email: string) => {
-    setSearchEmail(email);
   };
 
   const handleSearch = async () => {
     if (!searchEmail.trim()) {
-      alert("Please enter a valid email");
+      alert("Please enter a valid email.");
       return;
     }
 
     setLoading(true);
     setCustomer(null);
+    setError(null);
 
     try {
-      const foundCustomer = await searchCustomerByEmail(searchEmail);
-      setCustomer(foundCustomer);
+      const foundCustomer = await searchCustomerByEmail(searchEmail.trim().toLowerCase());
+      if (foundCustomer) {
+        setCustomer(foundCustomer);
+      } else {
+        setError("Customer not found. A new customer will be created.");
+      }
     } catch (error) {
+      setError("Error fetching customer. Please try again.");
       console.error("Error fetching customer:", error);
     } finally {
       setLoading(false);
@@ -71,11 +75,11 @@ const InvoiceForm = () => {
 
   const handleSubmit = async () => {
     if (!searchEmail || !customer) {
-      alert("Please enter a valid email to find or create a customer.");
+      alert("Please enter a valid email and find the customer before generating an invoice.");
       return;
     }
 
-    if (invoiceItems.some((item) => item.productId === "")) {
+    if (invoiceItems.some((item) => !item.productId)) {
       alert("Please select a product for all invoice items.");
       return;
     }
@@ -93,7 +97,7 @@ const InvoiceForm = () => {
       const response = await createInvoice(invoiceData);
       if (response.success) {
         alert("Invoice generated successfully!");
-        setInvoiceItems([{ productId: "", quantity: 1 }]); // Reset form after success
+        setInvoiceItems([{ productId: "", quantity: 1 }]);
       } else {
         alert("Error generating invoice.");
       }
@@ -117,7 +121,7 @@ const InvoiceForm = () => {
           placeholder="Enter Customer Email..."
           className="border p-2 w-full mb-2 text-[#001e38]"
           value={searchEmail}
-          onChange={(e) => handleEmailChange(e.target.value)}
+          onChange={(e) => setSearchEmail(e.target.value)}
         />
         <Button type="button" className="bg-blue-500 text-white px-4 py-2 rounded" onClick={handleSearch}>
           Search
@@ -125,17 +129,14 @@ const InvoiceForm = () => {
       </div>
 
       {loading && <p className="text-gray-500">Searching...</p>}
+      {error && <p className="text-red-500">{error}</p>}
 
-      {customer ? (
+      {customer && (
         <div className="p-2 border rounded bg-gray-100 text-[#001e38]">
           <p><strong>Name:</strong> {customer.name}</p>
           <p><strong>Email:</strong> {customer.email}</p>
           <p><strong>Phone:</strong> {customer.phone}</p>
         </div>
-      ) : (
-        searchEmail && !loading && (
-          <p className="text-red-500">Customer not found. A new customer will be created.</p>
-        )
       )}
 
       <h2 className="text-lg font-semibold mt-4 mb-2 text-[#001e38]">Invoice Items</h2>

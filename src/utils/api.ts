@@ -369,22 +369,24 @@ export const createInvoice = async (invoiceData: InvoiceRequest) => {
   }
 };
 
+
 export const searchCustomerByEmail = async (email: string) => {
   try {
-
     const tenantId = localStorage.getItem("tenantId");
-    if (!tenantId) throw new Error("Tenant ID is missing. Please log in again.");
+    if (!tenantId) {
+      throw new Error("Tenant ID is missing. Please log in again.");
+    }
 
+    const response = await api.get(
+      `${API_URL}/tenants/${tenantId}/customers?email=${email.trim().toLowerCase()}`,
+      {
+        headers: getAuthHeaders(), // `getAuthHeaders` should return an object
+      }
+    );
 
-    const response = await api.get(`${API_URL}/tenants/${tenantId}/customers?email=${email.trim().toLowerCase()}`,  {
-      headers: { ...getAuthHeaders() } as Record<string, string>,
-    });
-    if (response.status !== 200) throw new Error("Customer not found");
-    
- 
-    const data = response.data; // Access the data property directly
-    return data.customer; // Access the 'customer' property from the parsed data
+    return response.data?.customer || null; // Ensure it safely accesses `customer`
   } catch (error) {
-    console.error("Error searching customer:", error);
+    console.error("Error searching for customer:", error);
     return null;
-  }}
+  }
+};
