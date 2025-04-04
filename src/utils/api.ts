@@ -376,13 +376,13 @@ export const searchCustomerByEmail = async (email: string) => {
     if (!tenantId) throw new Error("Tenant ID is missing. Please log in again.");
 
 
-    const response = await fetch(`${API_URL}/tenants/${tenantId}/customers?email=${email}`,  {
+    const response = await api.get(`${API_URL}/tenants/${tenantId}/customers?email=${email.trim().toLowerCase()}`,  {
       headers: { ...getAuthHeaders() } as Record<string, string>,
     });
-    if (!response.ok) throw new Error("Customer not found");
+    if (response.status !== 200) throw new Error("Customer not found");
     
  
-    const data = await response.json(); // Parse the response as JSON
+    const data = response.data; // Access the data property directly
     return data.customer; // Access the 'customer' property from the parsed data
   } catch (error) {
     console.error("Error searching customer:", error);

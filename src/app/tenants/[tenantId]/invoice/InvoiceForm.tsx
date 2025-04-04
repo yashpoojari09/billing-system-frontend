@@ -81,7 +81,7 @@ const InvoiceForm = () => {
 
       {/* 🔍 Search Customer by Email */}
       <input
-        type="text"
+        type="email"
         placeholder="Enter Customer Email..."
         className="border p-2 w-full mb-2 text-[#001e38] "
         value={searchEmail}
