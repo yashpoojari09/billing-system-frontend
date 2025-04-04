@@ -1,7 +1,7 @@
 import axios from "axios";
-import {InvoiceRequest} from "@/types";
+import {Customer, InvoiceRequest} from "@/types";
 export const API_URL="https://billing-system-lemon.vercel.app/api";
-import {FormData} from "@/types";
+import {cus} from "@/types";
 
 // Get tokens from localStorage
 export const getAuthHeaders = () => {
@@ -212,7 +212,7 @@ export const getCustomers = async () => {
     }
   }
 };
-export const addCustomer = async (customer: FormData) => {
+export const addCustomer = async (customer: Customer) => {
   try {
     const tenantId = localStorage.getItem("tenantId");
     
@@ -238,7 +238,7 @@ export const addCustomer = async (customer: FormData) => {
 
 
 // Update Customer
-export const updateCustomer = async (customerId: string, customer: FormData) => {
+export const updateCustomer = async (customerId: string, customer: Customer) => {
   const tenantId = localStorage.getItem("tenantId");
   if (!tenantId) throw new Error("Tenant ID is missing. Please log in again.");
   
