@@ -23,7 +23,7 @@ const InvoiceForm = () => {
     try {
       const inventory = await getInventory();
       setProducts(inventory);
-    } catch (error) {
+    } catch  {
       setError("Failed to load inventory. Please try again.");
     }
   };
@@ -44,7 +44,7 @@ const InvoiceForm = () => {
       } else {
         setError("No customers found. A new customer will be created.");
       }
-    } catch (error) {
+    } catch {
       setError("Error fetching customers. Please try again.");
     } finally {
       setLoading(false);
@@ -105,7 +105,7 @@ const InvoiceForm = () => {
       } else {
         alert("Error generating invoice.");
       }
-    } catch (error) {
+    } catch {
       alert("Error generating invoice.");
     } finally {
       setSubmitting(false);
