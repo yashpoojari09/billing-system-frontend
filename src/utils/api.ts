@@ -367,14 +367,19 @@ export const createInvoice = async (invoiceData: InvoiceRequest) => {
 
 export const searchCustomerByEmail = async (email: string) => {
   try {
-    const tenantId = localStorage.getItem("tenantId");
 
-    const response = await fetch(`${API_URL}/tenants/${tenantId}/customers/search?email=${email}`);
+    const tenantId = localStorage.getItem("tenantId");
+    if (!tenantId) throw new Error("Tenant ID is missing. Please log in again.");
+
+
+    const response = await fetch(`${API_URL}/tenants/${tenantId}/customers/search?email=${email}`,  {
+      headers: { ...getAuthHeaders() } as Record<string, string>,
+    });
     if (!response.ok) throw new Error("Customer not found");
     
-    const customer = await response.json();
-    console.log("Customer Found:", customer);
-    return customer;
+ 
+    const data = await response.json(); // Parse the response as JSON
+    return data.customer; // Access the 'customer' property from the parsed data
   } catch (error) {
     console.error("Error searching customer:", error);
     return null;
