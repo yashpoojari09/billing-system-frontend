@@ -65,7 +65,7 @@ export default function AddCustomerForm({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">phone</label>
+            <label className="block text-sm font-medium text-gray-700">Phone</label>
             <input
               {...register("phone")}
               className="w-full border p-2 rounded text-black"

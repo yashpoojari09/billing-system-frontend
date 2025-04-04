@@ -212,7 +212,7 @@ export const getCustomers = async () => {
     }
   }
 };
-export const addCustomer = async (customer: { name: string; email: string; phone:string }) => {
+export const addCustomer = async (customer: FormData) => {
   try {
     const tenantId = localStorage.getItem("tenantId");
     
