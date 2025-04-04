@@ -370,7 +370,7 @@ export const createInvoice = async (invoiceData: InvoiceRequest) => {
 };
 
 
-export const searchCustomerByEmail = async (email: string) => {
+export const searchCustomerByEmail = async (search: string) => {
   try {
     const tenantId = localStorage.getItem("tenantId");
     if (!tenantId) {
@@ -378,7 +378,7 @@ export const searchCustomerByEmail = async (email: string) => {
     }
 
     const response = await api.get(
-      `${API_URL}/tenants/${tenantId}/customers?email=${email.trim().toLowerCase()}`,
+      `${API_URL}/tenants/${tenantId}/customers?search=${search.trim().toLowerCase()}`,
       {
         headers: getAuthHeaders(), // `getAuthHeaders` should return an object
       }
