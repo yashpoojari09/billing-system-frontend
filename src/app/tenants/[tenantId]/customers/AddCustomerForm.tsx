@@ -64,6 +64,16 @@ export default function AddCustomerForm({
             {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
           </div>
 
+          <div>
+            <label className="block text-sm font-medium text-gray-700">phone</label>
+            <input
+              {...register("phone")}
+              className="w-full border p-2 rounded text-black"
+            />
+            {errors.phone && <p className="text-red-500 text-sm">{errors.phone.message}</p>}
+          </div>
+
+
           <div className="flex flex-col sm:flex-row justify-between gap-2">
             <ButtonDash
               title="Cancel"
