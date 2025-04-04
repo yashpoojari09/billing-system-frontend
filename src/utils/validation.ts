@@ -32,6 +32,9 @@ export const inventorySchema = z.object({
 export const customerSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
+  phone: z
+    .string()
+    .regex(/^\d{10}$/, "Invalid phone number. Must be 10 digits"),
 });
 
 export const taxRuleSchema = z.object({
