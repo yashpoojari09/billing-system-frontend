@@ -384,7 +384,7 @@ export const searchCustomerByEmail = async (email: string) => {
       }
     );
 
-    return response.data?.customer || null; // Ensure it safely accesses `customer`
+    return response.data || null; // Ensure it safely accesses `customer`
   } catch (error) {
     console.error("Error searching for customer:", error);
     return null;
