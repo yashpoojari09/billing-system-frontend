@@ -14,7 +14,7 @@ export default function EditCustomerPage() {
   const customerId = params?.customerId as string;
   const tenantId = typeof window !== "undefined" ? localStorage.getItem("tenantId") : null; // Ensure localStorage is accessed on client-side
 
-  const [formData, setFormData] = useState({ name: "", email: "", phone: "" });
+  const [formData, setFormData] = useState({ name: "", email: "", phone: "", });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -25,7 +25,8 @@ export default function EditCustomerPage() {
           `${API_URL}/tenants/${tenantId}/customers/${customerId}`,
           { headers: getAuthHeaders() }
         );
-        setFormData({ name: response.data.name,
+        setFormData({ 
+           name: response.data.name,
            email: response.data.email, 
            phone: response.data.phone });
       } catch {
