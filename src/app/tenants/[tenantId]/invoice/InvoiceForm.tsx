@@ -35,11 +35,12 @@ const InvoiceForm = () => {
     }
 
     setLoading(true);
-    setCustomer(null);
     setError(null);
 
     try {
       const foundCustomer = await searchCustomerByEmail(searchEmail.trim().toLowerCase());
+      console.log("Setting customer state:", foundCustomer); // ✅ Debugging state update
+
       if (foundCustomer) {
         setCustomer(foundCustomer);
       } else {
