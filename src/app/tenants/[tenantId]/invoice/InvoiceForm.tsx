@@ -76,8 +76,8 @@ const InvoiceForm = () => {
   };
 
   return (
-    <div className="text-lg font-bold mb-4 text-[#001e38] text-center">
-      <h1 className="text-xl font-bold mb-4">Generate Invoice</h1>
+    <div className="p-6 max-w-2xl mx-auto bg-white rounded shadow">
+      <h1 className="text-xl font-bold mb-4 text-[#001e38] ">Generate Invoice</h1>
 
       {/* 🔍 Search Customer by Email */}
       <input
@@ -105,7 +105,7 @@ const InvoiceForm = () => {
       <h2 className="text-lg font-semibold mt-4 mb-2 text-[#001e38] ">Invoice Items</h2>
 
       {invoiceItems.map((item, index) => (
-        <div key={index} className="flex gap-2 mb-2">
+        <div key={index} className="flex gap-2 mb-2 text-[#001e38] ">
           <select
             className="border p-2 w-1/2 text-[#001e38] "
             value={item.productId}
@@ -120,7 +120,7 @@ const InvoiceForm = () => {
           </select>
           <input
             type="number"
-            className="border p-2 w-1/4 text-[#001e38] "
+            className="border p-2 w-1/4"
             value={item.quantity}
             onChange={(e) => handleQuantityChange(index, e.target.value)}
             min="1"
