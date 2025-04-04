@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/Button";
 
 const InvoiceForm = () => {
   const [searchEmail, setSearchEmail] = useState("");
-  const [customer, setCustomer] = useState<CustomerInvoice | null>(null);
+  const [customers, setCustomers] = useState<CustomerInvoice[] | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
   const [invoiceItems, setInvoiceItems] = useState<InvoiceItem[]>([{ productId: "", quantity: 1 }]);
   const [loading, setLoading] = useState(false);
@@ -38,17 +38,17 @@ const InvoiceForm = () => {
     setError(null);
 
     try {
-      const foundCustomer = await searchCustomerByEmail(searchEmail.trim().toLowerCase());
-      console.log("Setting customer state:", foundCustomer); // ✅ Debugging state update
+      const foundCustomers = await searchCustomerByEmail(searchEmail.trim().toLowerCase());
+      console.log("Setting customers state:", foundCustomers); // ✅ Debugging state update
 
-      if (foundCustomer) {
-        setCustomer(foundCustomer);
+      if (foundCustomers) {
+        setCustomers(foundCustomers);
       } else {
-        setError("Customer not found. A new customer will be created.");
+        setError("Customer not found. A new customers will be created.");
       }
     } catch (error) {
-      setError("Error fetching customer. Please try again.");
-      console.error("Error fetching customer:", error);
+      setError("Error fetching customers. Please try again.");
+      console.error("Error fetching customers:", error);
     } finally {
       setLoading(false);
     }
@@ -75,8 +75,8 @@ const InvoiceForm = () => {
   };
 
   const handleSubmit = async () => {
-    if (!searchEmail || !customer) {
-      alert("Please enter a valid email and find the customer before generating an invoice.");
+    if (!searchEmail || !customers) {
+      alert("Please enter a valid email and find the customers before generating an invoice.");
       return;
     }
 
@@ -89,9 +89,9 @@ const InvoiceForm = () => {
 
     try {
       const invoiceData = {
-        name: customer.name,
-        email: customer.email,
-        phone: customer.phone,
+        name: customers[0].name,
+        email: customers[0].email,
+        phone: customers[0].phone,
         products: invoiceItems,
       };
 
@@ -132,13 +132,13 @@ const InvoiceForm = () => {
       {loading && <p className="text-gray-500">Searching...</p>}
       {error && <p className="text-red-500">{error}</p>}
 
-      {customer && (
+      {customers && customers.map(customer=>(
         <div className="p-2 border rounded bg-gray-100 ">
           <p className="text-[#001e38]"><strong>Name:</strong> {customer.name}</p>
           <p><strong>Email:</strong> {customer.email}</p>
           <p><strong>Phone:</strong> {customer.phone}</p>
         </div>
-      )}
+      )) }
 
       <h2 className="text-lg font-semibold mt-4 mb-2 text-[#001e38]">Invoice Items</h2>
 
