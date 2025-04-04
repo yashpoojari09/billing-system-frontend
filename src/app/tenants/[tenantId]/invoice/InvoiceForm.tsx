@@ -8,12 +8,12 @@ import { Button } from "@/components/ui/Button";
 const InvoiceForm = () => {
   const [searchEmail, setSearchEmail] = useState("");
   const [customers, setCustomers] = useState<CustomerInvoice[] | null>(null);
+  const [selectedCustomer, setSelectedCustomer] = useState<CustomerInvoice | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
   const [invoiceItems, setInvoiceItems] = useState<InvoiceItem[]>([{ productId: "", quantity: 1 }]);
   const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [selectedCustomer, setSelectedCustomer] = useState<CustomerInvoice | null>(null);
 
   useEffect(() => {
     loadInventory();
@@ -24,7 +24,6 @@ const InvoiceForm = () => {
       const inventory = await getInventory();
       setProducts(inventory);
     } catch (error) {
-      console.error("Error loading inventory:", error);
       setError("Failed to load inventory. Please try again.");
     }
   };
@@ -40,20 +39,21 @@ const InvoiceForm = () => {
 
     try {
       const foundCustomers = await searchCustomerByEmail(searchEmail.trim().toLowerCase());
-
-      if (foundCustomers && foundCustomers.length > 0) {
+      if (foundCustomers.length > 0) {
         setCustomers(foundCustomers);
-        setSelectedCustomer(null); // Reset selected customer if a new search is made
       } else {
-        setCustomers([]);
-        setError("No customer found. You may need to create a new one.");
+        setError("No customers found. A new customer will be created.");
       }
     } catch (error) {
       setError("Error fetching customers. Please try again.");
-      console.error("Error fetching customers:", error);
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleSelectCustomer = (customer: CustomerInvoice) => {
+    setSelectedCustomer(customer);
+    setCustomers(null);
   };
 
   const handleProductChange = (index: number, productId: string) => {
@@ -74,13 +74,6 @@ const InvoiceForm = () => {
 
   const removeItem = (index: number) => {
     setInvoiceItems(invoiceItems.filter((_, i) => i !== index));
-  };
-
-  const calculateTotal = () => {
-    return invoiceItems.reduce((total, item) => {
-      const product = products.find((p) => p.id === item.productId);
-      return total + (product ? product.price * item.quantity : 0);
-    }, 0);
   };
 
   const handleSubmit = async () => {
@@ -108,11 +101,11 @@ const InvoiceForm = () => {
       if (response.success) {
         alert("Invoice generated successfully!");
         setInvoiceItems([{ productId: "", quantity: 1 }]);
+        setSelectedCustomer(null);
       } else {
         alert("Error generating invoice.");
       }
     } catch (error) {
-      console.error("Error submitting invoice:", error);
       alert("Error generating invoice.");
     } finally {
       setSubmitting(false);
@@ -126,7 +119,6 @@ const InvoiceForm = () => {
       {/* 🔍 Search Customer by Email */}
       <div className="flex gap-2">
         <input
-          name="email"
           type="email"
           placeholder="Enter Customer Email..."
           className="border p-2 w-full mb-2 text-[#001e38]"
@@ -141,17 +133,11 @@ const InvoiceForm = () => {
       {loading && <p className="text-gray-500">Searching...</p>}
       {error && <p className="text-red-500">{error}</p>}
 
-      {/* Customers List */}
-      {customers && customers.length > 0 && (
-        <div className="grid gap-2">
-          {customers.map((customer, i) => (
-            <div
-              key={i}
-              className={`p-2 border rounded cursor-pointer ${
-                selectedCustomer?.id === customer.id ? "bg-blue-200 border-blue-500" : "bg-gray-100"
-              }`}
-              onClick={() => setSelectedCustomer(customer)}
-            >
+      {customers && (
+        <div className="border p-2 rounded bg-gray-100 mt-2">
+          <h2 className="font-semibold">Select a Customer:</h2>
+          {customers.map((customer) => (
+            <div key={customer.id} className="p-2 border-b cursor-pointer hover:bg-gray-200" onClick={() => handleSelectCustomer(customer)}>
               <p><strong>Name:</strong> {customer.name}</p>
               <p><strong>Email:</strong> {customer.email}</p>
               <p><strong>Phone:</strong> {customer.phone}</p>
@@ -160,37 +146,33 @@ const InvoiceForm = () => {
         </div>
       )}
 
-      {/* Display Selected Customer */}
       {selectedCustomer && (
-        <div className="mt-4 p-4 border rounded bg-green-100">
-          <h3 className="text-md font-bold">Selected Customer:</h3>
+        <div className="border p-2 rounded bg-green-100 mt-4">
+          <h2 className="font-semibold">Selected Customer:</h2>
           <p><strong>Name:</strong> {selectedCustomer.name}</p>
           <p><strong>Email:</strong> {selectedCustomer.email}</p>
           <p><strong>Phone:</strong> {selectedCustomer.phone}</p>
         </div>
       )}
 
-      {/* Invoice Items */}
       <h2 className="text-lg font-semibold mt-4 mb-2 text-[#001e38]">Invoice Items</h2>
       {invoiceItems.map((item, index) => (
-        <div key={index} className="flex gap-2 mb-2 text-[#001e38]">
+        <div key={index} className="flex gap-2 mb-2">
           <select className="border p-2 w-1/2" value={item.productId} onChange={(e) => handleProductChange(index, e.target.value)}>
             <option value="">Select Product</option>
             {products.map((product) => (
               <option key={product.id} value={product.id}>{product.name} - ${product.price}</option>
             ))}
           </select>
-          <input name="quantity" type="number" className="border p-2 w-1/4" value={item.quantity} onChange={(e) => handleQuantityChange(index, Number(e.target.value))} min="1" />
+          <input type="number" className="border p-2 w-1/4" value={item.quantity} onChange={(e) => handleQuantityChange(index, Number(e.target.value))} min="1" />
           <Button type="button" className="bg-red-500 text-white px-2 rounded" onClick={() => removeItem(index)}>❌</Button>
         </div>
       ))}
 
-      {/* Total & Submit */}
-      <p className="font-semibold text-lg mt-2">Total: ${calculateTotal()}</p>
-
-      <Button type="submit" className="bg-green-500 text-white px-4 py-2 rounded w-full mt-4" onClick={handleSubmit} disabled={submitting}>
-        {submitting ? "Generating..." : "Generate Invoice"}
-      </Button>
+      <div className="flex gap-4 mt-4">
+        <Button type="button" className="bg-blue-500 text-white px-4 py-2 rounded" onClick={addItem}>➕ Add Item</Button>
+        <Button type="button" className="bg-green-500 text-white px-4 py-2 rounded w-full" onClick={handleSubmit} disabled={submitting}>{submitting ? "Generating..." : "Generate Invoice"}</Button>
+      </div>
     </div>
   );
 };
