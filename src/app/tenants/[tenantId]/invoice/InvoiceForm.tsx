@@ -13,6 +13,7 @@ const InvoiceForm = () => {
   const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [selectedCustomer, setSelectedCustomer] = useState<CustomerInvoice | null>(null);
 
   useEffect(() => {
     loadInventory();
@@ -39,12 +40,13 @@ const InvoiceForm = () => {
 
     try {
       const foundCustomers = await searchCustomerByEmail(searchEmail.trim().toLowerCase());
-      console.log("Setting customers state:", foundCustomers); // ✅ Debugging state update
 
-      if (foundCustomers) {
+      if (foundCustomers && foundCustomers.length > 0) {
         setCustomers(foundCustomers);
+        setSelectedCustomer(null); // Reset selected customer if a new search is made
       } else {
-        setError("Customer not found. A new customers will be created.");
+        setCustomers([]);
+        setError("No customer found. You may need to create a new one.");
       }
     } catch (error) {
       setError("Error fetching customers. Please try again.");
@@ -74,9 +76,16 @@ const InvoiceForm = () => {
     setInvoiceItems(invoiceItems.filter((_, i) => i !== index));
   };
 
+  const calculateTotal = () => {
+    return invoiceItems.reduce((total, item) => {
+      const product = products.find((p) => p.id === item.productId);
+      return total + (product ? product.price * item.quantity : 0);
+    }, 0);
+  };
+
   const handleSubmit = async () => {
-    if (!searchEmail || !customers) {
-      alert("Please enter a valid email and find the customers before generating an invoice.");
+    if (!selectedCustomer) {
+      alert("Please select a customer before generating an invoice.");
       return;
     }
 
@@ -89,9 +98,9 @@ const InvoiceForm = () => {
 
     try {
       const invoiceData = {
-        name: customers[0].name,
-        email: customers[0].email,
-        phone: customers[0].phone,
+        name: selectedCustomer.name,
+        email: selectedCustomer.email,
+        phone: selectedCustomer.phone,
         products: invoiceItems,
       };
 
@@ -132,58 +141,56 @@ const InvoiceForm = () => {
       {loading && <p className="text-gray-500">Searching...</p>}
       {error && <p className="text-red-500">{error}</p>}
 
-      {customers && customers.map((customer, i)=>(
-        <div key={i} className="p-2 border rounded bg-gray-100 ">
-          <p><strong>Name:</strong> {customer.name}</p>
-          <p><strong>Email:</strong> {customer.email}</p>
-          <p><strong>Phone:</strong> {customer.phone}</p>
+      {/* Customers List */}
+      {customers && customers.length > 0 && (
+        <div className="grid gap-2">
+          {customers.map((customer, i) => (
+            <div
+              key={i}
+              className={`p-2 border rounded cursor-pointer ${
+                selectedCustomer?.id === customer.id ? "bg-blue-200 border-blue-500" : "bg-gray-100"
+              }`}
+              onClick={() => setSelectedCustomer(customer)}
+            >
+              <p><strong>Name:</strong> {customer.name}</p>
+              <p><strong>Email:</strong> {customer.email}</p>
+              <p><strong>Phone:</strong> {customer.phone}</p>
+            </div>
+          ))}
         </div>
-      )) }
+      )}
 
+      {/* Display Selected Customer */}
+      {selectedCustomer && (
+        <div className="mt-4 p-4 border rounded bg-green-100">
+          <h3 className="text-md font-bold">Selected Customer:</h3>
+          <p><strong>Name:</strong> {selectedCustomer.name}</p>
+          <p><strong>Email:</strong> {selectedCustomer.email}</p>
+          <p><strong>Phone:</strong> {selectedCustomer.phone}</p>
+        </div>
+      )}
+
+      {/* Invoice Items */}
       <h2 className="text-lg font-semibold mt-4 mb-2 text-[#001e38]">Invoice Items</h2>
-
       {invoiceItems.map((item, index) => (
         <div key={index} className="flex gap-2 mb-2 text-[#001e38]">
-          <select
-            className="border p-2 w-1/2 text-[#001e38]"
-            value={item.productId}
-            onChange={(e) => handleProductChange(index, e.target.value)}
-          >
+          <select className="border p-2 w-1/2" value={item.productId} onChange={(e) => handleProductChange(index, e.target.value)}>
             <option value="">Select Product</option>
             {products.map((product) => (
-              <option key={product.id} value={product.id}>
-                {product.name} - ${product.price}
-              </option>
+              <option key={product.id} value={product.id}>{product.name} - ${product.price}</option>
             ))}
           </select>
-          <input
-            name="quantity"
-            type="number"
-            className="border p-2 w-1/4"
-            value={item.quantity}
-            onChange={(e) => handleQuantityChange(index, Number(e.target.value))}
-            min="1"
-          />
-          <Button type="button" className="bg-red-500 text-white px-2 rounded" onClick={() => removeItem(index)}>
-            ❌
-          </Button>
+          <input name="quantity" type="number" className="border p-2 w-1/4" value={item.quantity} onChange={(e) => handleQuantityChange(index, Number(e.target.value))} min="1" />
+          <Button type="button" className="bg-red-500 text-white px-2 rounded" onClick={() => removeItem(index)}>❌</Button>
         </div>
       ))}
 
-      <div className="flex gap-4 mt-4">
-        <Button type="button" className="bg-blue-500 text-white px-4 py-2 rounded" onClick={addItem}>
-          ➕ Add Item
-        </Button>
+      {/* Total & Submit */}
+      <p className="font-semibold text-lg mt-2">Total: ${calculateTotal()}</p>
 
-        <Button
-          type="button"
-          className="bg-green-500 text-white px-4 py-2 rounded w-full"
-          onClick={handleSubmit}
-          disabled={submitting}
-        >
-          {submitting ? "Generating..." : "Generate Invoice"}
-        </Button>
-      </div>
+      <Button type="submit" className="bg-green-500 text-white px-4 py-2 rounded w-full mt-4" onClick={handleSubmit} disabled={submitting}>
+        {submitting ? "Generating..." : "Generate Invoice"}
+      </Button>
     </div>
   );
 };
