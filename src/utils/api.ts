@@ -215,7 +215,6 @@ export const getCustomers = async () => {
 export const addCustomer = async (customer: { name: string; email: string; phone:string }) => {
   try {
     const tenantId = localStorage.getItem("tenantId");
-    if (!tenantId) throw new Error("Tenant ID is missing. Please log in again.");
     
     if (!tenantId) {
       throw new Error("Tenant ID is missing. Please log in again.");
