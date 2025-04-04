@@ -220,8 +220,13 @@ export const addCustomer = async (customer: {name:string; email:string; phone:st
     }
 
     const response = await api.post(`${API_URL}/tenants/${tenantId}/customers`, customer,
-       { headers: getAuthHeaders(),       withCredentials: true // ✅ Ensures cookies (refresh token) are sent
-       });
+      {
+        headers: {
+          ...getAuthHeaders(),
+          "Content-Type": "application/json",
+        },
+        withCredentials: true, // ✅ send cookies (for refresh token)
+      });
 
     return response.data; // Return response data
   } catch (error) {
