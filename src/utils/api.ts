@@ -1,7 +1,6 @@
 import axios from "axios";
 import {Customer, InvoiceRequest} from "@/types";
 export const API_URL="https://billing-system-lemon.vercel.app/api";
-import {cus} from "@/types";
 
 // Get tokens from localStorage
 export const getAuthHeaders = () => {
@@ -212,7 +211,7 @@ export const getCustomers = async () => {
     }
   }
 };
-export const addCustomer = async (customer: Customer) => {
+export const addCustomer = async (customer: {name:string; email:string; phone:string}) => {
   try {
     const tenantId = localStorage.getItem("tenantId");
     
