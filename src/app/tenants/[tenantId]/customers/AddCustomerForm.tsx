@@ -16,7 +16,7 @@ export default function AddCustomerForm({
   onCustomerAdded,
 }: {
   onClose: () => void;
-  onCustomerAdded: (customer: Customer) => void;
+  onCustomerAdded: (customer: FormData) => void;
 }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
