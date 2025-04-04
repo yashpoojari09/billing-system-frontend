@@ -56,7 +56,7 @@ export default function CustomersPage() {
 
       <div className="flex flex-col sm:flex-row justify-between items-center mb-4 gap-2">
         <Button type="button" onClick={() => setIsAddModalOpen(true)} className="w-full sm:w-auto">
-          + Add Customer
+          +
         </Button>
       </div>
 
