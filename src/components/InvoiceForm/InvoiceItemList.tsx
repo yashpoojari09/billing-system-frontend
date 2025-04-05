@@ -1,7 +1,7 @@
 // components/InvoiceForm/InvoiceItemList.tsx
 "use client";
 
-import { InvoiceItem, Product } from "@/types";
+import { InvoiceItem, Product } from "@/types/types";
 import { Button } from "@/components/ui/Button";
 
 interface Props {

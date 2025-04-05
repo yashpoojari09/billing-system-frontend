@@ -1,5 +1,5 @@
 // components/InvoiceForm/InvoiceSummary.tsx
-import { InvoiceItem } from "@/types";
+import { InvoiceItem } from "@/types/types";
 
 interface Props {
   items: InvoiceItem[];

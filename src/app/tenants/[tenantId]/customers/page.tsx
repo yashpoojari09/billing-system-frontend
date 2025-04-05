@@ -6,7 +6,7 @@ import AddCustomerForm from "./AddCustomerForm";
 import { useRouter, useParams } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { getCustomers } from "@/utils/api"; // ✅ Ensure this is imported
-import { Customer } from "@/types"
+import { Customer } from "@/types/types"
 
 export default function CustomersPage() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);

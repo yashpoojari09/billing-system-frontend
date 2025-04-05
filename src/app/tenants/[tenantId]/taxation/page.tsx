@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/Button"
 import { useRouter } from "next/navigation";
 import TaxTable from "./TaxTable";
 import { getTaxRules } from "@/utils/api";
-import { TaxRuleProps } from "@/types";
+import { TaxRuleProps } from "@/types/types";
 
 
 export default function TaxTablePage() {

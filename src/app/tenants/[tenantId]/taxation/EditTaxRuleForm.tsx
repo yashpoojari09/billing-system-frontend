@@ -5,7 +5,7 @@ import { updateTaxRule } from "@/utils/api";
 import { taxRuleSchema } from "@/utils/validation";
 import { z } from "zod";
 import { ButtonDash } from "@/components/ui/Button";
-import { TaxRuleProps } from "@/types";
+import { TaxRuleProps } from "@/types/types";
 
 export default function EditTaxRuleForm({
   taxRules,

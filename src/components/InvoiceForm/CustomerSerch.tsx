@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { searchCustomerByEmail } from "@/utils/api";
-import { CustomerInvoice } from "@/types";
+import { CustomerInvoice } from "@/types/types";
 import { Button } from "@/components/ui/Button";
 
 interface Props {

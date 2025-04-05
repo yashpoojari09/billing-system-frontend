@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
 import { API_URL } from "@/utils/api";
-import { FormData } from "@/types";
+import { FormData } from "@/types/types";
 import { getAuthHeaders } from "@/utils/api";
 import { ButtonDash } from "@/components/ui/Button";
 

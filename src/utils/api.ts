@@ -1,5 +1,5 @@
 import axios from "axios";
-import {Customer, InvoiceRequest} from "@/types";
+import {Customer, InvoiceRequest} from "@/types/types";
 export const API_URL="https://billing-system-lemon.vercel.app/api";
 
 // Get tokens from localStorage

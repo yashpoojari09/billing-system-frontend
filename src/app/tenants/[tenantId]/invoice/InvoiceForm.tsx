@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { CustomerInvoice, InvoiceItem, Product } from "@/types";
+import { CustomerInvoice, InvoiceItem, Product } from "@/types/types";
 import { getInventory, createInvoice } from "@/utils/api";
 import { CustomerSearch } from "@/components/InvoiceForm/CustomerSerch";
 import { InvoiceItemList } from "@/components/InvoiceForm/InvoiceItemList";
 import { InvoiceSummary } from "@/components/InvoiceForm/InvoiceSummary";
 import { Button } from "@/components/ui/Button";
+import { handleInvoicePDF } from "@/utils/pdfHandler";
 
 const InvoiceForm = () => {
   const [selectedCustomer, setSelectedCustomer] = useState<CustomerInvoice | null>(null);
@@ -36,9 +37,14 @@ const InvoiceForm = () => {
     try {
       const response = await createInvoice(invoiceData);
       if (response.success) {
+        const { receiptNumber } = response.data;
+        const tenantId = localStorage.getItem("tenantId");
+        if (tenantId && receiptNumber) {
+          handleInvoicePDF(tenantId, receiptNumber, "both"); // or "view", "download"
+        }
         alert("Invoice generated!");
         setSelectedCustomer(null);
-        setItems([{ productId: "", quantity: 1, price: 0, totalPrice: 0 }]);
+        // setItems([{ productId: "", quantity: 1, price: 0, totalPrice: 0 }]);
       } else {
         alert("Failed to generate invoice.");
       }

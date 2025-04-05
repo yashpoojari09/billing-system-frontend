@@ -4,7 +4,7 @@
 import { useRouter } from "next/navigation";
 import { deleteCustomer } from "@/utils/api";
 // import EditCustomerForm from "./[customerId]/EditCustomerForm";
-import { CustomersTableProps } from "@/types";
+import { CustomersTableProps } from "@/types/types";
 import { ButtonEd } from "@/components/ui/Button";
 
 

@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { customerSchema } from "@/utils/validation";
 import { addCustomer } from "@/utils/api";
 import { z } from "zod";
-import { Customer } from "@/types";
+import { Customer } from "@/types/types";
 import { ButtonDash } from "@/components/ui/Button";
 
 type CustomerFormValues = z.infer<typeof customerSchema>;

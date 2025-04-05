@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { deleteTaxRule } from "@/utils/api";
 import EditTaxRuleForm from "./EditTaxRuleForm";
-import { TaxRuleProps } from "@/types";
+import { TaxRuleProps } from "@/types/types";
 import { ButtonEd } from "@/components/ui/Button";
 
 export default function TaxationTable({fetchTaxRules, taxRules, isLoading}: { taxRules: TaxRuleProps[]; fetchTaxRules: () => void; isLoading:boolean }) {
