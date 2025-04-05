@@ -336,7 +336,24 @@ export const deleteTaxRule = async (taxId: string) => {
   return response.data;
 };
 
-//Submit invoice
+
+
+// export const fetchInvoicePreview = async (formData: any ) => {
+//   const tenantId = localStorage.getItem("tenantId");
+
+//   try {
+//     const response = await api.post(`${API_URL}/tenants/${tenantId}/invoice/preview`, formData, {
+//       headers: {
+//         'Content-Type': 'application/json',
+//         ...getAuthHeaders()
+//       }
+//     });
+//     return response.data.invoicePreview;
+//   } catch (error) {
+//     console.error('Error fetching invoice preview:', error);
+//     throw error;
+//   }
+// };
 
 // ✅ Submit invoice
 export const createInvoice = async (invoiceData: InvoiceRequest) => {
@@ -347,7 +364,7 @@ export const createInvoice = async (invoiceData: InvoiceRequest) => {
     }
     const tenantId = localStorage.getItem("tenantId");
 
-    const response = await api.post(`${API_URL}/tenants/${tenantId}invoice`, invoiceData, {
+    const response = await api.post(`${API_URL}/tenants/${tenantId}/invoice`, invoiceData, {
       headers: {
         ...getAuthHeaders(),
 

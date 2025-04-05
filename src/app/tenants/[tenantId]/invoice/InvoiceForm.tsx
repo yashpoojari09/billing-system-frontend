@@ -1,112 +1,47 @@
-"use client";
-
-import { useState, useEffect } from "react";
-import { searchCustomerByEmail, getInventory, createInvoice } from "@/utils/api";
-import { InvoiceItem, Product, CustomerInvoice } from "@/types";
+import { useEffect, useState } from "react";
+import { CustomerInvoice, InvoiceItem, Product } from "@/types";
+import { getInventory, createInvoice } from "@/utils/api";
+import { CustomerSearch } from "@/components/InvoiceForm/CustomerSerch";
+import { InvoiceItemList } from "@/components/InvoiceForm/InvoiceItemList";
+import { InvoiceSummary } from "@/components/InvoiceForm/InvoiceSummary";
 import { Button } from "@/components/ui/Button";
 
 const InvoiceForm = () => {
-  const [searchEmail, setSearchEmail] = useState("");
-  const [customers, setCustomers] = useState<CustomerInvoice[] | null>(null);
   const [selectedCustomer, setSelectedCustomer] = useState<CustomerInvoice | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
-  const [invoiceItems, setInvoiceItems] = useState<InvoiceItem[]>([{ productId: "", quantity: 1 }]);
-  const [loading, setLoading] = useState(false);
+  const [items, setItems] = useState<InvoiceItem[]>([{ productId: "", quantity: 1, price: 0, totalPrice: 0 }]);
   const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    loadInventory();
+    getInventory().then(setProducts);
   }, []);
-
-  const loadInventory = async () => {
-    try {
-      const inventory = await getInventory();
-      setProducts(inventory);
-    } catch  {
-      setError("Failed to load inventory. Please try again.");
-    }
-  };
-
-  const handleSearch = async () => {
-    if (!searchEmail.trim()) {
-      alert("Please enter a valid email.");
-      return;
-    }
-
-    setLoading(true);
-    setError(null);
-
-    try {
-      const foundCustomers = await searchCustomerByEmail(searchEmail.trim().toLowerCase());
-      if (foundCustomers.length > 0) {
-        setCustomers(foundCustomers);
-      } else {
-        setError("No customers found. A new customer will be created.");
-      }
-    } catch {
-      setError("Error fetching customers. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleSelectCustomer = (customer: CustomerInvoice) => {
-    setSelectedCustomer(customer);
-    setCustomers(null);
-  };
-
-  const handleProductChange = (index: number, productId: string) => {
-    const updatedItems = [...invoiceItems];
-    updatedItems[index] = { ...updatedItems[index], productId };
-    setInvoiceItems(updatedItems);
-  };
-
-  const handleQuantityChange = (index: number, quantity: number) => {
-    const updatedItems = [...invoiceItems];
-    updatedItems[index] = { ...updatedItems[index], quantity: Number(quantity) };
-    setInvoiceItems(updatedItems);
-  };
-
-  const addItem = () => {
-    setInvoiceItems([...invoiceItems, { productId: "", quantity: 1 }]);
-  };
-
-  const removeItem = (index: number) => {
-    setInvoiceItems(invoiceItems.filter((_, i) => i !== index));
-  };
 
   const handleSubmit = async () => {
     if (!selectedCustomer) {
-      alert("Please select a customer before generating an invoice.");
+      alert("Please select a customer.");
       return;
     }
 
-    if (invoiceItems.some((item) => !item.productId)) {
-      alert("Please select a product for all invoice items.");
-      return;
-    }
+    const total = items.reduce((sum, item) => sum + item.totalPrice, 0);
+
+    const invoiceData = {
+      name: selectedCustomer.name,
+      email: selectedCustomer.email,
+      phone: selectedCustomer.phone,
+      products: items,
+      totalAmount: total,
+    };
 
     setSubmitting(true);
-
     try {
-      const invoiceData = {
-        name: selectedCustomer.name,
-        email: selectedCustomer.email,
-        phone: selectedCustomer.phone,
-        products: invoiceItems,
-      };
-
       const response = await createInvoice(invoiceData);
       if (response.success) {
-        alert("Invoice generated successfully!");
-        setInvoiceItems([{ productId: "", quantity: 1 }]);
+        alert("Invoice generated!");
         setSelectedCustomer(null);
+        setItems([{ productId: "", quantity: 1, price: 0, totalPrice: 0 }]);
       } else {
-        alert("Error generating invoice.");
+        alert("Failed to generate invoice.");
       }
-    } catch {
-      alert("Error generating invoice.");
     } finally {
       setSubmitting(false);
     }
@@ -116,63 +51,21 @@ const InvoiceForm = () => {
     <div className="p-6 max-w-2xl mx-auto bg-white rounded shadow">
       <h1 className="text-xl font-bold mb-4 text-[#001e38]">Generate Invoice</h1>
 
-      {/* 🔍 Search Customer by Email */}
-      <div className="flex gap-2">
-        <input
-          type="email"
-          placeholder="Enter Customer Email..."
-          className="border p-2 w-full mb-2 text-[#001e38]"
-          value={searchEmail}
-          onChange={(e) => setSearchEmail(e.target.value)}
-        />
-        <Button type="button" className="bg-blue-500 text-white px-4 py-2 rounded" onClick={handleSearch}>
-          Search
-        </Button>
-      </div>
+      <CustomerSearch   selectedCustomer={selectedCustomer}
+ onCustomerSelect={setSelectedCustomer} />
 
-      {loading && <p className="text-gray-500">Searching...</p>}
-      {error && <p className="text-red-500">{error}</p>}
+ 
 
-      {customers && (
-        <div className="border p-2 rounded bg-gray-100 mt-2">
-          <h2 className="font-semibold">Select a Customer:</h2>
-          {customers.map((customer) => (
-            <div key={customer.id} className="p-2 border-b cursor-pointer hover:bg-gray-200" onClick={() => handleSelectCustomer(customer)}>
-              <p><strong>Name:</strong> {customer.name}</p>
-              <p><strong>Email:</strong> {customer.email}</p>
-              <p><strong>Phone:</strong> {customer.phone}</p>
-            </div>
-          ))}
-        </div>
-      )}
+      <InvoiceItemList items={items} products={products} onItemsChange={setItems} />
+      <InvoiceSummary items={items} />
 
-      {selectedCustomer && (
-        <div className="border p-2 rounded bg-green-100 mt-4">
-          <h2 className="font-semibold">Selected Customer:</h2>
-          <p><strong>Name:</strong> {selectedCustomer.name}</p>
-          <p><strong>Email:</strong> {selectedCustomer.email}</p>
-          <p><strong>Phone:</strong> {selectedCustomer.phone}</p>
-        </div>
-      )}
-
-      <h2 className="text-lg font-semibold mt-4 mb-2 text-[#001e38]">Invoice Items</h2>
-      {invoiceItems.map((item, index) => (
-        <div key={index} className="flex gap-2 mb-2">
-          <select className="border p-2 w-1/2" value={item.productId} onChange={(e) => handleProductChange(index, e.target.value)}>
-            <option value="">Select Product</option>
-            {products.map((product) => (
-              <option key={product.id} value={product.id}>{product.name} - ${product.price}</option>
-            ))}
-          </select>
-          <input type="number" className="border p-2 w-1/4" value={item.quantity} onChange={(e) => handleQuantityChange(index, Number(e.target.value))} min="1" />
-          <Button type="button" className="bg-red-500 text-white px-2 rounded" onClick={() => removeItem(index)}>❌</Button>
-        </div>
-      ))}
-
-      <div className="flex gap-4 mt-4">
-        <Button type="button" className="bg-blue-500 text-white px-4 py-2 rounded" onClick={addItem}>➕ Add Item</Button>
-        <Button type="button" className="bg-green-500 text-white px-4 py-2 rounded w-full" onClick={handleSubmit} disabled={submitting}>{submitting ? "Generating..." : "Generate Invoice"}</Button>
-      </div>
+      <Button type="submit"
+        onClick={handleSubmit}
+        className="mt-4 bg-green-500 text-white px-4 py-2 rounded w-full"
+        disabled={submitting}
+      >
+        {submitting ? "Generating..." : "Generate Invoice"}
+      </Button>
     </div>
   );
 };

@@ -39,3 +39,7 @@ export const taxRuleSchema = z.object({
   taxRate: z.number().min(0, { message: "Tax rate must be a positive number" }),
   region: z.string().min(1, { message: "Region is required" }),
 });
+
+//invoice form 
+
+
