@@ -51,11 +51,13 @@ export default function CustomersPage() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto py-10 px-4">
-      <h1 className="text-2xl font-bold mb-6 text-center break-words">Customers Management: {tenantId}</h1>
+    <div className="max-w-5xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
+       <h1 className="text-2xl font-bold mb-6 text-center">Customers Management: {tenantId}</h1>
 
-      <div className="flex flex-col sm:flex-row justify-between items-center mb-4 gap-2">
-        <Button type="button" onClick={() => setIsAddModalOpen(true)} className="w-full sm:w-auto">
+      <div className="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4">
+        <Button type="button" onClick={() => setIsAddModalOpen(true)} 
+          className="flex justify-center sm:justify-end bg-blue-600 text-white px-4 py-2 rounded-md w-full sm:w-auto"
+          >
           +
         </Button>
       </div>

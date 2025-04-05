@@ -29,7 +29,7 @@ export default function CustomersTable({ customers, setCustomers, isLoading }: C
   };
 
   return (
-    <div className="bg-white p-4 shadow rounded-lg w-full max-w-4xl mx-auto overflow-x-auto">
+    <div className="bg-white p-4 shadow rounded-lg">
       <h2 className="text-xl font-bold mb-4 text-[#000000] text-center">Customers List</h2>
 
       <div className="overflow-x-auto">

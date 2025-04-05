@@ -45,7 +45,7 @@ useEffect(() => {
       <div className="flex flex-col sm:flex-row justify-between items-center mb-4 space-y-3 sm:space-y-0 sm:space-x-4">
 
         <Button type="button" onClick={() => setIsAddModalOpen(true)} className="bg-blue-600 text-white px-4 py-2 rounded-md w-full sm:w-auto">
-          + Add Inventory
+          +
         </Button>
       </div>
 

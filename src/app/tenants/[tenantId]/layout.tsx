@@ -2,7 +2,9 @@
 
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState, useCallback, useRef } from "react";
-import { FiMenu } from "react-icons/fi";
+import { FiMenu, FiLogOut } from "react-icons/fi";
+import { FaFileInvoice, FaUsers, FaBoxes, FaFileInvoiceDollar } from 'react-icons/fa';
+
 
 
 const TenantLayout = ({ children }: { children: React.ReactNode }) => {
@@ -60,53 +62,52 @@ const TenantLayout = ({ children }: { children: React.ReactNode }) => {
       {/* ✅ Sidebar (Mobile & Desktop) */}
       <div
         ref={sidebarRef}
-        className={`fixed inset-y-0 left-0 w-64 bg-gray-900 text-white p-5 transition-transform duration-300 z-30 md:relative ${
-          isSidebarOpen ? "translate-x-0" : "-translate-x-64 md:translate-x-0"
-        }`}
+        className={`fixed inset-y-0 left-0 w-64 bg-gray-900 text-white p-5 transition-transform duration-300 z-30 md:relative ${isSidebarOpen ? "translate-x-0" : "-translate-x-64 md:translate-x-0"
+          }`}
       >
         <h2 className="text-lg font-bold mb-6">Tenant Dashboard</h2>
         <ul className="space-y-3">
-           <li>
+          <li>
             <button
               onClick={() => handleNavigation(`/tenants/${tenantId}/invoice`)}
-              className={`w-full text-left px-4 py-2 block rounded cursor-pointer ${
-                pathname?.includes("invoice") ? "bg-blue-600" : "hover:bg-gray-700"
-              }`}
+              className={`w-full text-left px-4 py-2 flex items-center rounded cursor-pointer ${pathname?.includes("invoice") ? "bg-blue-600" : "hover:bg-gray-700"
+                }`}
             >
-              Invoice
+              <FaFileInvoice className="mr-2" />
+              <span>Invoice</span>
             </button>
           </li>
           <li>
             <button
               onClick={() => handleNavigation(`/tenants/${tenantId}/customers`)}
-              className={`w-full text-left px-4 py-2 block rounded cursor-pointer ${
-                pathname?.includes("customers") ? "bg-blue-600" : "hover:bg-gray-700"
-              }`}
+              className={`w-full text-left px-4 py-2 flex items-center rounded cursor-pointer ${pathname?.includes("customers") ? "bg-blue-600" : "hover:bg-gray-700"
+                }`}
             >
+              <FaUsers className="mr-2" />
               Customers
             </button>
           </li>
           <li>
             <button
               onClick={() => handleNavigation(`/tenants/${tenantId}/inventory`)}
-              className={`w-full text-left px-4 py-2 block rounded cursor-pointer ${
-                pathname?.includes("inventory") ? "bg-blue-600" : "hover:bg-gray-700"
-              }`}
+              className={`w-full text-left px-4 py-2 flex items-center rounded cursor-pointer ${pathname?.includes("inventory") ? "bg-blue-600" : "hover:bg-gray-700"
+                }`}
             >
+              <FaBoxes className="mr-2" />
               Inventory
             </button>
           </li>
           <li>
             <button
               onClick={() => handleNavigation(`/tenants/${tenantId}/taxation`)}
-              className={`w-full text-left px-4 py-2 block rounded cursor-pointer ${
-                pathname?.includes("taxation") ? "bg-blue-600" : "hover:bg-gray-700"
-              }`}
+              className={`w-full text-left px-4 py-2 flex items-center rounded cursor-pointer ${pathname?.includes("taxation") ? "bg-blue-600" : "hover:bg-gray-700"
+                }`}
             >
+              <FaFileInvoiceDollar className="mr-2" />
               Taxation
             </button>
           </li>
-         
+
         </ul>
 
         <div className="mt-100">
@@ -114,7 +115,7 @@ const TenantLayout = ({ children }: { children: React.ReactNode }) => {
             onClick={handleLogout}
             className="w-full bg-gray-700 hover:bg-gray-600 text-white  px-4 py-2 rounded cursor-pointer"
           >
-            Logout
+            <FiLogOut className="ml-15" style={{ transform: 'rotate(180deg)', fontSize: '24px' }} />
           </button>
         </div>
       </div>

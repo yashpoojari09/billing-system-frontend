@@ -53,7 +53,7 @@ export default function InventoryTable({ inventory, fetchInventory, isLoading }:
   };
 
   return (
-    <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md mt-6">
+    <div className="bg-white p-4 shadow rounded-lg">
       <h2 className="text-lg font-bold mb-4 text-gray-700">Inventory List</h2>
 
       {/* Table */}

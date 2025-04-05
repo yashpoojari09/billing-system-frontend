@@ -48,7 +48,7 @@ export default function TaxTablePage() {
           onClick={() => setIsAddModalOpen(true)}
           className="flex justify-center sm:justify-end bg-blue-600 text-white px-4 py-2 rounded-md w-full sm:w-auto"
         >
-          + Add Tax Rule
+          +
         </Button>
       </div>
       {/* TaxTableTable Table */}
