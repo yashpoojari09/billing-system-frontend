@@ -144,3 +144,4 @@ export interface InvoiceSummaryProps {
   items: InvoiceItem[];
   products: Product[];
 }
+

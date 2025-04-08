@@ -407,3 +407,27 @@ export const searchCustomerByEmail = async (search: string) => {
     return null;
   }
 };
+
+import { TenantSettingsFormData} from '@/utils/validation';
+
+
+
+// settings api 
+export const fetchTenantSettings = async (): Promise<TenantSettingsFormData | null> => {
+  try {
+    const res = await axios.get("/api/settings");
+    return res.data || null;
+  } catch (error) {
+    console.error("Error fetching settings:", error);
+    throw error;
+  }
+};
+
+export const updateTenantSettings = async (data: TenantSettingsFormData): Promise<void> => {
+  try {
+    await axios.put("/api/settings", data);
+  } catch (error) {
+    console.error("Error updating settings:", error);
+    throw error;
+  }
+};

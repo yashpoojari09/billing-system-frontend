@@ -3,7 +3,7 @@
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState, useCallback, useRef } from "react";
 import { FiMenu, FiLogOut } from "react-icons/fi";
-import { FaFileInvoice, FaUsers, FaBoxes, FaFileInvoiceDollar } from 'react-icons/fa';
+import { FaFileInvoice, FaUsers, FaBoxes, FaFileInvoiceDollar, FaCog } from 'react-icons/fa';
 
 
 
@@ -105,6 +105,16 @@ const TenantLayout = ({ children }: { children: React.ReactNode }) => {
             >
               <FaFileInvoiceDollar className="mr-2" />
               Taxation
+            </button>
+          </li>
+          <li>
+            <button
+              onClick={() => handleNavigation(`/tenants/${tenantId}/settings`)}
+              className={`w-full text-left px-4 py-2 flex items-center rounded cursor-pointer ${pathname?.includes("taxation") ? "bg-blue-600" : "hover:bg-gray-700"
+                }`}
+            >
+              <FaCog className="mr-2" />
+              Settings
             </button>
           </li>
 

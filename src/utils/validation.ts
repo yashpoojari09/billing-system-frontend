@@ -42,6 +42,15 @@ export const taxRuleSchema = z.object({
   
 });
 
-//invoice form 
+//tenant settings Schema
 
+export const tenantSettingsSchema = z.object({
+  businessName: z.string().min(1),
+  address: z.string().min(1),
+  gstin: z.string().min(1),
+  phone: z.string().min(8),
+  upiId: z.string().optional(),
+  terms: z.string().optional(),
+});
 
+export type TenantSettingsFormData = z.infer<typeof tenantSettingsSchema>;
