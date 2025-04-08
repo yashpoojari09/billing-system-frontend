@@ -6,7 +6,6 @@ import { inventorySchema } from "@/utils/validation";
 import { addInventoryItem } from "@/utils/api";
 import { z } from "zod";
 import { ButtonDash } from "@/components/ui/Button";
-import { useState } from "react";
 import { TaxRuleProps } from "@/types/taxRule";
 
 type InventoryFormValues = z.infer<typeof inventorySchema>;
@@ -22,14 +21,14 @@ export default function AddInventory({ onClose, fetchInventory, fetchTaxRules, t
     formState: { errors, isSubmitting },
   } = useForm<InventoryFormValues>({
     resolver: zodResolver(inventorySchema),
+    defaultValues: {
+      name: '',
+      stock: 0,
+      price: 0,
+      taxId: '', // Set the default taxId here
+    },
   });
-  const [form, setForm] = useState({
-    name: '',
-    price: 0,
-    stock: 0,
-    taxId: '',
-  });
-
+ 
   // Handle form submission
   const onSubmit = async (data: InventoryFormValues) => {
     try {
@@ -43,9 +42,7 @@ export default function AddInventory({ onClose, fetchInventory, fetchTaxRules, t
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
-  };
+
 
   return (
     <>
@@ -96,9 +93,10 @@ export default function AddInventory({ onClose, fetchInventory, fetchTaxRules, t
                   {tax.region} - {(tax.taxRate * 100).toFixed(2)}%
                 </option>
               ))}
-              {errors.taxId && <p className="text-red-500 text-sm">{errors.taxId.message}</p>}
 
             </select>
+            {errors.taxId && <p className="text-red-500 text-sm">{errors.taxId.message}</p>}
+
             {/* Submit Button */}
             <div className="flex flex-col sm:flex-row justify-between gap-2">
               <ButtonDash
