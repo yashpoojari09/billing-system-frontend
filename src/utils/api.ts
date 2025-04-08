@@ -415,7 +415,11 @@ import { TenantSettingsFormData} from '@/utils/validation';
 // settings api 
 export const fetchTenantSettings = async (): Promise<TenantSettingsFormData | null> => {
   try {
-    const res = await axios.get("/api/settings");
+    const tenantId = localStorage.getItem("tenantId");
+    if (!tenantId) {
+      throw new Error("Tenant ID is missing. Please log in again.");
+    }
+    const res = await api.get(`${API_URL}/tenants/${tenantId}/settings`);
     return res.data || null;
   } catch (error) {
     console.error("Error fetching settings:", error);
@@ -425,7 +429,11 @@ export const fetchTenantSettings = async (): Promise<TenantSettingsFormData | nu
 
 export const updateTenantSettings = async (data: TenantSettingsFormData): Promise<void> => {
   try {
-    await axios.put("/api/settings", data);
+    const tenantId = localStorage.getItem("tenantId");
+    if (!tenantId) {
+      throw new Error("Tenant ID is missing. Please log in again.");
+    }
+    await api.put(`${API_URL}/tenants/${tenantId}/settings`, data);
   } catch (error) {
     console.error("Error updating settings:", error);
     throw error;
