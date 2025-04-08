@@ -5,20 +5,19 @@ import { updateInventoryItem } from "@/utils/api";
 import { inventorySchema } from "@/utils/validation";
 import { z } from "zod";
 import { ButtonDash } from "@/components/ui/Button";
+import { TaxRuleProps } from "@/types/taxRule";
+import { InventoryItem } from "@/types/types";
 
-
-
-type InventoryItem = {
-  id: string;
-  name: string;
-  stock: number;
-  price: number;
-};
 
 export default function EditInventoryForm(
-  { inventoryItem, onClose, fetchInventory }: { inventoryItem: InventoryItem; onClose: () => void; fetchInventory: () => void }) {
+  { inventoryItem, onClose, fetchInventory, taxRules }: {
+    inventoryItem: InventoryItem; onClose: () => void;
+    fetchInventory: () => void; taxRules: TaxRuleProps[];
+  }) {
   const [name, setName] = useState<string>(inventoryItem.name);
   const [stock, setStock] = useState<number>(inventoryItem.stock);
+  const [taxId, setTaxId] = useState<string>(inventoryItem.taxId || "");
+
   const [price, setPrice] = useState<number>(inventoryItem.price);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -27,10 +26,15 @@ export default function EditInventoryForm(
 
     try {
       // Validate input using Zod
-      inventorySchema.parse({ name, stock, price });
+      inventorySchema.parse({ name, stock, price, taxId });
 
       setLoading(true);
-      await updateInventoryItem(inventoryItem.id, { name, stock, price });
+      await updateInventoryItem(inventoryItem.id, {
+        name,
+        stock,
+        price,
+        taxId
+      });
       fetchInventory(); // ✅ Refresh inventory after editing
       setLoading(false);
       onClose(); // Close the modal after successful update
@@ -91,6 +95,21 @@ export default function EditInventoryForm(
               onChange={(e) => setPrice(Number(e.target.value))}
               className="w-full border p-3 rounded text-[#001e38]"
             />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-[#001e38]">Tax Rule</label>
+            <select
+              value={taxId}
+              onChange={(e) => setTaxId(e.target.value)}
+              className="w-full border p-3 rounded text-[#001e38]"
+            >
+              <option value="">Select Tax Rate</option>
+              {taxRules.map((tax) => (
+                <option key={tax.id} value={tax.id}>
+                  {tax.region} - {(tax.taxRate * 100).toFixed(2)}%
+                </option>
+              ))}
+            </select>
           </div>
 
           {/* Submit Buttons */}

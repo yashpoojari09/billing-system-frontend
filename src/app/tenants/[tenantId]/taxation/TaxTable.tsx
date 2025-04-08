@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { deleteTaxRule } from "@/utils/api";
 import EditTaxRuleForm from "./EditTaxRuleForm";
-import { TaxRuleProps } from "@/types/types";
+import { TaxRuleProps } from "@/types/taxRule";
 import { ButtonEd } from "@/components/ui/Button";
 
 export default function TaxationTable({fetchTaxRules, taxRules, isLoading}: { taxRules: TaxRuleProps[]; fetchTaxRules: () => void; isLoading:boolean }) {
@@ -45,7 +45,7 @@ export default function TaxationTable({fetchTaxRules, taxRules, isLoading}: { ta
         <tbody>
           {taxRules.map((tax) => (
             <tr key={tax.id} className="text-center text-[#000000]">
-              <td className="p-2 border text-sm sm:text-base">{tax.taxRate}%</td>
+              <td className="p-2 border text-sm sm:text-base">{(tax.taxRate * 100).toFixed(2)}%</td>
               <td className="p-2 border text-sm sm:text-base">{tax.region}</td>
               <td className="p-2 border text-sm sm:text-base justify-centre gap-2">
                 <ButtonEd

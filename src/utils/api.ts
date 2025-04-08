@@ -154,7 +154,7 @@ export const addInventoryItem = async (data: { name: string; stock: number; pric
 };
 
 // Update Inventory Item
-export const updateInventoryItem = async (id: string, data: { name: string; stock: number; price: number }) => {
+export const updateInventoryItem = async (id: string, data: { name: string; stock: number; price: number; taxId: string }) => {
   try {
     const tenantId = localStorage.getItem("tenantId");
     if (!tenantId) throw new Error("Tenant ID is missing. Please log in again.");

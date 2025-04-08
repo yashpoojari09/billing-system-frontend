@@ -17,20 +17,39 @@ const InvoiceForm = () => {
     getInventory().then(setProducts);
   }, []);
 
+
+      // 🧠 Enrich each item with tax rate and tax amount
+      const enrichedItems = items.map((item) => {
+        const product = products.find((p) => p.id === item.productId);
+        const taxRate = product?.tax?.taxRate || 0;
+    
+        const basePrice = item.price * item.quantity;
+        const taxAmount = basePrice * taxRate;
+        const totalPrice = basePrice + taxAmount;
+    
+        return {
+          ...item,
+          taxRate,
+          taxAmount,
+          totalPrice,
+        };
+      });
+    
+      const total = enrichedItems.reduce((sum, item) => sum + item.totalPrice, 0);
+    
   const handleSubmit = async () => {
     if (!selectedCustomer) {
       alert("Please select a customer.");
       return;
     }
 
-    const total = items.reduce((sum, item) => sum + item.totalPrice, 0);
-
     const invoiceData = {
       name: selectedCustomer.name,
       email: selectedCustomer.email,
       phone: selectedCustomer.phone,
-      products: items,
+      products: enrichedItems,
       totalAmount: total,
+
     };
 
     setSubmitting(true);
@@ -44,6 +63,7 @@ const InvoiceForm = () => {
         }
         alert("Invoice generated!");
         setSelectedCustomer(null);
+        setItems([{ productId: "", quantity: 1, price: 0, totalPrice: 0 }]);
         // setItems([{ productId: "", quantity: 1, price: 0, totalPrice: 0 }]);
       } else {
         alert("Failed to generate invoice.");
@@ -63,7 +83,7 @@ const InvoiceForm = () => {
  
 
       <InvoiceItemList items={items} products={products} onItemsChange={setItems} />
-      <InvoiceSummary items={items} />
+      <InvoiceSummary items={enrichedItems} />
 
       <Button type="submit"
         onClick={handleSubmit}

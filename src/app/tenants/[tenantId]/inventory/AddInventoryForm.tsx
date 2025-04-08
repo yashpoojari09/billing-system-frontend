@@ -6,10 +6,15 @@ import { inventorySchema } from "@/utils/validation";
 import { addInventoryItem } from "@/utils/api";
 import { z } from "zod";
 import { ButtonDash } from "@/components/ui/Button";
+import { useState } from "react";
+import { TaxRuleProps } from "@/types/taxRule";
 
 type InventoryFormValues = z.infer<typeof inventorySchema>;
 
-export default function AddInventory({ onClose, fetchInventory }: { onClose: () => void; fetchInventory: () => void }) {
+export default function AddInventory({ onClose, fetchInventory, fetchTaxRules, taxes }: {
+  onClose: () => void; fetchInventory: () => void;
+  fetchTaxRules: () => void; taxes: TaxRuleProps[];
+}) {
   const {
     register,
     handleSubmit,
@@ -18,17 +23,28 @@ export default function AddInventory({ onClose, fetchInventory }: { onClose: () 
   } = useForm<InventoryFormValues>({
     resolver: zodResolver(inventorySchema),
   });
+  const [form, setForm] = useState({
+    name: '',
+    price: 0,
+    stock: 0,
+    taxId: '',
+  });
 
   // Handle form submission
   const onSubmit = async (data: InventoryFormValues) => {
     try {
       await addInventoryItem(data);
       fetchInventory(); // ✅ Refresh inventory after adding
+      fetchTaxRules(); // ✅ Refresh inventory after adding
       reset();
       onClose(); // Refresh inventory list
     } catch (error) {
       console.error("Error adding inventory:", error);
     }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   return (
@@ -70,6 +86,19 @@ export default function AddInventory({ onClose, fetchInventory }: { onClose: () 
               {errors.price && <p className="text-red-500 text-sm">{errors.price.message}</p>}
             </div>
 
+            <select
+              {...register("taxId")}
+              className="w-full border p-2 rounded text-[#001e38]"
+            >
+              <option value="">Select Tax Rate</option>
+              {taxes.map((tax) => (
+                <option key={tax.id} value={tax.id}>
+                  {tax.region} - {(tax.taxRate * 100).toFixed(2)}%
+                </option>
+              ))}
+              {errors.taxId && <p className="text-red-500 text-sm">{errors.taxId.message}</p>}
+
+            </select>
             {/* Submit Button */}
             <div className="flex flex-col sm:flex-row justify-between gap-2">
               <ButtonDash
@@ -81,8 +110,8 @@ export default function AddInventory({ onClose, fetchInventory }: { onClose: () 
                 Cancel
               </ButtonDash>
               <ButtonDash
-              title={isSubmitting ? "Adding..." : "Add Item"}
-              variant="green"
+                title={isSubmitting ? "Adding..." : "Add Item"}
+                variant="green"
                 disabled={isSubmitting}
                 className="bg-green-600 text-white px-4 py-2 rounded-md w-full sm:w-auto"
               >
@@ -94,3 +123,4 @@ export default function AddInventory({ onClose, fetchInventory }: { onClose: () 
     </>
   );
 }
+

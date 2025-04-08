@@ -4,18 +4,15 @@ import { useState } from "react";
 import { deleteInventoryItem } from "@/utils/api";
 import EditInventory from "./EditInventoryForm";
 import { ButtonDash, ButtonEd } from "@/components/ui/Button";
+import { TaxRuleProps, } from "@/types/taxRule";
+import { InventoryItem } from "@/types/types";
 
-type InventoryItem = {
-  id: string;
-  name: string;
-  stock: number;
-  price: number;
-  
-};
 
-export default function InventoryTable({ inventory, fetchInventory, isLoading }: { inventory: InventoryItem[]; fetchInventory: () => void; isLoading: boolean; }) {
+export default function InventoryTable({ inventory, fetchInventory, isLoading, taxRules }: {
+  inventory: InventoryItem[]; fetchInventory: () => void; isLoading: boolean; fetchTaxRules: () => void; taxRules: TaxRuleProps[];
+}) {
   // const [setInventory] = useState<InventoryItem[]>([]);
-  const [editInventoryItem , setEditInventoryItem] = useState<InventoryItem | null>(null);
+  const [editInventoryItem, setEditInventoryItem] = useState<InventoryItem | null>(null);
   const [confirmDelete, setConfirmDelete] = useState<{ isOpen: boolean; id: string | null }>({
     isOpen: false,
     id: null,
@@ -35,7 +32,7 @@ export default function InventoryTable({ inventory, fetchInventory, isLoading }:
   //   }
   // };
 
- 
+
 
   // Handle delete confirmation
   const handleDelete = async () => {
@@ -45,6 +42,7 @@ export default function InventoryTable({ inventory, fetchInventory, isLoading }:
       await deleteInventoryItem(confirmDelete.id);
 
       fetchInventory();
+      
       // setInventory((prev) => prev.filter((item) => item.id !== confirmDelete.id));
       setConfirmDelete({ isOpen: false, id: null });
     } catch (error) {
@@ -58,55 +56,63 @@ export default function InventoryTable({ inventory, fetchInventory, isLoading }:
 
       {/* Table */}
       <div className="overflow-x-auto">
-      { isLoading ? ( // ✅ Show loading while fetching
-        <div className="text-center text-gray-600">Loading Inventory...</div>
-      ) : (
-        <table className="w-full border-collapse border border-gray-300">
-          <thead>
-            <tr className="bg-gray-200 text-[#001e38]">
-              <th className="border p-2">Name</th>
-              <th className="border p-2">Stock</th>
-              <th className="border p-2">Price</th>
-              <th className="border p-2">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {inventory.length > 0 ? (
-              inventory.map((item) => (
-                <tr key={item.id} className="text-center">
-                  <td className="border p-2 text-[#001e38]">{item.name}</td>
-                  <td className="border p-2 text-[#001e38]">{item.stock}</td>
-                  <td className="border p-2 text-[#001e38]">${item.price}</td>
-                  <td className="border p-2 space-x-2 text-[#001e38]">
-                    {/* Edit Button */}
-                    <ButtonEd variant="edit"
-                  onClick={() => setEditInventoryItem(item)}
-                  className="bg-blue-500 text-white px-3 py-1 rounded mb-2 sm:mb-0 sm:mr-2 w-full sm:w-auto"
-               >
-                      Edit
-                    </ButtonEd>
+        {isLoading ? ( // ✅ Show loading while fetching
+          <div className="text-center text-gray-600">Loading Inventory...</div>
+        ) : (
+          <table className="w-full border-collapse border border-gray-300">
+            <thead>
+              <tr className="bg-gray-200 text-[#001e38]">
+                <th className="border p-2">Name</th>
+                <th className="border p-2">Stock</th>
+                <th className="border p-2">Price</th>
+                <th className="border p-2">Tax Rate</th>
 
-                    {/* Delete Button */}
-                    <ButtonEd variant="delete" onClick={() => setConfirmDelete({ isOpen: true, id: item.id })} className="bg-red-600 text-white px-3 py-1 rounded-md">
-                      Delete
-                    </ButtonEd>
+                <th className="border p-2">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {inventory.length > 0 ? (
+                inventory.map((item) => (
+                  <tr key={item.id} className="text-center">
+                    <td className="border p-2 text-[#001e38]">{item.name}</td>
+                    <td className="border p-2 text-[#001e38]">{item.stock}</td>
+                    <td className="border p-2 text-[#001e38]">${item.price}</td>
+                    <td className="border p-2 text-[#001e38]">
+                      {taxRules.find(t => t.id === item.taxId)?.taxRate
+                        ? `${(taxRules.find(t => t.id === item.taxId)!.taxRate * 100).toFixed(2)}%`
+                        : "N/A"}
+                    </td>
+
+                    <td className="border p-2 space-x-2 text-[#001e38]">
+                      {/* Edit Button */}
+                      <ButtonEd variant="edit"
+                        onClick={() => setEditInventoryItem(item)}
+                        className="bg-blue-500 text-white px-3 py-1 rounded mb-2 sm:mb-0 sm:mr-2 w-full sm:w-auto"
+                      >
+                        Edit
+                      </ButtonEd>
+
+                      {/* Delete Button */}
+                      <ButtonEd variant="delete" onClick={() => setConfirmDelete({ isOpen: true, id: item.id })} className="bg-red-600 text-white px-3 py-1 rounded-md">
+                        Delete
+                      </ButtonEd>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={4} className="border p-2 text-center text-gray-500">
+                    No inventory items found.
                   </td>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan={4} className="border p-2 text-center text-gray-500">
-                  No inventory items found.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      )}
+              )}
+            </tbody>
+          </table>
+        )}
       </div>
 
       {/* Edit Confirmation Modal */}
-      {editInventoryItem && <EditInventory inventoryItem={editInventoryItem} onClose={() => setEditInventoryItem(null)}  fetchInventory={fetchInventory}/>}
+      {editInventoryItem && <EditInventory inventoryItem={editInventoryItem} onClose={() => setEditInventoryItem(null)} fetchInventory={fetchInventory} taxRules={taxRules} />}
 
       {/* Delete Confirmation Modal */}
       {confirmDelete.isOpen && (

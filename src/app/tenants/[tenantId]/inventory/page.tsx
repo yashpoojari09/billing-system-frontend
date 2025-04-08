@@ -6,12 +6,15 @@ import AddInventory from "./AddInventoryForm";
 import { Button } from "@/components/ui/Button";
 import { useRouter } from "next/navigation";
 import { getInventory } from "@/utils/api";
+import { getTaxRules } from "@/utils/api";
+import { TaxRuleProps } from "@/types/taxRule";
 
 
 export default function InventoryPage() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [inventory, setInventory] = useState([]); // ✅ Store inventory data here
   const [isLoading, setIsLoading] = useState(false);
+  const [taxRule, setTaxRule] = useState<TaxRuleProps[]>([]); // ✅ Store inventory data here
 
   const router = useRouter();
 
@@ -28,6 +31,19 @@ export default function InventoryPage() {
 
 };
 
+ // ✅ Fetch inventory data
+ const fetchTaxRules = async () => {
+  try {
+    setIsLoading(true); // ✅ Show loading before fetch
+    const data = await getTaxRules();
+    setTaxRule(data);
+  } catch (error) {
+    console.error("Error fetching inventory:", error);
+  }
+  setIsLoading(false); // ✅ Show loading before fetch
+
+};
+
 // ✅ Check for accessToken on page load
 useEffect(() => {
   const token = localStorage.getItem("accessToken");
@@ -35,6 +51,7 @@ useEffect(() => {
     router.push("/auth/login");
   }
   fetchInventory(); // ✅ Fetch inventory on mount
+  fetchTaxRules(); // ✅ Fetch inventory on mount
 }, [router]);
 
   return (
@@ -50,10 +67,13 @@ useEffect(() => {
       </div>
 
       {/* Inventory Table */}
-      <InventoryTable isLoading={isLoading} inventory={inventory} fetchInventory={fetchInventory}/>
+      <InventoryTable isLoading={isLoading} inventory={inventory} fetchInventory={fetchInventory} 
+      fetchTaxRules={fetchTaxRules} taxRules={taxRule}
+      />
 
       {/* Add Inventory Modal */}
-      {isAddModalOpen && <AddInventory onClose={() => setIsAddModalOpen(false)}  fetchInventory={fetchInventory}/>}
+      {isAddModalOpen && <AddInventory onClose={() => setIsAddModalOpen(false)}  
+      fetchInventory={fetchInventory} fetchTaxRules={fetchTaxRules} taxes={taxRule}/>}
     </div>
   );
 }     

@@ -29,12 +29,19 @@ export interface Customer {
 export interface PageProps {
   params: {tenantId: string;};
 }
+
+//inventory 
+export interface InventoryItem {
+  id: string;
+  name: string;
+  stock: number;
+  price: number;
+  taxId?: string | null;
+  
+};
+
 /// customer
 
-export interface TaxRuleProps { 
-  id: string; 
-  taxRate: number; 
-  region: string }
 
   // Invoice type inputs
  export  interface CustomerInvoice {
@@ -55,14 +62,17 @@ export interface TaxRuleProps {
     quantity: number;
     price: number;
     totalPrice: number;
+    taxRate?: number;
+
   }
   
+
  export interface InvoiceData {
     customerId: string;
     items: InvoiceItem[];
   }
   // invoice type inputs
-  export interface InvoiceRequest {
+  export interface  InvoiceRequest {
     name: string;
     email: string;
     phone: string;
@@ -71,7 +81,6 @@ export interface TaxRuleProps {
   export interface InvoiceProduct {
     productId: string;
     quantity: number;
-    price: number;
   }
 
   export interface InvoicePreviewData {
@@ -107,6 +116,10 @@ export interface Product {
   id: string;
   name: string;
   price: number;
+  tax?: {
+    id: string;
+    taxRate: number;
+  };
 }
 
 export interface InvoiceItem {
@@ -114,6 +127,8 @@ export interface InvoiceItem {
   quantity: number;
   price: number;
   totalPrice: number;
+  taxRate?: number;         
+  taxAmount?: number;  
 }
 
 export interface CustomerSearchProps {
