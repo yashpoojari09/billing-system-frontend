@@ -1,14 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { searchCustomerByEmail } from "@/utils/api";
 import { CustomerInvoice } from "@/types/types";
 import { Button } from "@/components/ui/Button";
 
 interface Props {
-  onCustomerSelect: (customer: CustomerInvoice) => void;
+  onCustomerSelect: (customer: CustomerInvoice | null) => void;
   selectedCustomer: CustomerInvoice | null;
-
 }
 
 export const CustomerSearch = ({ onCustomerSelect, selectedCustomer }: Props) => {
@@ -17,12 +16,17 @@ export const CustomerSearch = ({ onCustomerSelect, selectedCustomer }: Props) =>
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleSearch = async () => {
-    if (!email.trim()) {
-      alert("Please enter a valid email.");
-      return;
+  // Effect to trigger search when email length reaches 3 characters
+  useEffect(() => {
+    if (email.trim().length >= 3) {
+      handleSearch();
+    } else {
+      setCustomers(null);
+      setError(null);
     }
+  }, [email]);
 
+  const handleSearch = async () => {
     setLoading(true);
     setError(null);
 
@@ -46,10 +50,17 @@ export const CustomerSearch = ({ onCustomerSelect, selectedCustomer }: Props) =>
     onCustomerSelect(customer); // Pass up to parent
   };
 
+  const handleClearSelection = () => {
+    onCustomerSelect(null); // Deselect customer
+    setEmail(""); // Clear email input
+    setCustomers(null); // Clear customer list
+    setError(null); // Clear any errors
+  };
+
   return (
     <div className="mb-4">
       {/* Show search input only if no customer is selected */}
-      {!selectedCustomer && (
+      {!selectedCustomer ? (
         <>
           <div className="flex gap-2 text-[#001e38]">
             <input
@@ -59,7 +70,6 @@ export const CustomerSearch = ({ onCustomerSelect, selectedCustomer }: Props) =>
               placeholder="Enter Customer Email"
               className="border p-2 w-full text-[#001e38]"
             />
-            <Button type="button" onClick={handleSearch}>Search</Button>
           </div>
 
           {loading && <p className="text-gray-500">Searching...</p>}
@@ -74,22 +84,26 @@ export const CustomerSearch = ({ onCustomerSelect, selectedCustomer }: Props) =>
                   onClick={() => handleSelectCustomer(cust)}
                   className="cursor-pointer p-2 border-b hover:bg-gray-200"
                 >
-                  <p><strong>{cust.name}</strong> ({cust.email})</p>
+                  <p>
+                    <strong>{cust.name}</strong> ({cust.email})
+                  </p>
                   <p>{cust.phone}</p>
                 </div>
               ))}
             </div>
           )}
         </>
-      )}
-
-      {/* Only show selected customer once */}
-      {selectedCustomer && (
+      ) : (
         <div className="p-2 bg-green-100 rounded mt-2 text-[#001e38]">
           <h2 className="font-semibold">Selected Customer:</h2>
-          <p><strong>{selectedCustomer.name}</strong></p>
+          <p>
+            <strong>{selectedCustomer.name}</strong>
+          </p>
           <p>{selectedCustomer.email}</p>
           <p>{selectedCustomer.phone}</p>
+          <Button type="button" onClick={handleClearSelection} className="mt-2">
+            Clear Selection
+          </Button>
         </div>
       )}
     </div>
