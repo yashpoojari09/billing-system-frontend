@@ -51,6 +51,7 @@ export const tenantSettingsSchema = z.object({
   phone: z.string().min(8),
   upiId: z.string().optional(),
   terms: z.string().optional(),
+  logoUrl: z.string().optional(),
 });
 
 export type TenantSettingsFormData = z.infer<typeof tenantSettingsSchema>;
