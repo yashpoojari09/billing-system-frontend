@@ -55,20 +55,29 @@ const InvoiceForm = () => {
     setSubmitting(true);
     try {
       const response = await createInvoice(invoiceData);
+
       if (response.success) {
-        const { receiptNumber } = await response.data;
+        const { receiptNumber } = response.data;
         const tenantId = localStorage.getItem("tenantId");
+
         if (tenantId && receiptNumber) {
-          handleInvoicePDF(tenantId, receiptNumber, "both"); // or "view", "download"
+          await handleInvoicePDF(tenantId, receiptNumber, "both"); // or "view", "download"
         }
         alert("Invoice generated!");
         setSelectedCustomer(null);
         setItems([{ productId: "", quantity: 1, price: 0, totalPrice: 0 }]);
         // setItems([{ productId: "", quantity: 1, price: 0, totalPrice: 0 }]);
       } else {
-        alert("Failed to generate invoice.");
+        const errorMsg = response.error || "Failed to generate invoice.";
+        alert(`❌ ${errorMsg}`);
+        console.error("Invoice creation error:", errorMsg);
+      
       }
-    } finally {
+    }catch (err: any) {
+      console.error("❌ Unexpected error in handleSubmit:", err);
+      alert("An unexpected error occurred while submitting the invoice. Please try again.");
+    } 
+     finally {
       setSubmitting(false);
     }
   };
