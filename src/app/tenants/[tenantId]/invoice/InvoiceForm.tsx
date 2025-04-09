@@ -56,7 +56,7 @@ const InvoiceForm = () => {
     try {
       const response = await createInvoice(invoiceData);
       if (response.success) {
-        const { receiptNumber } = response.data;
+        const { receiptNumber } = await response.data;
         const tenantId = localStorage.getItem("tenantId");
         if (tenantId && receiptNumber) {
           handleInvoicePDF(tenantId, receiptNumber, "both"); // or "view", "download"

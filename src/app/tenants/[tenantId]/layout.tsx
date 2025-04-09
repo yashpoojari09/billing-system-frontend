@@ -70,11 +70,22 @@ const TenantLayout = ({ children }: { children: React.ReactNode }) => {
           <li>
             <button
               onClick={() => handleNavigation(`/tenants/${tenantId}/invoice`)}
-              className={`w-full text-left px-4 py-2 flex items-center rounded cursor-pointer ${pathname?.includes("invoice") ? "bg-blue-600" : "hover:bg-gray-700"
+              className={`w-full text-left px-4 py-2 flex items-center rounded cursor-pointer ${
+                pathname === `/tenants/${tenantId}/invoice` ? "bg-blue-600" : "hover:bg-gray-700"
                 }`}
             >
               <FaFileInvoice className="mr-2" />
               <span>Generate Invoice</span>
+            </button>
+          </li>
+          <li>
+            <button
+              onClick={() => handleNavigation(`/tenants/${tenantId}/invoices`)}
+              className={`w-full text-left px-4 py-2 flex items-center rounded cursor-pointer ${pathname === `/tenants/${tenantId}/invoices` ? "bg-blue-600" : "hover:bg-gray-700"
+                }`}
+            >
+              <FaFileInvoice className="mr-2" />
+              <span>All Invoice</span>
             </button>
           </li>
           <li>
@@ -107,20 +118,11 @@ const TenantLayout = ({ children }: { children: React.ReactNode }) => {
               Taxation
             </button>
           </li>
-          <li>
-            <button
-              onClick={() => handleNavigation(`/tenants/${tenantId}/invoices`)}
-              className={`w-full text-left px-4 py-2 flex items-center rounded cursor-pointer ${pathname?.includes("invoice") ? "bg-blue-600" : "hover:bg-gray-700"
-                }`}
-            >
-              <FaFileInvoice className="mr-2" />
-              <span>All Invoice</span>
-            </button>
-          </li>
+        
           <li>
             <button
               onClick={() => handleNavigation(`/tenants/${tenantId}/settings`)}
-              className={`w-full text-left px-4 py-2 flex items-center rounded cursor-pointer ${pathname?.includes("taxation") ? "bg-blue-600" : "hover:bg-gray-700"
+              className={`w-full text-left px-4 py-2 flex items-center rounded cursor-pointer ${pathname?.includes("settings") ? "bg-blue-600" : "hover:bg-gray-700"
                 }`}
             >
               <FaCog className="mr-2" />

@@ -1,38 +1,81 @@
 // utils/pdfHandler.ts
 
-import {API_URL} from "@/utils/api";
+import api, { API_URL } from "@/utils/api";
+import { getAuthHeaders } from "@/utils/api";
+
 export const handleInvoicePDF = async (
   tenantId: string,
   receiptNumber: string,
-  action: "view" | "download" | "both" = "both"
+  action = 'both' // 'view', 'download', or 'both'
 ) => {
   try {
-    const token = localStorage.getItem("accessToken");
-    const response = await fetch(`${API_URL}/tenants/${tenantId}/receipt/${receiptNumber}`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    console.log('📥 Fetching invoice PDF:', { tenantId, receiptNumber, action });
 
-    if (!response.ok) throw new Error("Failed to fetch PDF");
-
-    const blob = await response.blob();
-    const pdfUrl = URL.createObjectURL(blob);
-
-    if (action === "view" || action === "both") {
-      window.open(pdfUrl, "_blank");
+    if (!tenantId || !receiptNumber) {
+      throw new Error('Tenant ID and Receipt Number are required.');
     }
 
-    if (action === "download" || action === "both") {
-      const link = document.createElement("a");
-      link.href = pdfUrl;
-      link.download = `${receiptNumber}.pdf`;
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
+    let response;
+    try {
+      response = await api.get(
+        `${API_URL}/tenants/${tenantId}/receipt/${receiptNumber}`,
+        {
+          headers: {
+            ...getAuthHeaders(),
+          },
+          responseType: 'blob', // Important for handling binary data
+        }
+      );
+    } catch (apiError) {
+      console.error('❌ API request failed:', apiError);
+      throw new Error('Failed to fetch invoice PDF from the API.');
+    }
+
+    if (!response || response.status !== 200) {
+      console.error('❌ Invalid response:', response);
+      throw new Error(`Failed to fetch invoice PDF. Status: ${response?.status}`);
+    }
+
+    let blob;
+    try {
+      blob = new Blob([response.data], { type: 'application/pdf' });
+    } catch (blobError) {
+      console.error('❌ Error creating Blob:', blobError);
+      throw new Error('Failed to create Blob from response data.');
+    }
+
+    let pdfUrl;
+    try {
+      pdfUrl = URL.createObjectURL(blob);
+    } catch (urlError) {
+      console.error('❌ Error creating Object URL:', urlError);
+      throw new Error('Failed to create Object URL for the PDF.');
+    }
+
+    if (action === 'view' || action === 'both') {
+      try {
+        window.open(pdfUrl, '_blank');
+      } catch (viewError) {
+        console.error('❌ Error opening PDF in new tab:', viewError);
+        throw new Error('Failed to open PDF in a new tab.');
+      }
+    }
+
+    if (action === 'download' || action === 'both') {
+      try {
+        const link = document.createElement('a');
+        link.href = pdfUrl;
+        link.download = `${receiptNumber}.pdf`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(pdfUrl);
+      } catch (downloadError) {
+        console.error('❌ Error downloading PDF:', downloadError);
+        throw new Error('Failed to download the PDF.');
+      }
     }
   } catch (err) {
-    console.error("❌ Error handling invoice PDF:", err);
+    console.error('❌ Error handling invoice PDF:', err);
   }
 };
