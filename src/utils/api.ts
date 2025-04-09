@@ -427,7 +427,7 @@ export const fetchTenantSettings = async (): Promise<TenantSettingsFormData | nu
   }
 };
 
-export const updateTenantSettings = async (data: TenantSettingsFormData): Promise<void> => {
+export const updateTenantSettings = async (data: TenantSettingsFormData) => {
   try {
     const tenantId = localStorage.getItem("tenantId");
     if (!tenantId) {
@@ -440,8 +440,11 @@ export const updateTenantSettings = async (data: TenantSettingsFormData): Promis
       "Content-Type": "application/json"
         },
   });
-  return response.data; // Return the updated settings data
-  } catch (error) {
+  if (response.status === 200) {
+    return { success: true, data: response.data };
+  } else {
+    return { success: false, error: response.data.error || "Unknown error" };
+  }  } catch (error) {
     console.error("Error updating settings:", error);
     throw error;
   }
