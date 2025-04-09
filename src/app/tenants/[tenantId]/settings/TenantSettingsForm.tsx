@@ -18,17 +18,22 @@ const TenantSettingsForm: React.FC = () => {
 
   useEffect(() => {
     fetchTenantSettings().then((data) => {
+      console.log("🔍 Loaded settings:", data); // ← Add this
       if (data) {
         Object.entries(data).forEach(([key, value]) => {
           setValue(key as keyof TenantSettingsFormData, value);
+          console.log("Form errors:", errors);
+
         });
       }
     });
-  }, [setValue]);
+  }, [setValue, errors]);
 
   const onSubmit = async (data: TenantSettingsFormData) => {
     try {
       await updateTenantSettings(data);
+      console.log("📝 Submitting settings form:", data);
+
       alert("Settings updated successfully!");
     } catch {
       alert("Failed to update settings.");

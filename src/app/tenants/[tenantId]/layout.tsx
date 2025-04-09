@@ -74,7 +74,7 @@ const TenantLayout = ({ children }: { children: React.ReactNode }) => {
                 }`}
             >
               <FaFileInvoice className="mr-2" />
-              <span>Invoice</span>
+              <span>Generate Invoice</span>
             </button>
           </li>
           <li>
@@ -105,6 +105,16 @@ const TenantLayout = ({ children }: { children: React.ReactNode }) => {
             >
               <FaFileInvoiceDollar className="mr-2" />
               Taxation
+            </button>
+          </li>
+          <li>
+            <button
+              onClick={() => handleNavigation(`/tenants/${tenantId}/invoices`)}
+              className={`w-full text-left px-4 py-2 flex items-center rounded cursor-pointer ${pathname?.includes("invoice") ? "bg-blue-600" : "hover:bg-gray-700"
+                }`}
+            >
+              <FaFileInvoice className="mr-2" />
+              <span>All Invoice</span>
             </button>
           </li>
           <li>

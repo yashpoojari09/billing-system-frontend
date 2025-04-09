@@ -387,6 +387,21 @@ export const createInvoice = async (invoiceData: InvoiceRequest) => {
 };
 
 
+export interface InvoiceListItem {
+  id: string;
+  receiptNumber: string;
+  customerName: string;
+  amount: string;
+  date: string;
+  downloadUrl: string;
+}
+
+export const fetchInvoices = async (): Promise<InvoiceListItem[]> => {
+  const tenantId = localStorage.getItem('tenantId');
+  const res = await api.get(`${API_URL}/tenants/${tenantId}/invoices`);
+  return res.data;
+};
+
 export const searchCustomerByEmail = async (search: string) => {
   try {
     const tenantId = localStorage.getItem("tenantId");
