@@ -433,7 +433,14 @@ export const updateTenantSettings = async (data: TenantSettingsFormData): Promis
     if (!tenantId) {
       throw new Error("Tenant ID is missing. Please log in again.");
     }
-    await api.put(`${API_URL}/tenants/${tenantId}/settings`, data);
+  const response =  await api.put(`${API_URL}/tenants/${tenantId}/settings`, data, {
+    headers: {
+      ...getAuthHeaders(),
+
+      "Content-Type": "application/json"
+        },
+  });
+  return response.data; // Return the updated settings data
   } catch (error) {
     console.error("Error updating settings:", error);
     throw error;
