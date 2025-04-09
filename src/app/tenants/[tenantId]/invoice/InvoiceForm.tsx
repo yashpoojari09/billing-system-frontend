@@ -73,7 +73,7 @@ const InvoiceForm = () => {
         console.error("Invoice creation error:", errorMsg);
       
       }
-    }catch (err: any) {
+    }catch (err) {
       console.error("❌ Unexpected error in handleSubmit:", err);
       alert("An unexpected error occurred while submitting the invoice. Please try again.");
     } 

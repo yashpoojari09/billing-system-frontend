@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { searchCustomerByEmail } from "@/utils/api";
 import { CustomerInvoice } from "@/types/types";
 import { Button } from "@/components/ui/Button";
@@ -16,20 +16,11 @@ export const CustomerSearch = ({ onCustomerSelect, selectedCustomer }: Props) =>
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Effect to trigger search when email length reaches 3 characters
-  useEffect(() => {
-    if (email.trim().length >= 3) {
-      handleSearch();
-    } else {
-      setCustomers(null);
-      setError(null);
-    }
-  }, [email]);
-
-  const handleSearch = async () => {
+ 
+  const handleSearch = useCallback(async () => {
     setLoading(true);
     setError(null);
-
+  
     try {
       const result = await searchCustomerByEmail(email.trim().toLowerCase());
       if (result.length > 0) {
@@ -43,7 +34,18 @@ export const CustomerSearch = ({ onCustomerSelect, selectedCustomer }: Props) =>
     } finally {
       setLoading(false);
     }
-  };
+  }, [email]); // include email as dependency
+  
+  // Effect to trigger search when email length reaches 3 characters
+  useEffect(() => {
+    if (email.trim().length >= 3) {
+      handleSearch();
+    } else {
+      setCustomers(null);
+      setError(null);
+    }
+  }, [email, handleSearch]); // ✅ include handleSearch in dependencies
+  
 
   const handleSelectCustomer = (customer: CustomerInvoice) => {
     setCustomers(null); // Hide list

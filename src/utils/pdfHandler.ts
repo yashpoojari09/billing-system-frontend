@@ -1,6 +1,6 @@
 // utils/pdfHandler.ts
 
-import api, { API_URL } from "@/utils/api";
+import { API_URL } from "@/utils/api";
 import axios from "axios";
 
 export const handleInvoicePDF = async (
