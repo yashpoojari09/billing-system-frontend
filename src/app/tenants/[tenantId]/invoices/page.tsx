@@ -1,10 +1,14 @@
 "use client"
 import React, { useEffect, useState } from 'react';
+import { API_URL } from "@/utils/api";
+
 import { fetchInvoices, InvoiceListItem } from '@/utils/api'; // Adjust path
 
 const InvoiceList: React.FC = () => {
   const [invoices, setInvoices] = useState<InvoiceListItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const tenantId = localStorage.getItem('tenantId');
+
 
   useEffect(() => {
     const loadInvoices = async () => {
@@ -45,7 +49,7 @@ const InvoiceList: React.FC = () => {
               <td className="border p-2">₹{invoice.amount}</td>
               <td className="border p-2">
                 <a
-                  href={invoice.downloadUrl}
+                  href={`${API_URL}/tenants/${tenantId}/receipt/${invoice.receiptNumber}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-600 underline"

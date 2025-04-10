@@ -393,7 +393,6 @@ export interface InvoiceListItem {
   customerName: string;
   amount: string;
   date: string;
-  downloadUrl: string;
 }
 
 export const fetchInvoices = async (): Promise<InvoiceListItem[]> => {
