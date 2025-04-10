@@ -79,22 +79,19 @@ const TenantSettingsForm: React.FC = () => {
           />
           {errors.phone && <p className="text-sm text-red-500">{errors.phone.message}</p>}
         </div>
-
         <div>
-          <label className="block text-sm font-medium text-gray-700">UPI ID (for QR)</label>
-          <input
-            {...register('upiId')}
-            className="mt-1 block w-full border border-gray-300 rounded px-3 py-2 text-black bg-white"
-          />
-        </div>
+  <label className="block text-sm font-medium text-gray-700">Invoice Template (HTML)</label>
+  <textarea
+    {...register('invoiceTemplate')}
+    rows={10}
+    placeholder="Paste your Handlebars-compatible HTML template here"
+    className="mt-1 block w-full border border-gray-300 rounded px-3 py-2 text-black bg-white font-mono text-sm"
+  />
+  {errors.invoiceTemplate && (
+    <p className="text-sm text-red-500">{errors.invoiceTemplate.message}</p>
+  )}
+</div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Terms & Conditions</label>
-          <textarea
-            {...register('terms')}
-            className="mt-1 block w-full border border-gray-300 rounded px-3 py-2 text-black bg-white"
-          />
-        </div>
 
         <div className="pt-4 flex items-center space-x-4">
           <Button type="submit"

@@ -49,9 +49,8 @@ export const tenantSettingsSchema = z.object({
   address: z.string().min(1),
   gstin: z.string().min(1),
   phone: z.string().min(8),
-  upiId: z.string().optional(),
-  terms: z.string().optional(),
-  logoUrl: z.string().nullable().optional(),
+  invoiceTemplate: z.string().min(10, "Template must be at least 10 characters"),
+
 });
 
 export type TenantSettingsFormData = z.infer<typeof tenantSettingsSchema>;
