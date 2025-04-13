@@ -6,6 +6,7 @@ import EditInventory from "./EditInventoryForm";
 import { ButtonDash, ButtonEd } from "@/components/ui/Button";
 import { TaxRuleProps, } from "@/types/taxRule";
 import { InventoryItem } from "@/types/types";
+import { FiEdit, FiTrash2 } from "react-icons/fi";
 
 
 export default function InventoryTable({ inventory, fetchInventory, isLoading, taxRules }: {
@@ -51,17 +52,16 @@ export default function InventoryTable({ inventory, fetchInventory, isLoading, t
   };
 
   return (
-    <div className="bg-white p-4 shadow rounded-lg">
-      <h2 className="text-lg font-bold mb-4 text-gray-700">Inventory List</h2>
+    <div className="bg-dark shadow rounded-lg">
 
       {/* Table */}
       <div className="overflow-x-auto">
         {isLoading ? ( // ✅ Show loading while fetching
-          <div className="text-center text-gray-600">Loading Inventory...</div>
+          <div className="text-center text-white">Loading Inventory...</div>
         ) : (
-          <table className="w-full border-collapse border border-gray-300">
+          <table className="w-full border-collapse border border-white min-w-[350px]">
             <thead>
-              <tr className="bg-gray-200 text-[#001e38]">
+              <tr className="bg-dark text-[#ffffff]">
                 <th className="border p-2">Name</th>
                 <th className="border p-2">Stock</th>
                 <th className="border p-2">Price</th>
@@ -73,28 +73,29 @@ export default function InventoryTable({ inventory, fetchInventory, isLoading, t
             <tbody>
               {inventory.length > 0 ? (
                 inventory.map((item) => (
-                  <tr key={item.id} className="text-center">
-                    <td className="border p-2 text-[#001e38]">{item.name}</td>
-                    <td className="border p-2 text-[#001e38]">{item.stock}</td>
-                    <td className="border p-2 text-[#001e38]">${item.price}</td>
-                    <td className="border p-2 text-[#001e38]">
+                  <tr key={item.id} className="text-center  text-[#ffffff]">
+                    <td className="border p-2">{item.name}</td>
+                    <td className="border p-2 ">{item.stock}</td>
+                    <td className="border p-2">${item.price}</td>
+                    <td className="border p-2 ">
                       {taxRules.find(t => t.id === item.taxId)?.taxRate
                         ? `${(taxRules.find(t => t.id === item.taxId)!.taxRate * 100).toFixed(2)}%`
                         : "N/A"}
                     </td>
 
-                    <td className="border p-2 space-x-2 text-[#001e38]">
+                    <td className="border p-2 space-x-2">
                       {/* Edit Button */}
                       <ButtonEd variant="edit"
                         onClick={() => setEditInventoryItem(item)}
                         className="bg-blue-500 text-white px-3 py-1 rounded mb-2 sm:mb-0 sm:mr-2 w-full sm:w-auto"
                       >
-                        Edit
+                                                <FiEdit className="h-4 w-4" />
+                        
                       </ButtonEd>
 
                       {/* Delete Button */}
                       <ButtonEd variant="delete" onClick={() => setConfirmDelete({ isOpen: true, id: item.id })} className="bg-red-600 text-white px-3 py-1 rounded-md">
-                        Delete
+  <FiTrash2 className="h-4 w-4" />
                       </ButtonEd>
                     </td>
                   </tr>

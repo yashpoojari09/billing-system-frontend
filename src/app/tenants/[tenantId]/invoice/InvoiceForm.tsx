@@ -83,8 +83,7 @@ const InvoiceForm = () => {
   };
 
   return (
-    <div className="p-6 max-w-2xl mx-auto bg-white rounded shadow">
-      <h1 className="text-xl font-bold mb-4 text-[#001e38]">Generate Invoice</h1>
+    <div className="p-6 max-w-2xl mx-auto bg-dark rounded shadow">
 
       <CustomerSearch   selectedCustomer={selectedCustomer}
  onCustomerSelect={setSelectedCustomer} />
@@ -93,7 +92,7 @@ const InvoiceForm = () => {
 
       <InvoiceItemList items={items} products={products} onItemsChange={setItems} />
       <InvoiceSummary items={enrichedItems} />
-
+<br/>
       <Button type="submit"
         onClick={handleSubmit}
         className="mt-4 bg-green-500 text-white px-4 py-2 rounded w-full"

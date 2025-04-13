@@ -184,9 +184,8 @@ export const deleteInventoryItem = async (id: string) => {
   }
 };
 //customers
-
 // Fetch Customers
-export const getCustomers = async () => {
+export const getCustomers = async (page = 1, pageSize = 10) => {
   try {
     const tenantId = localStorage.getItem("tenantId");
     if (!tenantId) throw new Error("Tenant ID is missing. Please log in again.");
@@ -195,7 +194,7 @@ export const getCustomers = async () => {
       throw new Error("Tenant ID is missing. Please log in again.");
     }
 
-    const response = await api.get(`${API_URL}/tenants/${tenantId}/customers`, { headers: getAuthHeaders() ,
+    const response = await api.get(`${API_URL}/tenants/${tenantId}/customers?page=${page}&limit=${pageSize}`, { headers: getAuthHeaders() ,
       withCredentials: true // ✅ Ensures cookies (refresh token) are sent
 
     });
@@ -393,11 +392,18 @@ export interface InvoiceListItem {
   customerName: string;
   amount: string;
   date: string;
+
+}
+export interface FetchInvoicesResponse {
+  invoices: InvoiceListItem[];
+  total: number;
 }
 
-export const fetchInvoices = async (): Promise<InvoiceListItem[]> => {
+
+
+export const fetchInvoices = async (page = 1, pageSize = 10): Promise<FetchInvoicesResponse> => {
   const tenantId = localStorage.getItem('tenantId');
-  const res = await api.get(`${API_URL}/tenants/${tenantId}/invoices`);
+  const res = await api.get(`${API_URL}/tenants/${tenantId}/invoices?page=${page}&limit=${pageSize}`);
   return res.data;
 };
 

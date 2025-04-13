@@ -3,6 +3,7 @@
 import { InvoiceItem, Product } from "@/types/types";
 import { Button } from "@/components/ui/Button";
 import { FiTrash } from "react-icons/fi";
+import { FiPlus } from "react-icons/fi";
 
 interface Props {
   items: InvoiceItem[];
@@ -64,16 +65,17 @@ export const InvoiceItemList = ({ items, products, onItemsChange }: Props) => {
         const taxRate = product?.tax?.taxRate ? (product.tax.taxRate * 100).toFixed(2) : "0";
 
         return (
-          <div key={index} className="flex flex-col gap-1 mb-4 border p-3 rounded text-[#001e38] bg-white">
-            <div className="flex gap-2 items-center">
+          <div key={index} className="flex flex-col gap-1 mb-4 border p-3 rounded text-[#ffffff] bg-dark">
+            <div className="flex gap-2 items-center ">
               <select
-                className="border p-2 w-1/2"
+                className="border p-2 w-1/2 "
                 value={item.productId}
                 onChange={(e) => handleProductChange(index, e.target.value)}
               >
-                <option value="">Select Product</option>
+                <option value="" >Select Product</option>
                 {products.map((p) => (
-                  <option key={p.id} value={p.id}>
+                  <option  key={p.id} value={p.id}  
+>
                     {p.name} - ₹{p.price}
                   </option>
                 ))}
@@ -99,7 +101,7 @@ export const InvoiceItemList = ({ items, products, onItemsChange }: Props) => {
               </Button>
             </div>
 
-            <div className="text-sm text-gray-500 pl-1">
+            <div className="text-sm text-gray-200 pl-1">
               Tax Applied: {taxRate}%
             </div>
           </div>
@@ -107,7 +109,8 @@ export const InvoiceItemList = ({ items, products, onItemsChange }: Props) => {
       })}
 
       <Button type="button" onClick={addItem} className="bg-blue-500 text-white mt-2">
-        +
+                  <FiPlus className="h-5 w-5" />
+        
       </Button>
     </>
   );

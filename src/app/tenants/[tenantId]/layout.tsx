@@ -58,11 +58,11 @@ const TenantLayout = ({ children }: { children: React.ReactNode }) => {
   }, [isSidebarOpen]);
 
   return (
-    <div className="relative flex min-h-screen">
+    <div className="relative flex h-screen overflow-hidden">
       {/* ✅ Sidebar (Mobile & Desktop) */}
       <div
         ref={sidebarRef}
-        className={`fixed inset-y-0 left-0 w-64 bg-gray-900 text-white p-5 transition-transform duration-300 z-30 md:relative ${isSidebarOpen ? "translate-x-0" : "-translate-x-64 md:translate-x-0"
+        className={`fixed inset-y-0 left-0 w-64 bg-gray-900 text-white p-5 transition-transform duration-300 z-30 md:relative md:translate-x-0 ${isSidebarOpen ? "translate-x-0" : "-translate-x-64 md:translate-x-0"
           }`}
       >
         <h2 className="text-lg font-bold mb-6">Tenant Dashboard</h2>
@@ -132,7 +132,7 @@ const TenantLayout = ({ children }: { children: React.ReactNode }) => {
 
         </ul>
 
-        <div className="mt-100">
+        <div className="mt-60">
           <button
             onClick={handleLogout}
             className="w-full bg-gray-700 hover:bg-gray-600 text-white  px-4 py-2 rounded cursor-pointer"
@@ -143,18 +143,19 @@ const TenantLayout = ({ children }: { children: React.ReactNode }) => {
       </div>
 
       {/* ✅ Sticky Header (Navigation & Logout) */}
-      <div className="fixed w-full bg-gray-900 text-white p-4 flex justify-between items-center z-40 md:hidden">
+      <div className="fixed w-full text-white p-4 flex justify-between items-center z-40 md:hidden">
+      {!isSidebarOpen && (
         <button onClick={() => setIsSidebarOpen(true)} className="text-white">
           <FiMenu size={24} />
-        </button>
-        <h2 className="text-lg font-bold">Tenant Dashboard</h2>
+        </button>)}
+        {/* <h2 className="text-lg font-bold">Tenant Dashboard</h2>
         <button onClick={handleLogout} className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded">
           Logout
-        </button>
+        </button> */}
       </div>
 
       {/* ✅ Main Content (With Padding for Header) */}
-      <div className="flex-1 p-6 mt-16">{children}</div>
+      <div className="flex-1 overflow-y-auto p-6 mt-2">{children}</div>
     </div>
   );
 };

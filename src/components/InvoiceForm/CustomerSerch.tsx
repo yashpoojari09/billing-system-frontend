@@ -64,21 +64,21 @@ export const CustomerSearch = ({ onCustomerSelect, selectedCustomer }: Props) =>
       {/* Show search input only if no customer is selected */}
       {!selectedCustomer ? (
         <>
-          <div className="flex gap-2 text-[#001e38]">
+          <div className="flex gap-2 text-[#ffffff]">
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter Customer Email"
-              className="border p-2 w-full text-[#001e38]"
+              className="border p-2 w-full text-[#ffffff]"
             />
           </div>
 
-          {loading && <p className="text-gray-500">Searching...</p>}
+          {loading && <p className="text-white">Searching...</p>}
           {error && <p className="text-red-500">{error}</p>}
 
           {customers && (
-            <div className="mt-2 bg-gray-100 p-2 rounded text-[#001e38]">
+            <div className="mt-2 bg-gray-100 p-2 rounded text-[#000000]">
               <h2>Select a Customer:</h2>
               {customers.map((cust) => (
                 <div
@@ -96,13 +96,14 @@ export const CustomerSearch = ({ onCustomerSelect, selectedCustomer }: Props) =>
           )}
         </>
       ) : (
-        <div className="p-2 bg-green-100 rounded mt-2 text-[#001e38]">
+        <div className="p-2 bg-green-950 rounded mt-2 text-[#fffffff]">
           <h2 className="font-semibold">Selected Customer:</h2>
           <p>
             <strong>{selectedCustomer.name}</strong>
           </p>
           <p>{selectedCustomer.email}</p>
           <p>{selectedCustomer.phone}</p>
+          <br/>
           <Button type="button" onClick={handleClearSelection} className="mt-2">
             Clear Selection
           </Button>

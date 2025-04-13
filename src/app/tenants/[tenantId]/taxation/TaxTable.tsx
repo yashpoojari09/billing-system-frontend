@@ -5,6 +5,7 @@ import { deleteTaxRule } from "@/utils/api";
 import EditTaxRuleForm from "./EditTaxRuleForm";
 import { TaxRuleProps } from "@/types/taxRule";
 import { ButtonEd } from "@/components/ui/Button";
+import { FiEdit, FiTrash2 } from "react-icons/fi";
 
 export default function TaxationTable({fetchTaxRules, taxRules, isLoading}: { taxRules: TaxRuleProps[]; fetchTaxRules: () => void; isLoading:boolean }) {
   const [editTaxRule, setEditTaxRule] = useState<TaxRuleProps | null>(null);
@@ -29,14 +30,13 @@ export default function TaxationTable({fetchTaxRules, taxRules, isLoading}: { ta
   };
 
   return (
-    <div className="bg-white p-4 shadow rounded-lg">
-      <h2 className="text-xl font-bold mb-4 text-[#001e38]">Taxation Rules</h2>
+    <div className="bg-dark shadow rounded-lg">
       {isLoading ? ( // ✅ Show loading while fetching
-        <div className="text-center text-gray-600">Loading Taxation Rules...</div>
+        <div className="text-center text-white">Loading Taxation Rules...</div>
       ) : (
-      <table className="w-full border-collapse border border-gray-300">
+      <table className="w-full border-collapse border border-white">
         <thead>
-          <tr className="bg-gray-200 text-[#001e38]">
+          <tr className="bg-dark text-[#ffffff]">
             <th className="border p-2 text-sm sm:text-base">Tax Rate (%)</th>
             <th className="border p-2 text-sm sm:text-base">Region</th>
             <th className="border p-2 text-sm sm:text-base">Actions</th>
@@ -44,7 +44,7 @@ export default function TaxationTable({fetchTaxRules, taxRules, isLoading}: { ta
         </thead>
         <tbody>
           {taxRules.map((tax) => (
-            <tr key={tax.id} className="text-center text-[#000000]">
+            <tr key={tax.id} className="text-center text-[#fffff]">
               <td className="p-2 border text-sm sm:text-base">{(tax.taxRate * 100).toFixed(2)}%</td>
               <td className="p-2 border text-sm sm:text-base">{tax.region}</td>
               <td className="p-2 border text-sm sm:text-base justify-centre gap-2">
@@ -53,15 +53,16 @@ export default function TaxationTable({fetchTaxRules, taxRules, isLoading}: { ta
                   onClick={() => setEditTaxRule(tax)}
                   className="bg-blue-500 text-white px-3 py-1 rounded mb-2 sm:mb-0 sm:mr-2 w-full sm:w-auto"
                 >
-                  Edit
+                                                                  <FiEdit className="h-4 w-4" />
+
                 </ButtonEd>
                 <ButtonEd
                   variant="delete"
                   onClick={() => setDeleteTaxId({ isOpen: true, id: tax.id })}
                   className="bg-red-500 text-white px-3 py-1 rounded w-full sm:w-auto"
                 >
-                  Delete
-                </ButtonEd>
+  <FiTrash2 className="h-4 w-4" />
+  </ButtonEd>
               </td>
             </tr>
           ))}

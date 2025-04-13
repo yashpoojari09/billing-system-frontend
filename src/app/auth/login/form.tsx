@@ -51,7 +51,7 @@ const LoginForm = () => {
 
   return (
 
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-4 ">
       {error && <p className="text-red-500">{error}</p>}
       
       <Input label="Email" {...register("email")} type="email" />

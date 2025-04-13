@@ -3,10 +3,11 @@
 import { useState, useEffect } from "react";
 import CustomersTable from "./CustomersTable";
 import AddCustomerForm from "./AddCustomerForm";
-import { useRouter, useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { getCustomers } from "@/utils/api"; // ✅ Ensure this is imported
 import { Customer } from "@/types/types"
+import { FiPlus } from "react-icons/fi";
 
 export default function CustomersPage() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -14,8 +15,8 @@ export default function CustomersPage() {
   const [isLoading, setIsLoading] = useState(true); // ✅ Loading state
 
   const router = useRouter();
-  const params = useParams();
-  const tenantId = params?.tenantId;
+  // const params = useParams();
+  // const tenantId = params?.tenantId;
 
   // ✅ Check for accessToken on page load
   useEffect(() => {
@@ -51,14 +52,17 @@ export default function CustomersPage() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
-       <h1 className="text-2xl font-bold mb-6 text-center">Customers Management: {tenantId}</h1>
 
-      <div className="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4">
+    <div className="max-w-5xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
+       <h1 className="text-2xl font-bold mb-6 text-center">Customers Management</h1>
+       <div className="bg-dark p-6 rounded-lg shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a] w-full">
+
+
+      <div className="flex flex-col justify-end sm:flex-row justify-between items-center mb-4 gap-4">
         <Button type="button" onClick={() => setIsAddModalOpen(true)} 
-          className="flex justify-center sm:justify-end bg-blue-600 text-white px-4 py-2 rounded-md w-full sm:w-auto"
-          >
-          +
+    >
+          <FiPlus className="h-5 w-5" />
+
         </Button>
       </div>
 
@@ -73,6 +77,7 @@ export default function CustomersPage() {
           onCustomerAdded={handleCustomerAdded} // ✅ Pass function to update list
         />
       )}
+    </div>
     </div>
   );
 }

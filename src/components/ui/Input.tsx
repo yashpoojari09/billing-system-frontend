@@ -11,7 +11,7 @@ const Input: React.FC<InputProps> = ({ label, error, ...props }) => {
       <label className="text-sm font-medium text-white mb-1">{label}</label>
       <input
         {...props}
-        className={`px-3 py-2 border rounded-md bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+        className={`px-3 py-2 rounded-md bg-dark text-white focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a] ${
           error ? "border-red-500" : "border-gray-300"
         }`} // Apply a red border if there's an error
       />

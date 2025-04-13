@@ -12,7 +12,7 @@ export const InvoiceSummary = ({ items }: Props) => {
   
   return (
     <div className="mt-4">
-      <h3 className="text-lg font-semibold text-[#001e38]">
+      <h3 className="text-lg font-semibold text-[#fffff]">
       <p>Tax: ₹{taxTotal.toFixed(2)}</p>
       <p>Total: ₹{total.toFixed(2)}</p>      </h3>
     </div>

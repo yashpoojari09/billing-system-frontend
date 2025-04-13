@@ -40,52 +40,50 @@ const TenantSettingsForm: React.FC = () => {
     }
   };
   return (
-    <div className="p-6 max-w-2xl mx-auto bg-white rounded shadow">
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <h2 className="text-2xl font-bold text-[#001e38]">Tenant Settings</h2>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">Business Name</label>
+          <label className="block text-sm font-medium text-gray-200">Business Name</label>
           <input
             {...register('businessName')}
-            className="mt-1 block w-full border border-gray-300 rounded px-3 py-2 text-black bg-white"
+            className="mt-3 block w-full shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a] rounded px-3 py-2 text-white bg-dark"
           />
           {errors.businessName && <p className="text-sm text-red-500">{errors.businessName.message}</p>}
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">Address</label>
+        <label className="block text-sm font-medium text-gray-200">Address</label>
           <textarea
             {...register('address')}
-            className="mt-1 block w-full border border-gray-300 rounded px-3 py-2 text-black bg-white"
+            className="mt-3 block w-full shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a] rounded px-3 py-2 text-white bg-dark"
           />
           {errors.address && <p className="text-sm text-red-500">{errors.address.message}</p>}
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">GSTIN</label>
+          <label className="block text-sm font-medium text-gray-200">GSTIN</label>
           <input
             {...register('gstin')}
-            className="mt-1 block w-full border border-gray-300 rounded px-3 py-2 text-black bg-white"
+            className="mt-3 block w-full shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a] rounded px-3 py-2 text-white bg-dark"
           />
           {errors.gstin && <p className="text-sm text-red-500">{errors.gstin.message}</p>}
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">Phone</label>
+          <label className="block text-sm font-medium text-gray-200">Phone</label>
           <input
             {...register('phone')}
-            className="mt-1 block w-full border border-gray-300 rounded px-3 py-2 text-black bg-white"
+            className="mt-3 block w-full shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a] rounded px-3 py-2 text-white bg-dark"
           />
           {errors.phone && <p className="text-sm text-red-500">{errors.phone.message}</p>}
         </div>
         <div>
-  <label className="block text-sm font-medium text-gray-700">Invoice Template (HTML)</label>
+  <label className="block text-sm font-medium text-gray-200">Invoice Template (HTML)</label>
   <textarea
     {...register('invoiceTemplate')}
     rows={10}
     placeholder="Paste your Handlebars-compatible HTML template here"
-    className="mt-1 block w-full border border-gray-300 rounded px-3 py-2 text-black bg-white font-mono text-sm"
+    className="mt-3 block w-full shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a] rounded px-3 py-2 text-white bg-dark font-mono text-sm"
   />
   {errors.invoiceTemplate && (
     <p className="text-sm text-red-500">{errors.invoiceTemplate.message}</p>
@@ -96,20 +94,19 @@ const TenantSettingsForm: React.FC = () => {
         <div className="pt-4 flex items-center space-x-4">
           <Button type="submit"
             disabled={isSubmitting}
-            className="bg-[#001e38] hover:bg-[#00335c] text-white font-semibold py-2 px-6 rounded shadow"
+            className="bg-[#001e38] hover:bg-[#00335c] text-dark font-semibold py-2 px-6 rounded shadow"
           >
             {isSubmitting ? 'Saving...' : 'Save Settings'}
           </Button>
           <Button
             type="button"
-            className="bg-gray-300 hover:bg-gray-400 text-black font-semibold py-2 px-6 rounded shadow"
+            className="bg-gray-300 hover:bg-gray-400 text-dark font-semibold py-2 px-6 rounded "
             onClick={() => window.history.back()} // or use router.push('/dashboard') if using next/router
           >
             Cancel
           </Button>
         </div>
       </form>
-    </div>
   );
 }
 export default TenantSettingsForm;

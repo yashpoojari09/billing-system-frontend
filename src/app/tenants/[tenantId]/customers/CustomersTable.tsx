@@ -3,15 +3,17 @@
 // import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { deleteCustomer } from "@/utils/api";
-// import EditCustomerForm from "./[customerId]/EditCustomerForm";
+// import EditCustomerForm from "./[customerId]/EditCustomerForm";  const PAGE_SIZE = 10;
+
 import { CustomersTableProps } from "@/types/types";
 import { ButtonEd } from "@/components/ui/Button";
-
+import { FiEdit, FiTrash2 } from "react-icons/fi";
 
 export default function CustomersTable({ customers, setCustomers, isLoading }: CustomersTableProps) {
   // const [editCustomer, setEditCustomer] = useState<Customer | null>(null);
   // const [editCustomerId, setEditCustomerId] = useState<string | null>(null);
-  
+
+
   const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
   const router = useRouter();
 
@@ -29,19 +31,17 @@ export default function CustomersTable({ customers, setCustomers, isLoading }: C
   };
 
   return (
-    <div className="bg-white p-4 shadow rounded-lg">
-      <h2 className="text-xl font-bold mb-4 text-[#000000] text-center">Customers List</h2>
 
-      <div className="overflow-x-auto">
+    <div className="overflow-x-auto">
       {isLoading ? ( // ✅ Show loading while fetching
-        <div className="text-center text-gray-600">Loading customers...</div>
+        <div className="text-center text-white">Loading customers...</div>
       ) : (
-        <table className="w-full border-collapse border border-gray-300 min-w-[350px]">
+        <table className="w-full  border-collapse border border-black min-w-[350px]">
           <thead>
-            <tr className="bg-gray-200 text-[#000000]">
-              <th className="border p-2 text-left">Name</th>
-              <th className="border p-2 text-left">Email</th>
-              <th className="border p-2 text-left">Phone</th>
+            <tr className="bg-dark text-[#ffffff]">
+              <th className="border p-2 text-centre">Name</th>
+              <th className="border p-2 text-centre">Email</th>
+              <th className="border p-2 text-centre">Phone</th>
 
               <th className="border p-2 text-center">Actions</th>
             </tr>
@@ -49,7 +49,7 @@ export default function CustomersTable({ customers, setCustomers, isLoading }: C
           <tbody>
             {customers.length > 0 ? (
               customers.map((customer) => (
-                <tr key={customer.id} className="text-center text-[#000000]">
+                <tr key={customer.id} className="text-center text-[#ffffff]">
                   <td className="p-2 border">{customer.name}</td>
                   <td className="p-2 border">{customer.email}</td>
                   <td className="p-2 border">{customer.phone}</td>
@@ -63,14 +63,15 @@ export default function CustomersTable({ customers, setCustomers, isLoading }: C
                       variant="edit"
                       className="w-full sm:w-auto"
                     >
-                      Edit
+                      <FiEdit className="h-4 w-4" />
+
                     </ButtonEd>
                     <ButtonEd
                       onClick={() => handleDelete(customer.id)}
                       variant="delete"
                       className="w-full sm:w-auto"
                     >
-                      Delete
+                      <FiTrash2 className="h-4 w-4" />
                     </ButtonEd>
                   </td>
                 </tr>
@@ -84,8 +85,8 @@ export default function CustomersTable({ customers, setCustomers, isLoading }: C
             )}
           </tbody>
         </table>
+      
       )}
-      </div>
 
       {/* ✅ Show EditCustomerForm */}
       {/* {editCustomerId && (
