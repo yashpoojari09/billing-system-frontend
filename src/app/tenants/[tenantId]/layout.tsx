@@ -4,6 +4,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState, useCallback, useRef } from "react";
 import { FiMenu, FiLogOut } from "react-icons/fi";
 import { FaFileInvoice, FaUsers, FaBoxes, FaFileInvoiceDollar, FaCog } from 'react-icons/fa';
+import Image from "next/image";
 
 
 
@@ -65,7 +66,18 @@ const TenantLayout = ({ children }: { children: React.ReactNode }) => {
         className={`fixed inset-y-0 left-0 w-64 bg-gray-900 text-white p-5 transition-transform duration-300 z-30 md:relative md:translate-x-0 ${isSidebarOpen ? "translate-x-0" : "-translate-x-64 md:translate-x-0"
           }`}
       >
-        <h2 className="text-lg font-bold mb-6">Tenant Dashboard</h2>
+        <div className="flex items-center mb-2">
+         <Image
+    src="/TbLogo.svg"
+    alt="Logo"
+    width={70}
+    height={25}
+    className=" mr-1"
+  />
+        <h2 className="text-lg font-bold">Dashboard</h2>
+        </div>
+
+        {/* ✅ Navigation Links */}
         <ul className="space-y-3">
           <li>
             <button
