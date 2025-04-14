@@ -18,6 +18,17 @@ export default function InventoryPage() {
   const [taxRule, setTaxRule] = useState<TaxRuleProps[]>([]); // ✅ Store inventory data here
 
   const router = useRouter();
+  const PAGE_SIZE = 10;
+const [currentPage, setCurrentPage] = useState(1);
+
+const paginatedInventory = Array.isArray(inventory)
+? inventory.slice(
+  (currentPage - 1) * PAGE_SIZE,
+  currentPage * PAGE_SIZE)
+:[];
+
+const totalPages = Math.ceil(inventory.length / PAGE_SIZE);
+
 
  // ✅ Fetch inventory data
  const fetchInventory = async () => {
@@ -71,10 +82,32 @@ useEffect(() => {
       </div>
 
       {/* Inventory Table */}
-      <InventoryTable isLoading={isLoading} inventory={inventory} fetchInventory={fetchInventory} 
+      <InventoryTable isLoading={isLoading} inventory={paginatedInventory} fetchInventory={fetchInventory} 
       fetchTaxRules={fetchTaxRules} taxRules={taxRule}
       />
+ {!isLoading && inventory.length > PAGE_SIZE && (
+  <div className="flex justify-between items-center mt-4 text-white">
+    <button
+      onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+      disabled={currentPage === 1}
+      className="px-4 py-2 bg-gray-700 rounded disabled:opacity-50 cursor-pointer"
+    >
+      Previous
+    </button>
 
+    <span>
+      Page {currentPage} of {totalPages}
+    </span>
+
+    <button
+      onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+      disabled={currentPage === totalPages}
+      className="px-4 py-2 bg-gray-700 rounded disabled:opacity-50 cursor-pointer"
+    >
+      Next
+    </button>
+  </div>
+)}
       {/* Add Inventory Modal */}
       {isAddModalOpen && <AddInventory onClose={() => setIsAddModalOpen(false)}  
       fetchInventory={fetchInventory} fetchTaxRules={fetchTaxRules} taxes={taxRule}/>}

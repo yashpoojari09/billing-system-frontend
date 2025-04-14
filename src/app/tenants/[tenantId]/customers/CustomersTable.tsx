@@ -14,7 +14,6 @@ export default function CustomersTable({ customers, setCustomers, isLoading }: C
   // const [editCustomerId, setEditCustomerId] = useState<string | null>(null);
 
 
-  const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
   const router = useRouter();
 
   // ✅ Handle customer deletion
@@ -58,6 +57,8 @@ export default function CustomersTable({ customers, setCustomers, isLoading }: C
                     {/* setEditCustomerId(customer.id) */}
                     <ButtonEd
                       onClick={() => {
+                        const tenantId = localStorage.getItem("tenantId"); // Fetch tenantId inside the function
+
                         router.push(`/tenants/${tenantId}/customers/${customer.id}/edit`); // ✅ Navigate
                       }}
                       variant="edit"
@@ -78,7 +79,7 @@ export default function CustomersTable({ customers, setCustomers, isLoading }: C
               ))
             ) : (
               <tr>
-                <td colSpan={3} className="p-4 text-center text-gray-500">
+                <td colSpan={4} className="p-4 text-center text-gray-500">
                   No customers found.
                 </td>
               </tr>

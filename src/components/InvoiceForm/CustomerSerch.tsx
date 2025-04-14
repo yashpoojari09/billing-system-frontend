@@ -4,7 +4,8 @@ import { useState, useEffect, useCallback } from "react";
 import { searchCustomerByEmail } from "@/utils/api";
 import { CustomerInvoice } from "@/types/types";
 import { Button } from "@/components/ui/Button";
-
+import { FiPlus } from "react-icons/fi";
+import AddCustomerForm from "@/app/tenants/[tenantId]/customers/AddCustomerForm"; // ✅ Import AddCustomerForm
 interface Props {
   onCustomerSelect: (customer: CustomerInvoice | null) => void;
   selectedCustomer: CustomerInvoice | null;
@@ -15,6 +16,7 @@ export const CustomerSearch = ({ onCustomerSelect, selectedCustomer }: Props) =>
   const [customers, setCustomers] = useState<CustomerInvoice[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
  
   const handleSearch = useCallback(async () => {
@@ -30,7 +32,7 @@ export const CustomerSearch = ({ onCustomerSelect, selectedCustomer }: Props) =>
         setError("No customers found.");
       }
     } catch {
-      setError("Error searching for customer.");
+      setError("Customer not found, please Add Customer.");
     } finally {
       setLoading(false);
     }
@@ -58,6 +60,10 @@ export const CustomerSearch = ({ onCustomerSelect, selectedCustomer }: Props) =>
     setCustomers(null); // Clear customer list
     setError(null); // Clear any errors
   };
+  const handleCustomerAdded = (newCustomer: CustomerInvoice) => {
+    setIsAddModalOpen(false);
+    onCustomerSelect(newCustomer); // ✅ auto-select new customer
+  };
 
   return (
     <div className="mb-4">
@@ -75,8 +81,14 @@ export const CustomerSearch = ({ onCustomerSelect, selectedCustomer }: Props) =>
           </div>
 
           {loading && <p className="text-white">Searching...</p>}
-          {error && <p className="text-red-500">{error}</p>}
-
+          {error && (
+            <div className="text-red-500 mt-2 flex items-center justify-between">
+              <p>{error}</p>
+              <Button type="button" onClick={() => setIsAddModalOpen(true)}>
+          <FiPlus className="h-5 w-5" />
+              </Button>
+            </div>
+          )}
           {customers && (
             <div className="mt-2 bg-gray-100 p-2 rounded text-[#000000]">
               <h2>Select a Customer:</h2>
@@ -109,6 +121,13 @@ export const CustomerSearch = ({ onCustomerSelect, selectedCustomer }: Props) =>
           </Button>
         </div>
       )}
+       {/* ✅ Display Add Customer Modal */}
+            {isAddModalOpen && (
+              <AddCustomerForm
+                onClose={() => setIsAddModalOpen(false)}
+                onCustomerAdded={handleCustomerAdded} // ✅ Pass function to update list
+              />
+            )}
     </div>
   );
 };
