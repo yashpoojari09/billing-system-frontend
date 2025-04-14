@@ -44,26 +44,26 @@ export default function EditTaxRuleForm({
 
   return (
 <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm bg-black/40 px-4 z-50">
-<div className="bg-white p-6 rounded-lg shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a] w-full sm:w-96">
-        <h2 className="text-lg font-bold mb-4 text-[#000000]">Edit Tax Rule</h2>
+<div className="bg-black p-6 rounded-lg shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#ffffff1a] w-full sm:w-96">
+        <h2 className="text-lg font-bold mb-6 text-[#fffff]">Edit Tax Rule</h2>
 
         {error && <p className="text-red-500">{error}</p>}
 
         <form onSubmit={handleUpdate}>
-          <label className="block mb-2">Tax Rate (%)</label>
+          <label className="block mb-1">Tax Rate (%)</label>
           <input
             type="number"
             value={taxRate}
             onChange={(e) => setTaxRate(Number(e.target.value))}
-            className="border p-2 w-full mb-2 text-[#000000]"
+            className="shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a] p-2 w-full mb-6 text-[#ffffff]"
           />
 
-          <label className="block mb-2">Region</label>
+          <label className="block mb-1">Region</label>
           <input
             type="text"
             value={region}
             onChange={(e) => setRegion(e.target.value)}
-            className="border p-2 w-full mb-2 text-[#000000]"
+            className="shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a] p-2 w-full mb-2 text-[#ffffff]"
           />
 
           <div className="flex justify-end gap-2 mt-4 flex-wrap">

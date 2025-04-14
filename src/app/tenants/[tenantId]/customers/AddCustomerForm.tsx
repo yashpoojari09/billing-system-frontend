@@ -53,37 +53,37 @@ export default function AddCustomerForm({
 
   return (
 <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm bg-black/40 px-4 z-50">
-<div className="bg-white p-6 rounded-lg shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a] w-full max-w-md">
-        <h2 className="text-lg font-bold mb-4 text-black text-center">Add Customer</h2>
+<div className="bg-black p-6 rounded-lg shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a] w-full max-w-md">
+        <h2 className="text-lg font-bold mb-6 text-white text-center">Add Customer</h2>
 {formError && (
   <div className="text-red-600 text-sm text-center mb-2">
     {formError}
   </div>
 )}
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700">Name</label>
+            <label className="block text-sm font-medium text-white">Name</label>
             <input
               {...register("name")}
-              className="w-full border p-2 rounded text-black"
+              className="w-full  p-2 rounded text-white shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a]"
             />
             {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Email</label>
+            <label className="block text-sm font-medium text-white">Email</label>
             <input
               {...register("email")}
-              className="w-full border p-2 rounded text-black"
+              className="w-full shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a] p-2 rounded text-white"
             />
             {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Phone</label>
+            <label className="block text-sm font-medium text-white">Phone</label>
             <input
               {...register("phone")}
-              className="w-full border p-2 rounded text-black"
+              className="w-full shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a] p-2 rounded text-white"
             />
             {errors.phone && <p className="text-red-500 text-sm">{errors.phone.message}</p>}
           </div>

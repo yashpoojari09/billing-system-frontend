@@ -59,42 +59,42 @@ export default function EditCustomerPage() {
 
   return (
 <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm bg-black/40 px-4 z-50">
-<div className="bg-white p-6 rounded-lg shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a] w-full max-w-md">
-        <h2 className="text-xl font-bold mb-4 text-black text-center">Edit Customer</h2>
+<div className="bg-black p-6 rounded-lg shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a] w-full max-w-md">
+        <h2 className="text-xl font-bold mb-4 text-white text-center">Edit Customer</h2>
         {error && <p className="text-red-500 text-center">{error}</p>}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-gray-700">Name</label>
+            <label className="block text-white">Name</label>
             <input
               type="text"
               name="name"
               value={formData.name}
               onChange={handleChange}
-              className="w-full p-2 border rounded text-black"
+              className="w-full p-2 shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a] rounded text-white"
               required
             />
           </div>
 
           <div>
-            <label className="block text-gray-700">Email</label>
+            <label className="block text-white">Email</label>
             <input
               type="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full p-2 border rounded text-black"
+              className="w-full p-2 shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a] rounded text-white"
               required
             />
           </div>
           <div>
-            <label className="block text-gray-700">Phone</label>
+            <label className="block text-white">Phone</label>
             <input
               type="phone"
               name="phone"
               value={formData.phone}
               onChange={handleChange}
-              className="w-full p-2 border rounded text-black"
+              className="w-full p-2 shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a] rounded text-white"
               required
             />
           </div>

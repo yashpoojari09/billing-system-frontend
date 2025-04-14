@@ -35,6 +35,8 @@ export default function CustomersTable({ customers, setCustomers, isLoading }: C
       {isLoading ? ( // ✅ Show loading while fetching
         <div className="text-center text-white">Loading customers...</div>
       ) : (
+        <div className="overflow-hidden rounded-lg border border-white">
+
         <table className="w-full  border-collapse border border-black min-w-[350px]">
           <thead>
             <tr className="bg-dark text-[#ffffff]">
@@ -86,7 +88,7 @@ export default function CustomersTable({ customers, setCustomers, isLoading }: C
             )}
           </tbody>
         </table>
-      
+      </div>
       )}
 
       {/* ✅ Show EditCustomerForm */}

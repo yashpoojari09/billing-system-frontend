@@ -50,58 +50,58 @@ export default function EditInventoryForm(
 
   return (
 <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm bg-black/40 px-4 z-50">
-<div className="bg-white p-6 rounded-lg  w-full max-w-md">
-        <h2 className="text-lg font-bold mb-4 text-[#001e38] text-center">
+<div className="bg-black p-6 rounded-lg  w-full max-w-md shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a]">
+        <h2 className="text-lg font-bold mb-6 text-[#ffffff] text-center">
           Edit Inventory Item
         </h2>
 
         {error && <p className="text-red-500 text-sm text-center">{error}</p>}
 
-        <form onSubmit={handleUpdate} className="space-y-4">
+        <form onSubmit={handleUpdate} className="space-y-6">
           {/* Name Field */}
           <div>
-            <label className="block text-sm font-medium text-[#001e38]">
+            <label className="block text-sm font-medium text-[#ffffff]">
               Name
             </label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full border p-3 rounded text-[#001e38]"
+              className="w-full shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a] p-3 rounded text-[#ffffff]"
             />
           </div>
 
           {/* Stock Field */}
           <div>
-            <label className="block text-sm font-medium text-[#001e38]">
+            <label className="block text-sm font-medium text-[#fffff]">
               Stock
             </label>
             <input
               type="number"
               value={stock}
               onChange={(e) => setStock(Number(e.target.value))}
-              className="w-full border p-3 rounded text-[#001e38]"
+              className="w-full shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a] p-3 rounded text-[#ffffff]"
             />
           </div>
 
           {/* Price Field */}
           <div>
-            <label className="block text-sm font-medium text-[#001e38]">
+            <label className="block text-sm font-medium text-[#fffff]">
               Price
             </label>
             <input
               type="number"
               value={price}
               onChange={(e) => setPrice(Number(e.target.value))}
-              className="w-full border p-3 rounded text-[#001e38]"
+              className="w-full shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a] p-3 rounded text-[#fffff]"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-[#001e38]">Tax Rule</label>
+            <label className="block text-sm font-medium text-[#fffff]">Tax Rule</label>
             <select
               value={taxId}
               onChange={(e) => setTaxId(e.target.value)}
-              className="w-full border p-3 rounded text-[#001e38]"
+              className="w-full shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a] p-3 rounded text-[#fffff]"
             >
               <option value="">Select Tax Rate</option>
               {taxRules.map((tax) => (

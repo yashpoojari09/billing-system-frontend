@@ -15,7 +15,7 @@ export const Button: React.FC<ButtonProps> = ({ type, title, children, ...props 
     <button
       type={type}
       {...props}
-      className="sm:w-auto px-2 py-2 rounded-md shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a] text-white bg-transparent hover:bg-blue-600 hover:border-blue-600 transition-colors duration-300"
+      className="sm:w-auto px-2 py-2 rounded-md shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a] text-white bg-blue-700 hover:bg-blue-600 transition-colors duration-300 cursor-pointer"
       >
       {title || children}
     </button>
@@ -33,8 +33,8 @@ export const ButtonEd: React.FC<ButtonPropsEd> = ({ variant, title, children, ..
     <button
       {...props}
       className={`px-3 py-1 rounded mr-2  cursor-pointer sm:w-auto ${
-        variant === "edit" ? "shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a] bg-transparent hover:bg-blue-500 text-white hover:bg-blue-700" :
-        "shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a] bg-transparent hover:bg-blue-500 text-white hover:bg-red-500 text-white hover:bg-red-700"
+        variant === "edit" ? "shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a] bg-blue-700 text-white hover:bg-blue-500" :
+        "shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a]  bg-red-800 text-white hover:bg-red-500 text-white hover:bg-red-700"
       }`}
     >
       {title || children}

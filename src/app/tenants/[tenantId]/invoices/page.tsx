@@ -39,6 +39,8 @@ const InvoiceList: React.FC = () => {
 
       <h1 className="text-2xl font-bold mb-6 text-center">Invoices</h1>
       <div className="bg-dark p-6 rounded-lg shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a] w-full">
+      <div className="overflow-hidden rounded-lg border border-white">
+
         <table className="min-w-full border text-sm text-[#ffffff]">
           <thead className="bg-dark-100 text-left">
             <tr>
@@ -82,7 +84,7 @@ const InvoiceList: React.FC = () => {
               </tr>)}
           </tbody>
         </table>
-
+</div>
         {/* Pagination */}
         <div className="flex justify-between items-center mt-4 text-white">
           <button

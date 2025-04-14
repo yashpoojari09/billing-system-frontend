@@ -47,45 +47,45 @@ export default function AddInventory({ onClose, fetchInventory, fetchTaxRules, t
   return (
     <>
 <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm bg-black/40 px-4 z-50">
-<div className="bg-white p-6 rounded-lg shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a] w-full max-w-md">
-          <h2 className="text-lg font-bold mb-4 text-gray-700 text-center">Add Inventory Item</h2>
+<div className="bg-black p-6 rounded-lg shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a] w-full max-w-md">
+          <h2 className="text-lg font-bold mb-6 text-white text-center">Add Inventory Item</h2>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             {/* Name Field */}
             <div>
-              <label className="block text-sm font-medium text-[#001e38]">Name</label>
+              <label className="block text-sm font-medium text-[#fffff]">Name</label>
               <input
                 {...register("name")}
-                className="w-full border p-3 rounded text-[#001e38]"
+                className="w-full shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a] p-3 rounded text-[#fffff]"
               />
               {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
             </div>
 
             {/* Stock Field */}
             <div>
-              <label className="block text-sm font-medium text-[#001e38]">Stock</label>
+              <label className="block text-sm font-medium text-[#fffff]">Stock</label>
               <input
                 type="number"
                 {...register("stock", { valueAsNumber: true })}
-                className="w-full border p-2 rounded text-[#001e38]"
+                className="w-full shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a] p-2 rounded text-[#fffff]"
               />
               {errors.stock && <p className="text-red-500 text-sm">{errors.stock.message}</p>}
             </div>
 
             {/* Price Field */}
             <div>
-              <label className="block text-sm font-medium text-[#001e38]">Price</label>
+              <label className="block text-sm font-medium text-[#fffff]">Price</label>
               <input
                 type="number"
                 {...register("price", { valueAsNumber: true })}
-                className="w-full border p-2 rounded text-[#001e38]"
+                className="w-full shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a] p-2 rounded text-[#fffff]"
               />
               {errors.price && <p className="text-red-500 text-sm">{errors.price.message}</p>}
             </div>
 
             <select
               {...register("taxId")}
-              className="w-full border p-2 rounded text-[#001e38]"
+              className="w-full shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a] p-2 rounded text-[#fffff]"
             >
               <option value="">Select Tax Rate</option>
               {taxes.map((tax) => (

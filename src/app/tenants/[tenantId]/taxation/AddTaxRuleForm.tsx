@@ -31,12 +31,12 @@ export default function AddTaxRuleForm({ onClose, fetchTaxRules }: { onClose: ()
 
   return (
 <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm bg-black/40 px-4 z-50">
-<div className="bg-white p-6 rounded-lg shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a] w-full max-w-md">
-        <h2 className="text-lg font-bold mb-2 text-[#000000]">Add Tax Rule</h2>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+<div className="bg-black p-6 rounded-lg shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a] w-full max-w-md">
+        <h2 className="text-lg font-bold mb-6 text-[#ffffff]">Add Tax Rule</h2>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {/* Tax Rate Field */}
           <div>
-            <label className="block text-sm font-medium text-[#001e38]">Tax Rate</label>
+            <label className="block text-sm font-medium text-[#ffffff]">Tax Rate</label>
             <input
               type="number"
               step="0.01"
@@ -44,17 +44,17 @@ export default function AddTaxRuleForm({ onClose, fetchTaxRules }: { onClose: ()
                 required: "Tax rate is required",
                 valueAsNumber: true,
               })}
-              className="w-full border p-3 rounded text-[#001e38]"
+              className="w-full shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a] p-3 rounded text-[#ffffff]"
             />
             {errors.taxRate && <p className="text-red-500 text-sm">{errors.taxRate.message}</p>}
           </div>
 
           {/* Region Field */}
           <div>
-            <label className="block text-sm font-medium text-[#001e38]">Region</label>
+            <label className="block text-sm font-medium text-[#ffffff]">Region</label>
             <input
               {...register("region", { required: "Region is required" })}
-              className="w-full border p-3 rounded text-[#001e38]"
+              className="w-full shadow-[0_0px_9px_-3px_#ffffff,0_4px_6px_-4px_#0000001a] p-3 rounded text-[#ffffff]"
             />
             {errors.region && <p className="text-red-500 text-sm">{errors.region.message}</p>}
           </div>

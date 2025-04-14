@@ -65,8 +65,8 @@ export const InvoiceItemList = ({ items, products, onItemsChange }: Props) => {
         const taxRate = product?.tax?.taxRate ? (product.tax.taxRate * 100).toFixed(2) : "0";
 
         return (
-          <div key={index} className="flex flex-col gap-1 mb-4 border p-3 rounded text-[#ffffff] bg-dark">
-            <div className="flex gap-2 items-center ">
+          <div key={index} className="flex flex-col gap-1 mb-4 border p-3 rounded-md text-[#ffffff] bg-dark">
+            <div className="flex gap-2 items-center">
             <Select
                   className="text-black"
                   classNamePrefix="react-select"
@@ -93,7 +93,7 @@ export const InvoiceItemList = ({ items, products, onItemsChange }: Props) => {
               <input
                 type="number"
                 value={item.quantity}
-                className="border p-2 w-1/4"
+                className="border p-2 w-1/4 rounded-md"
                 min={1}
                 onChange={(e) => handleQtyChange(index, Number(e.target.value))}
               />

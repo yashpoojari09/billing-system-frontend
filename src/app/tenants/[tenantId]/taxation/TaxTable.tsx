@@ -34,6 +34,8 @@ export default function TaxationTable({fetchTaxRules, taxRules, isLoading}: { ta
       {isLoading ? ( // ✅ Show loading while fetching
         <div className="text-center text-white">Loading Taxation Rules...</div>
       ) : (
+        <div className="overflow-hidden rounded-lg border border-white">
+
       <table className="w-full border-collapse border border-white">
         <thead>
           <tr className="bg-dark text-[#ffffff]">
@@ -68,6 +70,7 @@ export default function TaxationTable({fetchTaxRules, taxRules, isLoading}: { ta
           ))}
         </tbody>
       </table>
+      </div>
       )}
 
       {editTaxRule && <EditTaxRuleForm taxRules={editTaxRule} onClose={() => setEditTaxRule(null)}  fetchTaxRules={fetchTaxRules}/>}

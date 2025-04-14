@@ -59,6 +59,8 @@ export default function InventoryTable({ inventory, fetchInventory, isLoading, t
         {isLoading ? ( // ✅ Show loading while fetching
           <div className="text-center text-white">Loading Inventory...</div>
         ) : (
+          <div className="overflow-hidden rounded-lg border border-white">
+
           <table className="w-full border-collapse border border-white min-w-[350px]">
             <thead>
               <tr className="bg-dark text-[#ffffff]">
@@ -109,6 +111,7 @@ export default function InventoryTable({ inventory, fetchInventory, isLoading, t
               )}
             </tbody>
           </table>
+          </div>
         )}
       </div>
 

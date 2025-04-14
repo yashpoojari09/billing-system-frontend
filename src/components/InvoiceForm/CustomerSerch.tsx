@@ -75,8 +75,8 @@ export const CustomerSearch = ({ onCustomerSelect, selectedCustomer }: Props) =>
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter Customer Email"
-              className="border p-2 w-full text-[#ffffff]"
+              placeholder="Enter Customer email or phone no"
+              className="border rounded-md p-2 w-full text-[#ffffff]"
             />
           </div>
 
