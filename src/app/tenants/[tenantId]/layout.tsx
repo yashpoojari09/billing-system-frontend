@@ -144,7 +144,7 @@ const TenantLayout = ({ children }: { children: React.ReactNode }) => {
 
         </ul>
 
-        <div className="mt-60">
+        <div className="mt-50">
           <button
             onClick={handleLogout}
             className="w-full bg-gray-700 hover:bg-gray-600 text-white  px-4 py-2 rounded cursor-pointer"
